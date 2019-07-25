@@ -14,12 +14,15 @@ import CreateRecipe from "./components/CreateRecipe/CreateRecipe";
 
 import IngredientList from "./components/IngredientList";
 
+import CreateTag from "./components/Tags/CreateTag";
+
+
 class App extends Component {
   render() {
     return (
         <div className="full-width container">
             <nav className="navbar navbar-expand-lg navbar-light bg-light">
-              <a className="navbar-brand" href="https://codingthesmartway.com" target="_blank">
+              <a className="navbar-brand" href="https://codingthesmartway.com" target="_blank" rel="noopener noreferrer">
                 <img src={logo} width="30" height="30" alt="CodingTheSmartWay.com" />
               </a>
               <Link to="/" className="navbar-brand">MERN-Stack Todo App</Link>
@@ -55,6 +58,8 @@ class App extends Component {
           <Route path="/recipes" component={withAuth(RecipeList)} />
           <Route path="/ingredients" component={withAuth(IngredientList)} />
           <Route path="/recipe/create" component={withAuth(CreateRecipe)} />
+          <Route path="/tag/create" component={withAuth(CreateTag)} />
+
           <Route path="/login" component={Login} />
           <Route path="/register" component={Register} />
         </Switch>

@@ -4,7 +4,6 @@ const cookieParser = require('cookie-parser');
 const path = require('path');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
-const User = require('./models/User');
 const withAuth = require('./middleware');
 
 const app = express();
@@ -16,6 +15,10 @@ const secret = config.secret;
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieParser());
+
+/* Models */
+const User = require('./models/User');
+const Tag = require('./models/Tag');
 
 const mongo_uri = 'mongodb+srv://' + config.database.user + ':' + config.database.password + '@cluster0-xt4o2.mongodb.net/test?retryWrites=true&w=majority';
 
@@ -101,5 +104,41 @@ app.post('/api/authenticate', function(req, res) {
 app.get('/checkToken', withAuth, function(req, res) {
   res.sendStatus(200);
 });
+
+
+/* Tags */
+
+app.post('/api/savetag', function(req, res) {
+  const { title } = req.body;
+  const tag = new Tag({ title });
+  tag.save(function(err) {
+    if (err) {
+      console.log(err);
+      res.status(500).send("Error storing new tag. Please try again.");
+    } 
+    else {
+      res.status(200).send("Tag is saved!");
+    }
+  });
+});
+
+app.get('/api/searchtag', function(req, res) {
+  const query = req.query.q || '';
+  console.log(query);
+  if (query) {
+      Tag.find( {'title': {$regex: ".*" + query + ".*", '$options' : 'i'}})
+      .exec( function(err, tagArray) {
+        if (err) {
+          res.status(500).send("Error finding the tag. Please try again later.")
+        }
+        else {
+          res.send(tagArray);
+        }
+      }
+    )
+  }
+});
+
+/***/
 
 app.listen(process.env.PORT || 8080);

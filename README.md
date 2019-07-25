@@ -1,6 +1,5 @@
 TODO:
 <ul>
-	<li>Add tags for recipes</li>
 	<li>Make sure tags auto-complete when adding them to a new recipe</li>
 	<li>Add ingredients</li>
 	<li>Make sure ingredients auto-complete when adding them to a new recipe</li>
@@ -21,4 +20,5 @@ DONE:
 	<li>Signup and login</li>
 	<li>Route protection</li>
 	<li>Basic frontend functionality to create a new recipe</li>
+	<li>Add tags for recipes</li>
 </ul>
