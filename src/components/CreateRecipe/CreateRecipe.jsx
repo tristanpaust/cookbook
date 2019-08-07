@@ -3,6 +3,7 @@ import '../../css/App.css';
 
 import AddStep from './AddStep.jsx';
 import AddTag from './AddTag.jsx';
+import SearchTag from './SearchTag.jsx';
 import AddIngredient from './AddIngredient.jsx';
 import ImageDropzone from './ImageDropzone.jsx';
 
@@ -22,7 +23,6 @@ export default class CreateRecipe extends Component {
     this.onIngredientAdd = this.onIngredientAdd.bind(this);
     this.onDropdownClick = this.onDropdownClick.bind(this);
     this.onStepAdd = this.onStepAdd.bind(this);
-    this.onGetTag = this.onGetTag.bind(this);
   }
 
   componentDidMount() {
@@ -88,24 +88,12 @@ export default class CreateRecipe extends Component {
     e.preventDefault();
   }
 
-  onGetTag() {
-    let tag = this.refs.tag.value;
-    console.log(tag);
-    fetch('/api/searchtag?q='+tag, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      },      
-    })
-      .then(res => res.text())
-      .then(res => console.log(res));
-  }
-
   render() {
     return (
       <div className="container">
         <h1>Create a new Recipe</h1>
-                                        <button className="btn btn-primary" onClick={this.onGetTag}>Get</button>
+
+          <SearchTag/>
 
           <div className="container-fluid">
 

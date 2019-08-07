@@ -1,6 +1,6 @@
 TODO:
 <ul>
-	<li>Make sure tags auto-complete when adding them to a new recipe</li>
+	<li>If tag doesn't exist, create a new one</li>
 	<li>Add ingredients</li>
 	<li>Make sure ingredients auto-complete when adding them to a new recipe</li>
 	<li>What are we doing with different measurements when it comes to ingredients? (cups, liters, grams, etc)</li>
@@ -21,4 +21,5 @@ DONE:
 	<li>Route protection</li>
 	<li>Basic frontend functionality to create a new recipe</li>
 	<li>Add tags for recipes</li>
+	<li>Make sure tags auto-complete when adding them to a new recipe</li>
 </ul>

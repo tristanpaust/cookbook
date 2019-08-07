@@ -21,14 +21,11 @@ const User = require('./models/User');
 const Tag = require('./models/Tag');
 
 const mongo_uri = 'mongodb+srv://' + config.database.user + ':' + config.database.password + '@cluster0-xt4o2.mongodb.net/test?retryWrites=true&w=majority';
+const opts = { useNewUrlParser: true };
 
-mongoose.connect(mongo_uri, { useNewUrlParser: true }, function(err) {
-  if (err) {
-    throw err;
-  } else {
-    console.log(`Successfully connected to ${mongo_uri}`);
-  }
-});
+mongoose.connect(mongo_uri, opts, function(err) {
+  if (err) { return console.error('failed');}
+}); 
 
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -126,7 +123,7 @@ app.get('/api/searchtag', function(req, res) {
   const query = req.query.q || '';
   console.log(query);
   if (query) {
-      Tag.find( {'title': {$regex: ".*" + query + ".*", '$options' : 'i'}})
+      Tag.find( {'title': {$regex: ".*" + query + ".*", '$options' : 'i'}} )
       .exec( function(err, tagArray) {
         if (err) {
           res.status(500).send("Error finding the tag. Please try again later.")
