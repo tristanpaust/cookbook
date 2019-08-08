@@ -14,6 +14,7 @@ export default class SearchTag extends Component {
     this.state = {
       isLoading: false,
       value: undefined,
+      tags: []
     }
     this.onChange = this.onChange.bind(this);
     this.onGetTag = this.onGetTag.bind(this);
@@ -21,11 +22,28 @@ export default class SearchTag extends Component {
   }
 
    onChange(newValue, actionMeta) {
-    console.group('Value Changed');
-    console.log(newValue);
-    console.log('action:', actionMeta.action);
-    console.groupEnd();
     this.setState({ value: newValue });
+
+    if (actionMeta.action === "select-option") { 
+      // Add the tag to the array that keeps track of all ids
+      this.state.tags.push(newValue[newValue.length-1].value);
+    }
+    
+    if (actionMeta.action === "remove-value" || actionMeta.action === "pop-value") {
+      // calculates diff between old and new list
+      var index = 0;
+      
+      if (newValue) {
+        let difference = this.state.value.filter(x => !newValue.includes(x)); 
+        index = this.state.tags.indexOf(difference[0].value); 
+      }
+      // Get index of removed item in tags array
+      if (index > -1) {
+        // Remove the tag
+        this.state.tags.splice(index, 1); 
+      }
+    }
+    this.props.onSelectTag(this.state.tags);
   };
 
   handleCreate(inputValue) {
@@ -41,14 +59,16 @@ export default class SearchTag extends Component {
     .then(newOption => {
       var tag = JSON.parse(newOption);
       var option = createOption(tag.title);
+      this.state.value.push(option);
+      this.state.tags.push(tag._id);
       this.setState({
         isLoading: false,
-        value: option
+        value: this.state.value
       });
     })
   }
 
-  onGetTag(value) { console.log(value);
+  onGetTag(value) {
     if (!value) {
       return Promise.resolve({ options: [] });
     }
@@ -62,7 +82,7 @@ export default class SearchTag extends Component {
     .then((response) => {
       return response.json();
     })
-    .then((json) => {console.log(json)
+    .then((json) => {
       const formatted = json.map((l) => {
         return Object.assign({}, {
           value: l._id,
@@ -75,7 +95,7 @@ export default class SearchTag extends Component {
 
   render() {
     return (
-      <div className="form-control">
+      <div className="async-tag-control">
         <AsyncCreatableSelect
           isMulti
           isClearable

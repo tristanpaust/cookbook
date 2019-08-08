@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import '../../css/App.css';
+import '../../css/CreateRecipe.css';
 
 import AddStep from './AddStep.jsx';
 import AddTag from './AddTag.jsx';
@@ -19,33 +20,16 @@ export default class CreateRecipe extends Component {
       dropDownValue: 'Select unit',
       steps: [{text: 'Get pot', key: 1}, {text: 'Turn on oven', key: 2} , {text: 'Fill water in pot', key: 3} , {text: 'Boil water', key: 4}]
     }
-    this.onTagAdd = this.onTagAdd.bind(this);
     this.onIngredientAdd = this.onIngredientAdd.bind(this);
     this.onDropdownClick = this.onDropdownClick.bind(this);
     this.onStepAdd = this.onStepAdd.bind(this);
+    this.handleTagSelect = this.handleTagSelect.bind(this);
   }
 
   componentDidMount() {
     fetch('/api/recipelist')
       .then(res => res.text())
       .then(res => this.setState({message: res}));
-  }
-
-  onTagAdd(e) {
-    var tag = this.refs.tag.value;
-
-    var newTag = {
-      text: tag,
-      key: Date.now()
-    }
-
-    this.setState((prevState) => {
-      return {
-        tags: prevState.tags.concat(newTag)
-      };
-    });
-    this.refs.tag.value = '';
-    e.preventDefault();
   }
 
   onIngredientAdd(e) {
@@ -88,12 +72,14 @@ export default class CreateRecipe extends Component {
     e.preventDefault();
   }
 
+  handleTagSelect(options) {
+    this.setState({tags: options});
+  }
+
   render() {
     return (
       <div className="container">
         <h1>Create a new Recipe</h1>
-
-          <SearchTag/>
 
           <div className="container-fluid">
 
@@ -114,16 +100,14 @@ export default class CreateRecipe extends Component {
                 <div className="form-group">
                   <label htmlFor="tags">Tags</label>
                     <div className="input-group">
-                      <input id="tag" name="tag" type="text" className="form-control" ref="tag"/>                                      
-                      <button className="btn btn-primary" onClick={this.onTagAdd}>Add</button>
+                      <SearchTag onSelectTag={this.handleTagSelect}/>
                     </div>
                   <small className="form-text text-muted">The word will try to auto-complete as you type.</small>
                 </div>
-                <AddTag entries={this.state.tags}/>
               </div>
             </div>
 
-            <hr />
+            <hr /><button onClick={this.test}/>
 
               <div className="row d-md-block">
                 <h3> Ingredients </h3>
