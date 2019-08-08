@@ -19,6 +19,8 @@ app.use(cookieParser());
 /* Models */
 const User = require('./models/User');
 const Tag = require('./models/Tag');
+const Ingredient = require('./models/Ingredient');
+const Unit = require('./models/Unit');
 
 const mongo_uri = 'mongodb+srv://' + config.database.user + ':' + config.database.password + '@cluster0-xt4o2.mongodb.net/test?retryWrites=true&w=majority';
 const opts = { useNewUrlParser: true };
@@ -121,7 +123,6 @@ app.post('/api/savetag', function(req, res) {
 
 app.get('/api/searchtag', function(req, res) {
   const query = req.query.q || '';
-  console.log(query);
   if (query) {
       Tag.find( {'title': {$regex: ".*" + query + ".*", '$options' : 'i'}} )
       .exec( function(err, tagArray) {
@@ -138,4 +139,73 @@ app.get('/api/searchtag', function(req, res) {
 
 /***/
 
+/* Ingredients */
+
+app.post('/api/saveingredient', function(req, res) {console.log('ingredient!', req.body);
+  const { title } = req.body;
+  const ingredient = new Ingredient({ title });
+  ingredient.save(function(err) {
+    if (err) {
+      console.log(err);
+      res.status(500).send("Error storing new ingredient. Please try again.");
+    } 
+    else {
+      res.send(ingredient);
+    }
+  });
+});
+
+app.get('/api/searchingredient', function(req, res) {
+  const query = req.query.q || '';
+  if (query) {
+      Ingredient.find( {'title': {$regex: ".*" + query + ".*", '$options' : 'i'}} )
+      .exec( function(err, ingredientArray) {
+        if (err) {
+          res.status(500).send("Error finding the tag. Please try again later.")
+        }
+        else {
+          res.send(ingredientArray);
+        }
+      }
+    )
+  }
+});
+
+/***/
+
+
+
+/* Units */
+
+app.post('/api/saveunit', function(req, res) {
+  const { title } = req.body;
+  const unit = new Unit({ title });
+  unit.save(function(err) {
+    if (err) {
+      console.log(err);
+      res.status(500).send("Error storing new unit. Please try again.");
+    } 
+    else {
+      res.send(unit);
+    }
+  });
+});
+
+app.get('/api/searchunit', function(req, res) {
+  const query = req.query.q || '';
+  if (query) {
+      Unit.find( {'title': {$regex: ".*" + query + ".*", '$options' : 'i'}} )
+      .exec( function(err, unitArray) {
+        if (err) {
+          res.status(500).send("Error finding the tag. Please try again later.")
+        }
+        else {
+          res.send(unitArray);
+        }
+      }
+    )
+  }
+});
+
+/***/
 app.listen(process.env.PORT || 8080);

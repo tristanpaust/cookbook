@@ -6,6 +6,7 @@ import AddStep from './AddStep.jsx';
 import AddTag from './AddTag.jsx';
 import SearchTag from './SearchTag.jsx';
 import AddIngredient from './AddIngredient.jsx';
+import SearchIngredient from './SearchIngredient.jsx';
 import ImageDropzone from './ImageDropzone.jsx';
 
 import {Dropdown} from 'react-bootstrap';
@@ -24,6 +25,7 @@ export default class CreateRecipe extends Component {
     this.onDropdownClick = this.onDropdownClick.bind(this);
     this.onStepAdd = this.onStepAdd.bind(this);
     this.handleTagSelect = this.handleTagSelect.bind(this);
+    this.handleIngredientSelect = this.handleIngredientSelect.bind(this);
   }
 
   componentDidMount() {
@@ -76,6 +78,11 @@ export default class CreateRecipe extends Component {
     this.setState({tags: options});
   }
 
+  handleIngredientSelect(options) {
+    this.setState({ingredients: options});
+    console.log(this.state.ingredients);
+  }
+
   render() {
     return (
       <div className="container">
@@ -107,43 +114,10 @@ export default class CreateRecipe extends Component {
               </div>
             </div>
 
-            <hr /><button onClick={this.test}/>
-
               <div className="row d-md-block">
                 <h3> Ingredients </h3>
-                    
+                  <SearchIngredient onSelectIngredient={this.handleIngredientSelect}/>
 
-                  <div className="form-group">
-                    <div className="input-group">
-                      <input id="amount" name="amount" type="text" className="form-control" ref="amount"/>
-                      
-                      <Dropdown>
-                        <Dropdown.Toggle variant="secondary" id="dropdown-basic">
-                          {this.state.dropDownValue}
-                        </Dropdown.Toggle>
-
-                        <Dropdown.Menu>
-                          <Dropdown.Item onClick={this.onDropdownClick}>L</Dropdown.Item>
-                          <Dropdown.Item onClick={this.onDropdownClick}>cL</Dropdown.Item>
-                          <Dropdown.Item onClick={this.onDropdownClick}>mL</Dropdown.Item>
-                          
-                          <Dropdown.Divider />
-                          
-                          <Dropdown.Item onClick={this.onDropdownClick}>Kg</Dropdown.Item>
-                          <Dropdown.Item onClick={this.onDropdownClick}>g</Dropdown.Item>
-                          <Dropdown.Item onClick={this.onDropdownClick}>mg</Dropdown.Item>
-
-                          <Dropdown.Divider />
-
-                          <Dropdown.Item onClick={this.onDropdownClick}>Piece</Dropdown.Item>
-
-                        </Dropdown.Menu>
-                      </Dropdown>
-
-                      <input id="ingredient" name="ingredient" type="text" className="form-control" ref="ingredient"/>
-                      <button className="btn btn-primary" onClick={this.onIngredientAdd}>Add Ingredient</button>
-                    </div>
-                  </div>
                   <AddIngredient entries={this.state.ingredients}/>
               </div>
               
