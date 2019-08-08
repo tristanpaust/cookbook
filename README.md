@@ -1,8 +1,8 @@
 TODO:
 <ul>
-	<li>If tag doesn't exist, create a new one</li>
 	<li>Add ingredients</li>
 	<li>Make sure ingredients auto-complete when adding them to a new recipe</li>
+	<li>If tag doesn't exist, create a new one</li>
 	<li>What are we doing with different measurements when it comes to ingredients? (cups, liters, grams, etc)</li>
 	<li>Add different tags for ingredients</li>
 	<li>Fill out recipe with sample data that gradually gets recplaced while typing</li>
@@ -22,4 +22,5 @@ DONE:
 	<li>Basic frontend functionality to create a new recipe</li>
 	<li>Add tags for recipes</li>
 	<li>Make sure tags auto-complete when adding them to a new recipe</li>
+	<li>If tag doesn't exist, create a new one</li>
 </ul>

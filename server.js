@@ -114,7 +114,7 @@ app.post('/api/savetag', function(req, res) {
       res.status(500).send("Error storing new tag. Please try again.");
     } 
     else {
-      res.status(200).send("Tag is saved!");
+      res.send(tag);
     }
   });
 });
