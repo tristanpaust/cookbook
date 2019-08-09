@@ -14,7 +14,6 @@ export default class SearchUnit extends Component {
     this.state = {
       isLoading: false,
       value: undefined,
-      units: []
     }
     this.onChange = this.onChange.bind(this);
     this.onGetUnit = this.onGetUnit.bind(this);
@@ -23,27 +22,7 @@ export default class SearchUnit extends Component {
 
    onChange(newValue, actionMeta) {
     this.setState({ value: newValue });
-
-    if (actionMeta.action === "select-option") { 
-      // Add the unit to the array that keeps track of all ids
-      this.state.units.push(newValue[newValue.length-1].value);
-    }
-    
-    if (actionMeta.action === "remove-value" || actionMeta.action === "pop-value") {
-      // calculates diff between old and new list
-      var index = 0;
-      
-      if (newValue) {
-        let difference = this.state.value.filter(x => !newValue.includes(x)); 
-        index = this.state.units.indexOf(difference[0].value); 
-      }
-      // Get index of removed item in units array
-      if (index > -1) {
-        // Remove the unit
-        this.state.units.splice(index, 1); 
-      }
-    }
-    this.props.onSelectUnit(this.state.units);
+    this.props.onSelectUnit(newValue);
   };
 
   handleCreate(inputValue) {
@@ -59,11 +38,9 @@ export default class SearchUnit extends Component {
     .then(newOption => {
       var unit = JSON.parse(newOption);
       var option = createOption(unit.title);
-      this.state.value.push(option);
-      this.state.units.push(unit._id);
       this.setState({
         isLoading: false,
-        value: this.state.value
+        value: this.state.value,
       });
     })
   }
@@ -95,7 +72,7 @@ export default class SearchUnit extends Component {
 
   render() {
     return (
-      <div className="async-unit-control">
+      <div className="async-unit-control col">
         <AsyncCreatableSelect
           isClearable
           isDisabled={this.state.isLoading}

@@ -22,7 +22,7 @@ export default class SearchIngredient extends Component {
   }
 
    onChange(newValue, actionMeta) {
-    this.setState({ value: newValue });
+    this.setState({ value: null });
 
     if (actionMeta.action === "select-option") { 
       // Add the ingredient to the array that keeps track of all ids

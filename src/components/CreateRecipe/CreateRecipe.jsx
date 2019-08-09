@@ -83,6 +83,11 @@ export default class CreateRecipe extends Component {
     console.log(this.state.ingredients);
   }
 
+  getIngredients = () => {
+    var ingredientArray = this.child.getAllIngredients()
+    console.log(ingredientArray);
+  }
+  
   render() {
     return (
       <div className="container">
@@ -91,40 +96,43 @@ export default class CreateRecipe extends Component {
           <div className="container-fluid">
 
               <div className="row d-md-block">
-                  <div className="form-group">
-                    <label>Title</label>
-                    <input id="recipeTitle" className="form-control" name="recipeTitle" type="text"/>
-                    <small className="form-text text-muted">Add something expressive to make sure everone will be able to find it later on.</small>
-                  </div>
-                </div>
-                <hr />
-
-            <div className="row d-md-flex">
-              <div className="">
-                <div>
-                  <p>Please add at least 3 tags to complete this recipe. </p>
-                </div>
                 <div className="form-group">
+                  <label>Title</label>
+                  <input id="recipeTitle" className="form-control" name="recipeTitle" type="text"/>
+                  <small className="form-text text-muted">Add something expressive to make sure everone will be able to find it later on.</small>
+                </div>
+              </div>
+
+            <hr />
+
+            <div className="">
+              <div className="row">
+
+                <div className="form-group col">
                   <label htmlFor="tags">Tags</label>
                     <div className="input-group">
                       <SearchTag onSelectTag={this.handleTagSelect}/>
                     </div>
                   <small className="form-text text-muted">The word will try to auto-complete as you type.</small>
                 </div>
+
+                <div className="form-group col">
+                  <label htmlFor="ingredients">Ingredients</label>
+                  <div className="input-group">
+                    <SearchIngredient onSelectIngredient={this.handleIngredientSelect}/>
+                    <small className="form-text text-muted">The word will try to auto-complete as you type.</small>
+                    <AddIngredient onRef={ref => (this.child = ref)} entries={this.state.ingredients}/>
+                  </div>
+                </div>
+                <button onClick={this.getIngredients}>Child.method()</button>
               </div>
             </div>
-
-              <div className="row d-md-block">
-                <h3> Ingredients </h3>
-                  <SearchIngredient onSelectIngredient={this.handleIngredientSelect}/>
-
-                  <AddIngredient entries={this.state.ingredients}/>
-              </div>
               
-              <hr />
+            <hr />
 
               <div className="row">
-                <div className="">  
+                <div className="">
+
                   <div className="col-md-auto float-left">
                     <div className="dropzone-wrapper">
                       <ImageDropzone/>
@@ -136,8 +144,7 @@ export default class CreateRecipe extends Component {
                       <p> Add a new step </p>
                       <input id="step" name="step" type="text" ref="step"/>
                       <button className="btn btn-success" onClick={this.onStepAdd}>Add</button>
-                                                            <AddStep entries={this.state.steps}/>
-
+                      <AddStep entries={this.state.steps}/>
                     </div>
                   </div>
 
