@@ -1,6 +1,9 @@
 import React, { Component } from "react"; 
 //import AsyncSelect from 'react-select/async';
 import AsyncCreatableSelect from 'react-select/async-creatable';
+import SearchUnit from './SearchUnit.jsx';
+
+import Popup from "reactjs-popup";
 
 const createOption = (label) => ({
   label,
@@ -14,15 +17,25 @@ export default class SearchIngredient extends Component {
     this.state = {
       isLoading: false,
       value: undefined,
-      ingredients: []
+      ingredients: [],
+      open: false,
+      unit: undefined,
+      amount: undefined,
+      item: undefined,
+      ingredientObjs: [],
     }
     this.onChange = this.onChange.bind(this);
     this.onGetIngredient = this.onGetIngredient.bind(this);
     this.handleCreate = this.handleCreate.bind(this);
+
+    this.handleUnitSelect = this.handleUnitSelect.bind(this);
+    this.getAmount = this.getAmount.bind(this);
+    this.closeModal = this.closeModal.bind(this);
   }
 
    onChange(newValue, actionMeta) {
     this.setState({ value: null });
+    this.setState({ item: newValue});
 
     if (actionMeta.action === "select-option") { 
       // Add the ingredient to the array that keeps track of all ids
@@ -43,7 +56,7 @@ export default class SearchIngredient extends Component {
         this.state.ingredients.splice(index, 1); 
       }
     }
-    this.props.onSelectIngredient(this.state.ingredients);
+    this.openModal();
   };
 
   handleCreate(inputValue) {
@@ -93,6 +106,55 @@ export default class SearchIngredient extends Component {
     })
   }
 
+  openModal() {
+    this.setState({ open: true });
+
+  }
+  
+  closeModal() {
+    // If the array of ingredients already contains the selected one, just return and reset
+    for (let i = 0; i < this.state.ingredientObjs.length; i++) {
+      if (this.state.item !== undefined) {
+        if (this.state.ingredientObjs[i].item.value == this.state.item.value) {
+          return this.setState({ 
+            open: false,
+            item: undefined,
+            unit: undefined,
+            amount: undefined
+          });
+        }
+      }
+    }
+    // Otherwise build new object, pass to parent controller and return
+    if (this.state.amount !== undefined && this.state.unit !== undefined) {
+      let ingredient = {};
+      ingredient.amount = this.state.amount;
+      ingredient.unit = this.state.unit;
+      ingredient.item = this.state.item;
+      this.state.ingredientObjs.push(ingredient);
+      this.props.onSelectIngredient(this.state.ingredientObjs);
+    }
+
+    return this.setState({ 
+      open: false,
+      item: undefined,
+      unit: undefined,
+      amount: undefined
+    });
+  }
+
+  getAmount(e) {
+    // Store amount, as well as actual ingredient name and ID in state
+    this.setState({amount: e.target.value});
+  }
+
+  handleUnitSelect(options) {
+    this.setState({unit: options});
+    if (this.refs.amountInput.value.length) {
+      this.refs.closeModalBtn.focus();
+    }
+  }
+
   render() {
     return (
       <div className="async-ingredient-control">
@@ -106,7 +168,21 @@ export default class SearchIngredient extends Component {
           onChange={this.onChange}
           onCreateOption={this.handleCreate}
         />
-       </div>
+
+        <Popup
+          open={this.state.open}
+          modal
+          onClose={this.closeModal}
+        >
+          <div className="input-group col">
+            <h2>{this.state.value}</h2>
+            <input type="number" step="0.01" className="col" onChange={this.getAmount} ref="amountInput"/>
+            <SearchUnit ref="unitInput" onSelectUnit={this.handleUnitSelect}/> 
+            <button ref="closeModalBtn" onClick={this.closeModal}>OK</button>
+          </div>
+        </Popup>
+      </div>
+
     );
   }
 };

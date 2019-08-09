@@ -87,7 +87,7 @@ export default class CreateRecipe extends Component {
     var ingredientArray = this.child.getAllIngredients()
     console.log(ingredientArray);
   }
-  
+
   render() {
     return (
       <div className="container">
@@ -121,10 +121,9 @@ export default class CreateRecipe extends Component {
                   <div className="input-group">
                     <SearchIngredient onSelectIngredient={this.handleIngredientSelect}/>
                     <small className="form-text text-muted">The word will try to auto-complete as you type.</small>
-                    <AddIngredient onRef={ref => (this.child = ref)} entries={this.state.ingredients}/>
+                    <AddIngredient entries={this.state.ingredients}/>
                   </div>
                 </div>
-                <button onClick={this.getIngredients}>Child.method()</button>
               </div>
             </div>
               

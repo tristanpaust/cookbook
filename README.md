@@ -1,5 +1,6 @@
 TODO:
 <ul>
+	<li>Delete ingredients from list</li>
 	<li>Fill out recipe with sample data that gradually gets recplaced while typing</li>
 	<li>Where and how do we store recipe images?</li>
 	<li>Add sortable list of recipes (by date, tags, search, etc)</li>
@@ -23,4 +24,5 @@ DONE:
 	<li>If ingredient doesn't exist, create a new one</li>
 	<li>What are we doing with different measurements when it comes to ingredients? (cups, liters, grams, etc)</li>
 	<li>Add different tags for ingredients</li>
+	<li>Before storing a recipe, the latest state of ingredients needs to be selected (amount, unit, etc.) and stored in object array. How?</li>
 </ul>
