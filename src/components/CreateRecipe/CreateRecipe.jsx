@@ -115,75 +115,91 @@ export default class CreateRecipe extends Component {
       <div className="container">
           <div className="container-fluid">
 
-              <div className="row d-md-block">
-
-                  <span id="titleWrapper" className="input input--animated">
-                    <input id="recipeTitle" className="input__field input__field--animated" name="recipeTitle" type="text"/>
-                    <label className="input__label input__label--animated input__label--animated-color-1" htmlFor="recipeTitle">
-                      <span className="input__label-content input__label-content--animated">Neues Rezept erstellen</span>
-                    </label>                  
-                  </span>
-
-              </div>
+            <div className="row d-md-block">
+                <span id="titleWrapper" className="input input--animated">
+                  <input id="recipeTitle" className="input__field input__field--animated" name="recipeTitle" type="text"/>
+                  <label className="input__label input__label--animated input__label--animated-color-1" htmlFor="recipeTitle">
+                    <span className="input__label-content input__label-content--animated">Neues Rezept erstellen</span>
+                  </label>                  
+                </span>
+            </div>
 
             <hr />
 
-            <div className="row d-md-block">
-              <div className="form-group">
-                
-                <textarea className="input-group" id="description" name="textarea" placeholder="Kurzbeschreibung des Rezepts"></textarea>                
-                
-                <Select
-                  placeholder="-- Bitte Herkunfsland auswählen --"
-                  label="Single select"
-                  options={countryOptions}
-                  className="default--input"
-                  theme={(theme) => ({
-                    ...theme,
-                    colors: {
-                      ...theme.colors,
-                      text: '#6a7989',
-                      primary25: '#289fad',
-                      primary: '#6a7989',
-                    },
-                  })}
-                />
+            <h1 class="recipe-headline" htmlFor="ingredients">Generelle Angaben</h1>
 
-                <Select
-                  placeholder="-- Bitte Rezeptart auswählen --"
-                  label="Single select"
-                  options={dishOptions}
-                  theme={(theme) => ({
-                    ...theme,
-                    colors: {
-                      ...theme.colors,
-                      text: '#6a7989',
-                      primary25: '#289fad',
-                      primary: '#6a7989',
-                    },
-                  })}                  
-                />
-              </div>
-            </div>
+            <div id="generalInfo" className="row">
 
-            <div className="">
-              <div className="row">
+              <div className="col-md-auto float-left">
+                <div className="dropzone-wrapper">
+                  <ImageDropzone/>
+                </div>
+              </div> 
 
-                <div className="form-group col">
-                  <label htmlFor="tags">Tags</label>
+              <div className="input-group col">
+                <div className="row">
+                  <textarea id="description" className="general-info-input" name="textarea" placeholder="Kurzbeschreibung des Rezepts"></textarea>
+                  <small className="form-text text-muted">Nach was schmeckt das Rezept? Ist es schnell zuzubereiten? Etc.</small>
+                </div>
+
+                <div className="row">
+                  <Select
+                    placeholder="-- Bitte Herkunfsland auswählen --"
+                    label="Single select"
+                    options={countryOptions}
+                    className="general-info-input"
+                    theme={(theme) => ({
+                      ...theme,
+                      colors: {
+                        ...theme.colors,
+                        text: '#6a7989',
+                        primary25: '#289fad',
+                        primary: '#6a7989',
+                      },
+                    })}
+                  />
+                  <small className="form-text text-muted">Wo kommt das Rezept her?</small>
+                </div>
+
+                <div className="row">
+                  <Select
+                    placeholder="-- Bitte Rezeptart auswählen --"
+                    label="Single select"
+                    options={dishOptions}
+                    className="general-info-input"
+                    theme={(theme) => ({
+                      ...theme,
+                      colors: {
+                        ...theme.colors,
+                        text: '#6a7989',
+                        primary25: '#289fad',
+                        primary: '#6a7989',
+                      },
+                    })}                  
+                  />
+                  <small className="form-text text-muted">Vorspeise, Hauptspeise, Nachspeise, usw.</small>
+                </div>
+
+                <div className="row">
                     <div className="input-group">
                       <SearchTag onSelectTag={this.handleTagSelect}/>
                     </div>
-                  <small className="form-text text-muted">The word will try to auto-complete as you type.</small>
+                  <small className="form-text text-muted">Erstelle oder suche 3 Begriffe, um das Rezept zu beschreiben (scharf, Eintopf, Braten, usw.)</small>
                 </div>
+              </div>
+            </div>
 
-                <div className="form-group col">
-                  <label htmlFor="ingredients">Ingredients</label>
-                  <div className="input-group">
-                    <SearchIngredient onSelectIngredient={this.handleIngredientSelect}/>
-                    <small className="form-text text-muted">The word will try to auto-complete as you type.</small>
-                    <AddIngredient entries={this.state.ingredients}/>
-                  </div>
+            <hr />
+
+            <div className="row">
+              <div className="form-group col">
+
+                <h1 class="recipe-headline" htmlFor="ingredients">Zutaten</h1>
+
+                <div className="input-group">
+                  <SearchIngredient onSelectIngredient={this.handleIngredientSelect}/>
+                  <small className="form-text text-muted">Suche oder erstelle Zutaten, um sie dem Rezept hinzuzufügen.</small>
+                  <AddIngredient entries={this.state.ingredients}/>
                 </div>
               </div>
             </div>
@@ -191,14 +207,6 @@ export default class CreateRecipe extends Component {
             <hr />
 
               <div className="row">
-                <div className="">
-
-                  <div className="col-md-auto float-left">
-                    <div className="dropzone-wrapper">
-                      <ImageDropzone/>
-                    </div>
-                  </div>  
-
                   <div className="col-md-auto float-left">
                     <div>
                       <p> Add a new step </p>
@@ -207,8 +215,6 @@ export default class CreateRecipe extends Component {
                       <AddStep entries={this.state.steps}/>
                     </div>
                   </div>
-
-                </div>
               </div>
 
           </div>

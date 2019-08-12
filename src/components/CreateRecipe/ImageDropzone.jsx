@@ -24,12 +24,12 @@ class ImageDropzone extends Component {
       <Dropzone onDrop={this.onDrop}>
         {({getRootProps, getInputProps}) => (
           <section className="container">
+            <p className="dropzone-header">Vorschaubild</p>
             <div {...getRootProps({className: 'dropzone'})}>
               <input {...getInputProps()} />
-              <p>Drag 'n' drop some files here, or click to select files</p>
+              <p>Bild des Rezeptes hier ablegen oder klicken</p>
             </div>
             <aside>
-              <h4>Files</h4>
               <ul>{files}</ul>
             </aside>
           </section>

@@ -6,7 +6,7 @@
   padding: 20px;
   border-width: 2px;
   border-radius: 2px;
-  border-color: #eeeeee;
+  border-color: #289fad;
   border-style: dashed;
   background-color: #fafafa;
   color: #bdbdbd;
@@ -15,11 +15,29 @@
 }
 
 .dropzone:focus {
-    border-color: #2196f3;
+    border-color: #6a7989;
 }
 
 .container {
   display: flex;
   flex-direction: column;
   font-family: sans-serif;
+}
+
+.dropzone-wrapper {
+  padding: 9px;
+  border-color: #cccccc;
+}
+
+.dropzone-wrapper, .dropzone-wrapper section {
+  height: 100%;
+}
+
+.dropzone-header {
+  font-size: 130%;
+  color: hsl(0,0%,50%);
+  opacity: 1;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }

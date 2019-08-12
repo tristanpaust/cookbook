@@ -6,6 +6,32 @@
 	font-size: 200%;
 }
 
+.recipe-headline {
+	color: #289fad;
+	margin-bottom: 40px;
+}
+
+#generalInfo {
+	margin-bottom: 75px;
+}
+
+#generalInfo > div:first-child {
+	margin-right: 25px;
+}
+
+#generalInfo .row {
+	width: 100%;
+	margin-bottom: 20px;
+}
+
+#generalInfo .row:last-child {
+	margin-bottom: 0px;
+}
+
+#generalInfo .general-info-input {
+	width: 100%;
+}
+
 #description {
 	webkit-align-items: center;
 	-webkit-box-align: center;

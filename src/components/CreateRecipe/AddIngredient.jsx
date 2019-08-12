@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 
+import '../../css/AddIngredient.css';
+
 class AddIngredient extends Component {
     constructor() {
     super();
@@ -12,9 +14,8 @@ class AddIngredient extends Component {
   createItems(element) {
     return (
       <li className="row" key={element.item.value}>
-        <p>{element.amount}</p>
-        <p>{element.unit.label}</p>        
-        <p>{element.item.label}</p>
+        <p><b>{element.amount} {element.unit.label}</b> {element.item.label}</p>
+        <span class="remove-ingredient" aria-hidden="true">&times;</span>
       </li> 
 
     )

@@ -34,3 +34,11 @@
   width: 100%;
   display: inline-block;
 }
+
+.navbar {
+  background-color: #289fad;
+}
+
+.navbar a {
+  color: white;
+}

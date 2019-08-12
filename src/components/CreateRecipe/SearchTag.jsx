@@ -106,6 +106,7 @@ export default class SearchTag extends Component {
           loadOptions={this.onGetTag}
           onChange={this.onChange}
           onCreateOption={this.handleCreate}
+          placeholder="-- Bitte mindestens 3 Begriffe auswählen --"
         />
        </div>
     );

@@ -167,6 +167,7 @@ export default class SearchIngredient extends Component {
           loadOptions={this.onGetIngredient}
           onChange={this.onChange}
           onCreateOption={this.handleCreate}
+          placeholder="Zutaten suchen"
         />
 
         <Popup
