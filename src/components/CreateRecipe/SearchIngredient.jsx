@@ -115,7 +115,7 @@ export default class SearchIngredient extends Component {
     // If the array of ingredients already contains the selected one, just return and reset
     for (let i = 0; i < this.state.ingredientObjs.length; i++) {
       if (this.state.item !== undefined) {
-        if (this.state.ingredientObjs[i].item.value == this.state.item.value) {
+        if (this.state.ingredientObjs[i].item.value === this.state.item.value) {
           return this.setState({ 
             open: false,
             item: undefined,

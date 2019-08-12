@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 
-import SearchUnit from './SearchUnit.jsx';
-
 class AddIngredient extends Component {
     constructor() {
     super();
