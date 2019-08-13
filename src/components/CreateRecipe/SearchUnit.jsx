@@ -72,7 +72,7 @@ export default class SearchUnit extends Component {
 
   render() {
     return (
-      <div className="async-unit-control col">
+      <div className="async-unit-control">
         <AsyncCreatableSelect
           isClearable
           isDisabled={this.state.isLoading}
@@ -82,6 +82,7 @@ export default class SearchUnit extends Component {
           loadOptions={this.onGetUnit}
           onChange={this.onChange}
           onCreateOption={this.handleCreate}
+          placeholder="kg, ml, Stück, usw."
         />
        </div>
     );

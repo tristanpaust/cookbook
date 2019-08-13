@@ -126,7 +126,7 @@ export default class CreateRecipe extends Component {
 
             <hr />
 
-            <h1 class="recipe-headline" htmlFor="ingredients">Generelle Angaben</h1>
+            <h1 className="recipe-headline" htmlFor="ingredients">Generelle Angaben</h1>
 
             <div id="generalInfo" className="row">
 
@@ -194,7 +194,7 @@ export default class CreateRecipe extends Component {
             <div className="row">
               <div className="form-group col">
 
-                <h1 class="recipe-headline" htmlFor="ingredients">Zutaten</h1>
+                <h1 className="recipe-headline" htmlFor="ingredients">Zutaten</h1>
 
                 <div className="input-group">
                   <SearchIngredient onSelectIngredient={this.handleIngredientSelect}/>

@@ -1,5 +1,6 @@
 import React, { Component } from "react"; 
-//import AsyncSelect from 'react-select/async';
+import '../../css/Popup.css';
+
 import AsyncCreatableSelect from 'react-select/async-creatable';
 import SearchUnit from './SearchUnit.jsx';
 
@@ -19,6 +20,7 @@ export default class SearchIngredient extends Component {
       value: undefined,
       ingredients: [],
       open: false,
+      currentHeadlline: undefined,
       unit: undefined,
       amount: undefined,
       item: undefined,
@@ -30,6 +32,8 @@ export default class SearchIngredient extends Component {
 
     this.handleUnitSelect = this.handleUnitSelect.bind(this);
     this.getAmount = this.getAmount.bind(this);
+
+    this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
   }
 
@@ -56,7 +60,7 @@ export default class SearchIngredient extends Component {
         this.state.ingredients.splice(index, 1); 
       }
     }
-    this.openModal();
+    this.openModal(newValue);
   };
 
   handleCreate(inputValue) {
@@ -106,9 +110,9 @@ export default class SearchIngredient extends Component {
     })
   }
 
-  openModal() {
+  openModal(headline) {
+    this.setState({ currentHeadlline: headline.label})
     this.setState({ open: true });
-
   }
   
   closeModal() {
@@ -175,13 +179,31 @@ export default class SearchIngredient extends Component {
           modal
           onClose={this.closeModal}
         >
-          <div className="input-group col">
-            <h2>{this.state.value}</h2>
-            <input type="number" step="0.01" className="col" onChange={this.getAmount} ref="amountInput"/>
-            <SearchUnit ref="unitInput" onSelectUnit={this.handleUnitSelect}/> 
-            <button ref="closeModalBtn" onClick={this.closeModal}>OK</button>
+          <h2>{this.state.currentHeadlline}</h2>
+          
+          <div className="row popup-inner">
+            <div class="form-group col">
+              <input ref="amountInput" type="number" step="0.01" className="col form-control" onChange={this.getAmount} autoFocus={true}/>
+              <small className="form-text text-muted">Menge</small>
+            </div>
+
+            <div className="form-group col">
+              <SearchUnit ref="unitInput" onSelectUnit={this.handleUnitSelect}/> 
+              <small className="form-text text-muted">Einheit</small>
+            </div>          
           </div>
+
+          <div className="row float-right popup-btns">
+              <button ref="closeModalBtn" onClick={this.closeModal} className="close-modal-success btn btn-success">
+                <span class="oi oi-check"></span>
+                </button>
+              <button className="close-modal-cancel btn btn-success">
+                <span class="oi oi-x"></span>
+            </button>
+          </div>
+
         </Popup>
+
       </div>
 
     );
