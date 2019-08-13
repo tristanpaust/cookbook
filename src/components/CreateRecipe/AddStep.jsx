@@ -1,8 +1,9 @@
 import React, { Component } from "react";
- 
+import '../../css/AddStep.css';
+
 class AddStep extends Component {
   createItems(item) {
-    return <li key={item.key}>{item.text}</li>
+    return <li key={item.key}><p>{item.text}</p></li>
   }
  
   render() {

@@ -198,7 +198,7 @@ export default class SearchIngredient extends Component {
                 <span class="oi oi-check"></span>
                 </button>
               <button className="close-modal-cancel btn btn-success">
-                <span class="oi oi-x"></span>
+                <span className="oi oi-x"></span>
             </button>
           </div>
 

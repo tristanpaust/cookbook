@@ -21,10 +21,9 @@ export default class CreateRecipe extends Component {
       isFocused: false,
       tags: [],
       ingredients: [],
-      steps: [{text: 'Get pot', key: 1}, {text: 'Turn on oven', key: 2} , {text: 'Fill water in pot', key: 3} , {text: 'Boil water', key: 4}]
+      steps: [],
     }
-    this.onIngredientAdd = this.onIngredientAdd.bind(this);
-    this.onDropdownClick = this.onDropdownClick.bind(this);
+
     this.onStepAdd = this.onStepAdd.bind(this);
     this.handleTagSelect = this.handleTagSelect.bind(this);
     this.handleIngredientSelect = this.handleIngredientSelect.bind(this);
@@ -38,35 +37,12 @@ export default class CreateRecipe extends Component {
       .then(res => this.setState({message: res}));
   }
 
-  onIngredientAdd(e) {
-    let ingredient = this.refs.ingredient.value;
-    let amount = this.refs.amount.value;
-    
-    var newIngredient = {
-      text: amount + ' of ' + ingredient,
-      key: Date.now()
-    }
-
-    this.setState((prevState) => {
-      return { 
-        ingredients: prevState.ingredients.concat(newIngredient) 
-      };
-    });
-    this.refs.ingredient.value = '';
-    this.refs.amount.value = '';
-    e.preventDefault();
-  }
-
-  onDropdownClick(e) {
-    this.setState({dropDownValue: e.currentTarget.textContent}) 
-  }
-
   onStepAdd(e) {
     let step = this.refs.step.value;
 
     let newStep = {
       text: step,
-      key: Date.now
+      key: 'step' + parseInt(this.state.steps.length+1)
     }
 
     this.setState((prevState) => {
@@ -191,7 +167,7 @@ export default class CreateRecipe extends Component {
 
             <hr />
 
-            <div className="row">
+            <div className="row" id="ingredients">
               <div className="form-group col">
 
                 <h1 className="recipe-headline" htmlFor="ingredients">Zutaten</h1>
@@ -207,13 +183,25 @@ export default class CreateRecipe extends Component {
             <hr />
 
               <div className="row">
-                  <div className="col-md-auto float-left">
-                    <div>
-                      <p> Add a new step </p>
-                      <input id="step" name="step" type="text" ref="step"/>
-                      <button className="btn btn-success" onClick={this.onStepAdd}>Add</button>
-                      <AddStep entries={this.state.steps}/>
+                <div className="form-group col">
+                  <h1 className="recipe-headline" htmlFor="ingredients">Zubereitung</h1>
+                    
+                    <div className="input-group">
+                      <input 
+                        id="step" 
+                        name="step" 
+                        type="text" 
+                        ref="step"
+                        className="col form-control step-control"     
+                        onKeyPress={event => {
+                          if (event.key === 'Enter') {
+                            this.onStepAdd(event)
+                          }
+                        }}
+                      />
+                      <small className="form-text text-muted">Suche oder erstelle Zutaten, um sie dem Rezept hinzuzufügen.</small>
                     </div>
+                    <AddStep entries={this.state.steps}/>
                   </div>
               </div>
 
