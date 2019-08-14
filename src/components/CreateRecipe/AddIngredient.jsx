@@ -15,7 +15,7 @@ class AddIngredient extends Component {
     return (
       <li className="row" key={element.item.value}>
         <p><b>{element.amount} {element.unit.label}</b> {element.item.label}</p>
-        <span class="remove-ingredient" aria-hidden="true">&times;</span>
+        <span className="remove-ingredient" aria-hidden="true">&times;</span>
       </li> 
 
     )

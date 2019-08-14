@@ -182,7 +182,7 @@ export default class SearchIngredient extends Component {
           <h2>{this.state.currentHeadlline}</h2>
           
           <div className="row popup-inner">
-            <div class="form-group col">
+            <div className="form-group col">
               <input ref="amountInput" type="number" step="0.01" className="col form-control" onChange={this.getAmount} autoFocus={true}/>
               <small className="form-text text-muted">Menge</small>
             </div>
@@ -195,7 +195,7 @@ export default class SearchIngredient extends Component {
 
           <div className="row float-right popup-btns">
               <button ref="closeModalBtn" onClick={this.closeModal} className="close-modal-success btn btn-success">
-                <span class="oi oi-check"></span>
+                <span className="oi oi-check"></span>
                 </button>
               <button className="close-modal-cancel btn btn-success">
                 <span className="oi oi-x"></span>

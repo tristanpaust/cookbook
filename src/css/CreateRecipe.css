@@ -80,6 +80,9 @@
 	-moz-osx-font-smoothing: grayscale;
 }
 
+.has-error {
+	background-color: #d78308;
+}
 
 .input {
 	position: relative;

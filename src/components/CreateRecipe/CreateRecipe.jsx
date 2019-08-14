@@ -7,6 +7,7 @@ import SearchTag from './SearchTag.jsx';
 import AddIngredient from './AddIngredient.jsx';
 import SearchIngredient from './SearchIngredient.jsx';
 import ImageDropzone from './ImageDropzone.jsx';
+import FormValidator from '../FormValidator.jsx';
 
 import {countryOptions} from './SelectOptions.jsx';
 import {dishOptions} from './SelectOptions.jsx';
@@ -16,19 +17,61 @@ import Select from 'react-select';
 export default class CreateRecipe extends Component {
   constructor() {
     super();
+
+    this.validator = new FormValidator([
+      { 
+        field: 'tags', 
+        method: this.arrayNotEmpty, 
+        validWhen: true, 
+        message: 'Tags are required.' 
+      },
+      { 
+        field: 'tags',
+        method: this.arrayBiggerThanThree, 
+        validWhen: true, 
+        message: 'At least 3 tags are needed'
+      },
+      { 
+        field: 'ingredients', 
+        method: this.arrayNotEmpty, 
+        validWhen: true, 
+        message: 'Ingredients are required'
+      },
+      { 
+        field: 'steps', 
+        method: this.arrayNotEmpty, 
+        validWhen: true, 
+        message: 'Steps are required.'
+      }/*,
+      { 
+        field: 'password_confirmation', 
+        method: 'isEmpty', 
+        validWhen: false, 
+        message: 'Password confirmation is required.'
+      },
+      { 
+        field: 'password_confirmation', 
+        method: this.passwordMatch,   // notice that we are passing a custom function here
+        validWhen: true, 
+        message: 'Password and password confirmation do not match.'
+      }*/
+    ]);
+
     this.state = {
       message: 'Loading...',
       isFocused: false,
       tags: [],
       ingredients: [],
       steps: [],
+      validation: this.validator.valid(),
     }
+    
+    this.submitted = false;
 
     this.onStepAdd = this.onStepAdd.bind(this);
     this.handleTagSelect = this.handleTagSelect.bind(this);
     this.handleIngredientSelect = this.handleIngredientSelect.bind(this);
-    this.onFocus = this.onFocus.bind(this);
-    this.onBlur = this.onBlur.bind(this);
+    this.handleFormSubmit = this.handleFormSubmit.bind(this);
   }
 
   componentDidMount() {
@@ -68,26 +111,31 @@ export default class CreateRecipe extends Component {
     console.log(ingredientArray);
   }
 
-    onFocus() {
-      this.setState({
-        isFocused: true
-      });
-    }
+  arrayNotEmpty = (array) => (array.length > 0)
+  arrayBiggerThanThree = (array) => (array.length >= 3)
 
-    onBlur() {
-      this.setState({
-        isFocused: false
-      });
+  handleFormSubmit = event => {
+    event.preventDefault();
+
+    const validation = this.validator.validate(this.state);
+    this.setState({ validation });
+    this.submitted = true;
+
+    if (validation.isValid) {
+      console.log('form is valid and can be submitted.');
     }
+    else {
+      console.log('form is not valid.');
+    }
+  }
 
   render() {
-    var classes = [];
-
-    if(this.state.isFocused) {
-      classes.push('input--focused');
-    }
+   let validation = this.submitted ?
+                    this.validator.validate(this.state) :
+                    this.state.validation
 
     return (
+       <form className="create-recipe-form">
       <div className="container">
           <div className="container-fluid">
 
@@ -157,7 +205,7 @@ export default class CreateRecipe extends Component {
                 </div>
 
                 <div className="row">
-                    <div className="input-group">
+                    <div className={'input-group ' + (validation.tags.isInvalid && 'has-error')}>
                       <SearchTag onSelectTag={this.handleTagSelect}/>
                     </div>
                   <small className="form-text text-muted">Erstelle oder suche 3 Begriffe, um das Rezept zu beschreiben (scharf, Eintopf, Braten, usw.)</small>
@@ -172,7 +220,7 @@ export default class CreateRecipe extends Component {
 
                 <h1 className="recipe-headline" htmlFor="ingredients">Zutaten</h1>
 
-                <div className="input-group">
+                <div className={'input-group ' + (validation.ingredients.isInvalid && 'has-error')}>
                   <SearchIngredient onSelectIngredient={this.handleIngredientSelect}/>
                   <small className="form-text text-muted">Suche oder erstelle Zutaten, um sie dem Rezept hinzuzufügen.</small>
                   <AddIngredient entries={this.state.ingredients}/>
@@ -192,7 +240,7 @@ export default class CreateRecipe extends Component {
                         name="step" 
                         type="text" 
                         ref="step"
-                        className="col form-control step-control"     
+                        className={'col form-control step-control ' + (validation.steps.isInvalid && 'has-error')}
                         onKeyPress={event => {
                           if (event.key === 'Enter') {
                             this.onStepAdd(event)
@@ -207,6 +255,10 @@ export default class CreateRecipe extends Component {
 
           </div>
       </div>
+      <button onClick={this.handleFormSubmit} className="btn btn-primary">
+          Sign up
+       </button>
+       </form>
     );
   }
 }
