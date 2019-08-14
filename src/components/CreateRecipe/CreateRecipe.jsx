@@ -72,6 +72,9 @@ export default class CreateRecipe extends Component {
     this.handleTagSelect = this.handleTagSelect.bind(this);
     this.handleIngredientSelect = this.handleIngredientSelect.bind(this);
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
+
+    this.increasePeople = this.increasePeople.bind(this);
+    this.decreasePeople = this.decreasePeople.bind(this);    
   }
 
   componentDidMount() {
@@ -127,6 +130,17 @@ export default class CreateRecipe extends Component {
     }
   }
 
+  increasePeople() {
+    console.log(parseInt(this.refs.people.value)+1)
+    this.refs.people.value = parseInt(this.refs.people.value) + 1
+  }
+  
+  decreasePeople() {
+    if (parseInt(this.refs.people.value) >= 1) {
+      this.refs.people.value = parseInt(this.refs.people.value) - 1
+    }
+  }
+
   render() {
    let validation = this.submitted ?
                     this.validator.validate(this.state) :
@@ -162,6 +176,15 @@ export default class CreateRecipe extends Component {
                 <div className="row">
                   <textarea id="description" className="general-info-input" name="textarea" placeholder="Kurzbeschreibung des Rezepts"></textarea>
                   <small className="form-text text-muted">Nach was schmeckt das Rezept? Ist es schnell zuzubereiten? Etc.</small>
+                </div>
+
+                <div className="row">
+                  <div className="wrapper">
+                      <div className="value-button btn-danger" id="decrease" onClick={this.decreasePeople}>-</div>
+                      <input className="form-control" type="number" id="people" defaultValue="0" min="0" step="1" ref="people"/>
+                      <div className="value-button btn-success" id="increase" onClick={this.increasePeople}>+</div>
+                    </div>
+                    <small className="form-text text-muted">Für wie viele Personen ist das Rezept?</small>
                 </div>
 
                 <div className="row">

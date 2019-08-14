@@ -84,6 +84,67 @@
 	background-color: #d78308;
 }
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0; 
+}
+
+input[type=number] {
+    -moz-appearance:textfield;
+}
+
+.value-button {
+  display: inline-block;
+  border: 1px solid #ddd;
+  margin: 0px;
+  width: 40px;
+  height: 2.3em;
+  line-height: 2.3em;
+  text-align: center;
+  vertical-align: middle;
+  background: #eee;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+}
+
+.wrapper {
+	width: 100%;
+}
+
+#decrease {
+  	margin-right: -4px;
+  	border-radius: 8px 0 0 8px;
+  	color: hsl(0,0%,50%);
+  	float: left;
+}
+
+#increase {
+  	margin-left: -4px;
+	border-radius: 0 8px 8px 0;
+	color: hsl(0,0%,50%);
+}
+
+#people {
+	width: 3em;
+	text-align: center;
+	height: 2.3em;
+	float: left;
+	border-radius: 0;
+	padding-right: 15px;
+}
+
+.value-button:hover {
+  cursor: pointer;
+  transition: 0.3s;
+  color: white !important;
+}
+
 .input {
 	position: relative;
 	z-index: 1;
