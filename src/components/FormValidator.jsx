@@ -17,13 +17,13 @@ class FormValidator {
       if (!validation[rule.field].isInvalid) {
         // determine the field value, the method to invoke and optional args from 
         // the rule definition
-        const field_value = state[rule.field].toString();
+        const field_value = state[rule.field];
         const args = rule.args || [];
         const validation_method = 
               typeof rule.method === 'string' ?
               validator[rule.method] : 
               rule.method
-              
+         console.log(field_value, args, validation_method);     
         // call the validation_method with the current field value as the first
         // argument, any additional arguments, and the whole state as a final
         // argument.  If the result doesn't match the rule.validWhen property,
@@ -35,7 +35,6 @@ class FormValidator {
         }
       }
     });
-
     return validation;
   }
 

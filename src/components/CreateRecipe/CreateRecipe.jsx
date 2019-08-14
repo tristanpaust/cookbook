@@ -27,7 +27,7 @@ export default class CreateRecipe extends Component {
       },
       { 
         field: 'tags',
-        method: this.arrayBiggerThanThree, 
+        method: this.arrayBiggerThan, 
         validWhen: true, 
         message: 'At least 3 tags are needed'
       },
@@ -103,20 +103,18 @@ export default class CreateRecipe extends Component {
 
   handleIngredientSelect(options) {
     this.setState({ingredients: options});
-    console.log(this.state.ingredients);
   }
 
   getIngredients = () => {
     var ingredientArray = this.child.getAllIngredients()
-    console.log(ingredientArray);
   }
 
   arrayNotEmpty = (array) => (array.length > 0)
-  arrayBiggerThanThree = (array) => (array.length >= 3)
+  arrayBiggerThan = (array) => (array.length >= 3)
 
   handleFormSubmit = event => {
     event.preventDefault();
-
+    console.log(this.state.tags, this.state.tags.length)
     const validation = this.validator.validate(this.state);
     this.setState({ validation });
     this.submitted = true;
@@ -209,6 +207,7 @@ export default class CreateRecipe extends Component {
                       <SearchTag onSelectTag={this.handleTagSelect}/>
                     </div>
                   <small className="form-text text-muted">Erstelle oder suche 3 Begriffe, um das Rezept zu beschreiben (scharf, Eintopf, Braten, usw.)</small>
+                  <span className="help-block">{validation.tags.message}</span>
                 </div>
               </div>
             </div>
@@ -223,6 +222,7 @@ export default class CreateRecipe extends Component {
                 <div className={'input-group ' + (validation.ingredients.isInvalid && 'has-error')}>
                   <SearchIngredient onSelectIngredient={this.handleIngredientSelect}/>
                   <small className="form-text text-muted">Suche oder erstelle Zutaten, um sie dem Rezept hinzuzufügen.</small>
+                   <span className="help-block">{validation.ingredients.message}</span>
                   <AddIngredient entries={this.state.ingredients}/>
                 </div>
               </div>
@@ -248,6 +248,7 @@ export default class CreateRecipe extends Component {
                         }}
                       />
                       <small className="form-text text-muted">Suche oder erstelle Zutaten, um sie dem Rezept hinzuzufügen.</small>
+                      <span className="help-block">{validation.steps.message}</span>
                     </div>
                     <AddStep entries={this.state.steps}/>
                   </div>
