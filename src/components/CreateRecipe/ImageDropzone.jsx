@@ -5,41 +5,12 @@ import '../../css/ImageDropzone.css';
 class ImageDropzone extends Component {
   constructor() {
     super();
-    this.onDrop = (files) => { console.log(files);
+    this.onDrop = (files) => {
       this.setState({files})
     };
     this.state = {
-      files: [],
-      file: ''
+      files: []
     };
-
-    this.sendRequest = this.sendRequest.bind(this);
-  }
-
-  sendRequest(e) {
-    e.preventDefault();
-
-    var file = this.state.files[0];
-    var formData = new FormData();
-    formData.append('image', file);
-
-    fetch('/api/upload', {
-      method:'POST',
-      body: formData
-    })
-    .then(res => res.json())
-    .then(image => {
-      if (!image.error) {
-        this.setState({file: window.location.origin + '/users/' + image.filename});
-      } else {
-        const error = new Error(image.error);
-        throw error;
-      }
-    })
-    .catch(err => {
-      console.error(err);
-      alert('Error logging in please try again');
-    });
   }
 
   render() {
@@ -50,7 +21,6 @@ class ImageDropzone extends Component {
     ));
 
     return (
-      <div>
       <Dropzone onDrop={this.onDrop}>
         {({getRootProps, getInputProps}) => (
           <section className="container">
@@ -61,14 +31,12 @@ class ImageDropzone extends Component {
             </div>
             <aside>
               <ul>{files}</ul>
-              <button className="btn btn-success" onClick={this.sendRequest}>Upload</button>
             </aside>
           </section>
         )}
       </Dropzone>
-            <img src={this.state.file}/>
-            </div>
     );
   }
 }
+
 export default ImageDropzone;

@@ -5,9 +5,6 @@ const path = require('path');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const withAuth = require('./middleware');
-const cors = require('cors')
-const fs = require('fs');
-const multer = require('multer');
 
 const app = express();
 
@@ -15,15 +12,9 @@ var env = process.env.NODE_ENV || 'development';
 var config = require('./config')[env];
 const secret = config.secret;
 
-const corsOptions = {
-  origin: '*',
-  optionsSuccessStatus: 200,
-}
-
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieParser());
-app.use(cors(corsOptions))
 
 /* Models */
 const User = require('./models/User');
@@ -217,24 +208,4 @@ app.get('/api/searchunit', function(req, res) {
 });
 
 /***/
-
-/* Upload */
-
-var storage = multer.diskStorage({
-        destination: './public/users',
-        filename: function (req, file, cb) {
-          cb(null, file.originalname);
-        }
-    });
-
-var upload = multer({storage: storage});
-
-app.use(upload.single('image'));
-
-app.post('/api/upload', function (req, res) {
-  res.send(res.req.file);  
-});
-
-/***/
-
 app.listen(process.env.PORT || 8080);
