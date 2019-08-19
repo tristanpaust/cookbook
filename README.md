@@ -1,8 +1,11 @@
 TODO:
 <ul>
+	<li>CLean up file upload in server.js and dropzone</li>
+	<li>Make upload bar, spinner, auto-upload, make sure only one image can get uploaded</li>
+	<li>Cut images and force size?</li>
 	<li>Delete ingredients from list</li>
-	<li>Fill out recipe with sample data that gradually gets recplaced while typing</li>
-	<li>Where and how do we store recipe images?</li>
+	<li>Delete steps</li>
+	<li>Unit tests for recipe creation</li>
 	<li>Add sortable list of recipes (by date, tags, search, etc)</li>
 	<li>Same as above for ingredients</li>
 	<li>Homepage movable preview grid with preview images and short description (eg: https://haltu.github.io/muuri/)</li>
@@ -25,4 +28,6 @@ DONE:
 	<li>What are we doing with different measurements when it comes to ingredients? (cups, liters, grams, etc)</li>
 	<li>Add different tags for ingredients</li>
 	<li>Before storing a recipe, the latest state of ingredients needs to be selected (amount, unit, etc.) and stored in object array. How?</li>
+	<li>Fill out recipe with sample data that gradually gets recplaced while typing</li>
+	<li>Where and how do we store recipe images?</li>
 </ul>
