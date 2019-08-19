@@ -7,4 +7,5 @@ node_modules
 # Ignore server config file
 config.js
 
-public/users
+public/users/*
+!public/users/empty.txt
