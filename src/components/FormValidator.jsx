@@ -23,7 +23,6 @@ class FormValidator {
               typeof rule.method === 'string' ?
               validator[rule.method] : 
               rule.method
-         console.log(field_value, args, validation_method);     
         // call the validation_method with the current field value as the first
         // argument, any additional arguments, and the whole state as a final
         // argument.  If the result doesn't match the rule.validWhen property,
