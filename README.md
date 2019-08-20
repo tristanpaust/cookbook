@@ -1,8 +1,9 @@
 TODO:
 <ul>
 	<li>CLean up file upload in server.js and dropzone</li>
-	<li>Make upload bar, spinner, auto-upload, make sure only one image can get uploaded</li>
+	<li>Make sure only one image can get uploaded</li>
 	<li>Cut images and force size?</li>
+	<li>Delete image button>
 	<li>Delete ingredients from list</li>
 	<li>Delete steps</li>
 	<li>Unit tests for recipe creation</li>
