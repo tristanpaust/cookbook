@@ -8,11 +8,28 @@ class Progress extends Component {
   }
   render() {
     return (
-      <div className="ProgressBar">
-        <div
-          className="Progress"
-          style={{ width: this.props.progress + '%' }}
-        />
+      <div className="ProgressWrapper">
+        <span
+          className="oi oi-x CrossIcon"
+          onClick={this.props.removeImage}
+          style={{
+            opacity:
+              this.props.progress / 100
+          }}
+        />       
+        <div className="ProgressBar">
+          <div
+            className="Progress"
+            style={{ width: this.props.progress + '%' }}
+          />       
+          </div>
+        <span
+          className="oi oi-check CheckIcon"
+          style={{
+            opacity:
+              this.props.progress / 100
+          }}
+        /> 
       </div>
     )
   }

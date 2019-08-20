@@ -1,9 +1,6 @@
 TODO:
 <ul>
-	<li>CLean up file upload in server.js and dropzone</li>
-	<li>Make sure only one image can get uploaded</li>
-	<li>Cut images and force size?</li>
-	<li>Delete image button>
+	<li>Clean up file upload in server.js and disallow upload without image selection</li>
 	<li>Delete ingredients from list</li>
 	<li>Delete steps</li>
 	<li>Unit tests for recipe creation</li>
@@ -31,4 +28,7 @@ DONE:
 	<li>Before storing a recipe, the latest state of ingredients needs to be selected (amount, unit, etc.) and stored in object array. How?</li>
 	<li>Fill out recipe with sample data that gradually gets recplaced while typing</li>
 	<li>Where and how do we store recipe images?</li>
+	<li>Make sure only one image can get uploaded</li>
+	<li>Cut images and force size?</li>
+	<li>Delete image button>
 </ul>

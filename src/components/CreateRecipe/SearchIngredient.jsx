@@ -73,7 +73,7 @@ export default class SearchIngredient extends Component {
         'Content-Type': 'application/json'        }
     })
     .then(res => res.text())
-    .then(newOption => {console.log(newOption);
+    .then(newOption => {
       var ingredient = JSON.parse(newOption);
       var option = createOption(ingredient.title);
       this.state.value.push(option);

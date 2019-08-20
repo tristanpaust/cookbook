@@ -7,10 +7,12 @@ class ImageDropzone extends Component {
   constructor() {
     super();
     this.onDrop = (files) => { console.log(files);
-      this.setState({files})
-      this.uploadFiles(files[0])
+      this.setState({files});
+      this.uploadFiles(files[files.length-1]);
     };
     this.state = {
+      dropBoxIsHidden: '',
+      imageIsHidden: '',
       files: [],
       file: '',
       uploadProgress: 0
@@ -18,6 +20,7 @@ class ImageDropzone extends Component {
 
     this.sendRequest = this.sendRequest.bind(this);
     this.uploadFiles = this.uploadFiles.bind(this);
+    this.removeImage = this.removeImage.bind(this);
   }
 
 sendRequest(file) {
@@ -56,20 +59,30 @@ sendRequest(file) {
 }
 
 uploadFiles(file) {
-  //e.preventDefault();
-   return new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
 
     this.setState({ uploadProgress: {}, uploading: true });
     var file = this.state.files[0];
     var self = this;
-    this.sendRequest(file).then(function() {
+    this.sendRequest(file)
+    .then(function() {
+      self.setState({dropBoxIsHidden: 'hidden'})
+      self.setState({imageIsHidden: ''});
       self.setState({ successfullUploaded: true, uploading: false });
+      self.setState({file: window.location.origin + '/users/' + file.name});
     })
   })
   .catch(e => {
     // Not Production ready! Do some error handling here instead...
     this.setState({ successfullUploaded: true, uploading: false });
   })
+}
+
+removeImage(childState) {
+  this.setState({imageIsHidden: 'hidden'});
+  this.setState({dropBoxIsHidden: ''});
+  var currentProgess = { state: "pending", percentage: 0 };
+  this.setState({ uploadProgress: currentProgess });
 }
 
   render() {
@@ -79,7 +92,7 @@ uploadFiles(file) {
       <div>
         <Dropzone onDrop={this.onDrop}>
           {({getRootProps, getInputProps}) => (
-            <section className="container">
+            <section className={"container " + this.state.dropBoxIsHidden}>
               <p className="dropzone-header">Vorschaubild</p>
               <div {...getRootProps({className: 'dropzone'})}>
                 <input {...getInputProps()} />
@@ -90,8 +103,8 @@ uploadFiles(file) {
             </section>
           )}
         </Dropzone>
-        <img src={this.state.file}/>
-        <Progress progress={uploadProgress ? uploadProgress.percentage : 0} />
+        <img className={"preview-image " + this.state.imageIsHidden} src={this.state.file}/>
+        <Progress progress={uploadProgress ? uploadProgress.percentage : 0} removeImage={this.removeImage}/>
       </div>
     );
   }
