@@ -6,16 +6,21 @@ class AddIngredient extends Component {
     constructor() {
     super();
     this.state = {
-
     }
+
     this.createItems = this.createItems.bind(this);
+    this.deleteItem = this.deleteItem.bind(this);
+  }
+
+  deleteItem(e) {
+    this.props.onHandleDelete(e.target.id);
   }
   
   createItems(element) {
     return (
       <li className="row" key={element.item.value}>
         <p><b>{element.amount} {element.unit.label}</b> {element.item.label}</p>
-        <span className="remove-ingredient" aria-hidden="true">&times;</span>
+        <span id={element.item.value} className="remove-ingredient" aria-hidden="true" onClick={this.deleteItem}>&times;</span>
       </li> 
 
     )
@@ -23,6 +28,7 @@ class AddIngredient extends Component {
 
   render() {
     var ingredientEntries = this.props.entries;
+    console.log(ingredientEntries);
     var listItems = ingredientEntries.map(this.createItems);
  
     return (

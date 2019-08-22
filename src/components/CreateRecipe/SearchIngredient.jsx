@@ -171,6 +171,16 @@ export default class SearchIngredient extends Component {
     }
   }
 
+  deleteIngredient(id) {    
+    var array = [...this.state.ingredientObjs];
+    for (let i = 0; i < array.length; i++) {
+      if (array[i]['item'].value === id) {
+        array.splice(i, 1);
+        this.setState({ingredientObjs: array});
+      }
+    }
+  }
+
   render() {
     return (
       <div className="async-ingredient-control">

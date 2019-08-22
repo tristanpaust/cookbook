@@ -98,11 +98,14 @@ export default class CreateRecipe extends Component {
     this.handleTypeChange = this.handleTypeChange.bind(this);
     this.handleTagSelect = this.handleTagSelect.bind(this);
     this.handleIngredientSelect = this.handleIngredientSelect.bind(this);
+    this.handleIngredientDelete = this.handleIngredientDelete.bind(this);
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
 
     this.onStepAdd = this.onStepAdd.bind(this);
     this.increasePeople = this.increasePeople.bind(this);
     this.decreasePeople = this.decreasePeople.bind(this);
+
+    this.child = React.createRef();
   }
 
   componentDidMount() {
@@ -140,15 +143,27 @@ export default class CreateRecipe extends Component {
     this.setState({tags: options});
   }
 
-  handleIngredientSelect(options) {
+  handleIngredientSelect(options) {console.log(options);
     this.setState({ingredients: options});
+  }
+
+  handleIngredientDelete(id) {
+    var array = [...this.state.ingredients]; // make a separate copy of the array
+
+    for (let i = 0; i < array.length; i++) {
+      if (array[i]['item'].value === id) {
+        array.splice(i, 1);
+        this.setState({ingredients: array});
+        this.child.current.deleteIngredient(id);
+      }
+    }
   }
 
   getIngredients = () => {
     var ingredientArray = this.child.getAllIngredients()
   }
 
-  handleFormSubmit = event => {console.log(this.state);
+  handleFormSubmit = event => {
     event.preventDefault();
     const validation = this.validator.validate(this.state);
     this.setState({ validation });
@@ -307,10 +322,10 @@ export default class CreateRecipe extends Component {
                   <h1 className="recipe-headline" htmlFor="ingredients">Zutaten</h1>
 
                   <div className={'input-group ' + (validation.ingredients.isInvalid && 'has-error')}>
-                    <SearchIngredient onSelectIngredient={this.handleIngredientSelect}/>
+                    <SearchIngredient onSelectIngredient={this.handleIngredientSelect} ref={this.child}   />
                     <small className="form-text text-muted">Suche oder erstelle Zutaten, um sie dem Rezept hinzuzufügen.</small>
                      <span className="help-block">{validation.ingredients.message}</span>
-                    <AddIngredient entries={this.state.ingredients}/>
+                    <AddIngredient entries={this.state.ingredients} onHandleDelete={this.handleIngredientDelete}/>
                   </div>
                 </div>
               </div>
