@@ -28,7 +28,6 @@ class AddIngredient extends Component {
 
   render() {
     var ingredientEntries = this.props.entries;
-    console.log(ingredientEntries);
     var listItems = ingredientEntries.map(this.createItems);
  
     return (
