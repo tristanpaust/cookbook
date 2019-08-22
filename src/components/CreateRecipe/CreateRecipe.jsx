@@ -103,6 +103,8 @@ export default class CreateRecipe extends Component {
 
     this.onStepAdd = this.onStepAdd.bind(this);
     this.handleStepDelete = this.handleStepDelete.bind(this);
+    this.handleStepEdit = this.handleStepEdit.bind(this);
+    this.handleStepBlur = this.handleStepBlur.bind(this);
 
     this.increasePeople = this.increasePeople.bind(this);
     this.decreasePeople = this.decreasePeople.bind(this);
@@ -170,6 +172,16 @@ export default class CreateRecipe extends Component {
         return this.setState({steps: array});
       }
     }
+  }
+
+  handleStepEdit(textElement) {
+    textElement.contentEditable = true;
+    textElement.classList.add('editable');
+  }
+
+  handleStepBlur(textElement) {
+    textElement.contentEditable = false;
+    textElement.classList.remove('editable');
   }
 
   getIngredients = () => {
@@ -365,7 +377,12 @@ export default class CreateRecipe extends Component {
                         <small className="form-text text-muted">Suche oder erstelle Zutaten, um sie dem Rezept hinzuzufügen.</small>
                         <span className="help-block">{validation.steps.message}</span>
                       </div>
-                      <AddStep entries={this.state.steps} onHandleDelete={this.handleStepDelete}/>
+                      <AddStep 
+                        entries={this.state.steps} 
+                        onHandleDelete={this.handleStepDelete} 
+                        onHandleEdit={this.handleStepEdit} 
+                        onHandleBlur={this.handleStepBlur}
+                      />
                     </div>
                 </div>
 

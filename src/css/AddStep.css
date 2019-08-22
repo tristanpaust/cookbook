@@ -17,6 +17,20 @@
    line-height: 31px;
 }
 
+.step-list p {
+   width: 86%;
+   padding-left: 10px;
+   padding-right: 10px;
+   margin-right: 10px;
+   float: left;
+}
+
+.editable {
+   transition: 0.3s;
+   background-color: #fff5ae;
+   border-radius: 4px;
+}
+
 .step-list li:before {
    margin-right: 10px;
    content: counter(item);
@@ -27,11 +41,6 @@
    text-align: center;
    display: inline-block;
    line-height: 2em;
-   float: left;
-}
-
-.step-list p {
-   width: 90%;
    float: left;
 }
 
