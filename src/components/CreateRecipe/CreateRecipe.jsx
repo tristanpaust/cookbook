@@ -78,6 +78,7 @@ export default class CreateRecipe extends Component {
     this.state = {
       message: 'Loading...',
       title: undefined,
+      imageName: '',
       servings: 0,
       origin: undefined,
       type: undefined,
@@ -90,6 +91,7 @@ export default class CreateRecipe extends Component {
     this.submitted = false;
 
     this.handleTitleChange = this.handleTitleChange.bind(this);
+    this.handleImageChange = this.handleImageChange.bind(this);
     this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
     this.handleServingsChange = this.handleServingsChange.bind(this);
     this.handleOriginChange = this.handleOriginChange.bind(this);
@@ -114,11 +116,15 @@ export default class CreateRecipe extends Component {
     this.setState({title: e.target.value});
   }
 
+  handleImageChange(imgName) {
+    this.setState({imageName: imgName});
+  }
+
   handleDescriptionChange(e) {
     this.setState({description: e.target.value});
   }
 
-  handleServingsChange(e) {console.log('changed!', e.target.value);
+  handleServingsChange(e) {
     this.setState({servings: e.target.value})
   }
 
@@ -220,7 +226,7 @@ export default class CreateRecipe extends Component {
 
                 <div className="col-md-auto float-left">
                   <div className="dropzone-wrapper">
-                    <ImageDropzone/>
+                    <ImageDropzone onImageChange={this.handleImageChange}/>
                   </div>
                 </div> 
 

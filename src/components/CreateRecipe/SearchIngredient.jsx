@@ -35,6 +35,8 @@ export default class SearchIngredient extends Component {
 
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
+    this.dismissModal = this.dismissModal.bind(this);
+
   }
 
    onChange(newValue, actionMeta) {
@@ -115,35 +117,45 @@ export default class SearchIngredient extends Component {
     this.setState({ open: true });
   }
   
-  closeModal() {
-    // If the array of ingredients already contains the selected one, just return and reset
-    for (let i = 0; i < this.state.ingredientObjs.length; i++) {
-      if (this.state.item !== undefined) {
-        if (this.state.ingredientObjs[i].item.value === this.state.item.value) {
-          return this.setState({ 
-            open: false,
-            item: undefined,
-            unit: undefined,
-            amount: undefined
-          });
+  closeModal() { 
+      // If the array of ingredients already contains the selected one, just return and reset
+      for (let i = 0; i < this.state.ingredientObjs.length; i++) {
+        if (this.state.item !== undefined) {
+          if (this.state.ingredientObjs[i].item.value === this.state.item.value) {
+            return this.setState({ 
+              open: false,
+              item: undefined,
+              unit: undefined,
+              amount: undefined
+            });
+          }
         }
       }
-    }
-    // Otherwise build new object, pass to parent controller and return
-    if (this.state.amount !== undefined && this.state.unit !== undefined) {
-      let ingredient = {};
-      ingredient.amount = this.state.amount;
-      ingredient.unit = this.state.unit;
-      ingredient.item = this.state.item;
-      this.state.ingredientObjs.push(ingredient);
-      this.props.onSelectIngredient(this.state.ingredientObjs);
-    }
+      // Otherwise build new object, pass to parent controller and return
+      if (this.state.amount !== undefined && this.state.unit !== undefined) {
+        let ingredient = {};
+        ingredient.amount = this.state.amount;
+        ingredient.unit = this.state.unit;
+        ingredient.item = this.state.item;
+        this.state.ingredientObjs.push(ingredient);
+        this.props.onSelectIngredient(this.state.ingredientObjs);
+      }
 
+      return this.setState({ 
+        open: false,
+        item: undefined,
+        unit: undefined,
+        amount: undefined
+      });
+  }
+
+  dismissModal() {
     return this.setState({ 
       open: false,
       item: undefined,
       unit: undefined,
-      amount: undefined
+      amount: undefined,
+      open: false
     });
   }
 
@@ -194,10 +206,10 @@ export default class SearchIngredient extends Component {
           </div>
 
           <div className="row float-right popup-btns">
-              <button ref="closeModalBtn" onClick={this.closeModal} className="close-modal-success btn btn-success">
+              <button ref="closeModalBtn" id="modalSuccess" onClick={this.closeModal} className="close-modal-success btn btn-success">
                 <span className="oi oi-check"></span>
                 </button>
-              <button className="close-modal-cancel btn btn-success">
+              <button id="modalCancel" onClick={this.dismissModal} className="close-modal-cancel btn btn-success">
                 <span className="oi oi-x"></span>
             </button>
           </div>

@@ -15,6 +15,7 @@ class ImageDropzone extends Component {
       imageIsHidden: '',
       files: [],
       file: '',
+      fileName: '',
       uploadProgress: 0
     };
 
@@ -70,6 +71,8 @@ uploadFiles(file) {
       self.setState({imageIsHidden: ''});
       self.setState({ successfullUploaded: true, uploading: false });
       self.setState({file: window.location.origin + '/users/' + file.name});
+      self.setState({fileName: file.name});
+      self.props.onImageChange(file.name);
     })
   })
   .catch(e => {
@@ -83,6 +86,7 @@ removeImage(childState) {
   this.setState({dropBoxIsHidden: ''});
   var currentProgess = { state: "pending", percentage: 0 };
   this.setState({ uploadProgress: currentProgess });
+  this.props.onImageChange('');
 }
 
   render() {
@@ -103,7 +107,7 @@ removeImage(childState) {
             </section>
           )}
         </Dropzone>
-        <img className={"preview-image " + this.state.imageIsHidden} src={this.state.file}/>
+        <img className={"preview-image " + this.state.imageIsHidden} src={this.state.file} alt={this.state.fileName}/>
         <Progress progress={uploadProgress ? uploadProgress.percentage : 0} removeImage={this.removeImage}/>
       </div>
     );
