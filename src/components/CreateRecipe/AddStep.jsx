@@ -18,11 +18,11 @@ class AddStep extends Component {
   }
 
   editItem(e) {
-    this.props.onHandleEdit(e.target.parentNode.firstChild, e.target.parentNode.children[1]);
+    this.props.onHandleEdit(e.target.parentNode.firstChild);
   }
 
   closeEditItem(e) {
-    this.props.onHandleBlur(e.target.parentNode.firstChild, e.target.parentNode.children[1]);
+    this.props.onHandleBlur(e.target.parentNode.firstChild, e.target.parentNode.children[2].id);
   }
 
   createItems(item) {

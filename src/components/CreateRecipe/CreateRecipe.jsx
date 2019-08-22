@@ -179,9 +179,19 @@ export default class CreateRecipe extends Component {
     textElement.classList.add('editable');
   }
 
-  handleStepBlur(textElement) {
+  handleStepBlur(textElement, id) {
     textElement.contentEditable = false;
     textElement.classList.remove('editable');
+
+    var array = [...this.state.steps];
+
+    for (let i = 0; i < array.length; i++) {
+      if (array[i]['key'] === id) {
+        array[i]['text'] = textElement.textContent;
+      }
+    }
+    this.setState({steps: array});
+    console.log(this.state.steps);
   }
 
   getIngredients = () => {
@@ -217,6 +227,7 @@ export default class CreateRecipe extends Component {
       };
     });
     this.refs.step.value = '';
+
     e.preventDefault();
   }
 
