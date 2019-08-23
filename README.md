@@ -1,8 +1,5 @@
 TODO:
 <ul>
-	<li>Clean up file upload in server.js and disallow upload without image selection</li>
-	<li>Delete ingredients from list</li>
-	<li>Delete steps</li>
 	<li>Unit tests for recipe creation</li>
 	<li>Add sortable list of recipes (by date, tags, search, etc)</li>
 	<li>Same as above for ingredients</li>
@@ -31,4 +28,9 @@ DONE:
 	<li>Make sure only one image can get uploaded</li>
 	<li>Cut images and force size?</li>
 	<li>Delete image button>
+	<li>Clean up file upload in server.js and disallow upload without image selection</li>
+	<li>Delete ingredients from list</li>
+	<li>Delete steps</li>
+	<li>Edit steps</li>
+	<li>Finish recipe creation</li>
 </ul>
