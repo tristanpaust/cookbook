@@ -2,8 +2,12 @@ import React, { Component } from "react";
 //import AsyncSelect from 'react-select/async';
 import AsyncCreatableSelect from 'react-select/async-creatable';
 
-export default class SearchUnit extends Component {
+const createOption = (label, id) => ({
+  value: id,
+  label
+});
 
+export default class SearchUnit extends Component {
   constructor() {
     super();
     this.state = {
@@ -31,10 +35,13 @@ export default class SearchUnit extends Component {
     })
     .then(res => res.text())
     .then(newOption => {
+      newOption = JSON.parse(newOption);
+      var option = createOption(newOption.title, newOption._id);
       this.setState({
         isLoading: false,
-        value: this.state.value,
-      });
+        value: option,
+      });  
+      this.props.onSelectUnit(option);
     })
   }
 

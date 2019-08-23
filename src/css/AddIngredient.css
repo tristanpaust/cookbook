@@ -13,6 +13,7 @@
   height: 100%;
   margin: 0;
   line-height: 30px;
+  width: 95%;
 }
 
 
@@ -35,15 +36,19 @@
    display: none;
 }
 
-.remove-ingredient {
-  margin-left: 15px;
-  margin-top: 3px;
-  color: red;
+.remove-ingredient-icon {
+  float: right;
+  opacity: 0.5;
+  transition: 0.3s;
+  color: white;
+  background: #d78308;
+  border-radius: 100%;
+  padding: 3px 4px 0px 4px;
+  cursor: pointer;
+  height: 1.6em;
 }
 
-.remove-ingredient:hover {
-  font-size: 25px;
+.remove-ingredient-icon:hover {
+  background: #d75108;
   transition: 0.3s;
-  margin-top: -0.2em;
-  cursor: pointer;
 }

@@ -6,9 +6,9 @@ import SearchUnit from './SearchUnit.jsx';
 
 import Popup from "reactjs-popup";
 
-const createOption = (label) => ({
-  label,
-  value: label.toLowerCase().replace(/\W/g, ''),
+const createOption = (label, id) => ({
+  value: id,
+  label
 });
 
 export default class SearchIngredient extends Component {
@@ -17,7 +17,7 @@ export default class SearchIngredient extends Component {
     super();
     this.state = {
       isLoading: false,
-      value: undefined,
+      value: [],
       ingredients: [],
       open: false,
       currentHeadlline: undefined,
@@ -40,14 +40,15 @@ export default class SearchIngredient extends Component {
   }
 
    onChange(newValue, actionMeta) {
-    this.setState({ value: null });
-    this.setState({ item: newValue});
+    this.setState({ 
+      value: [],
+      item: newValue 
+    });
 
     if (actionMeta.action === "select-option") { 
       // Add the ingredient to the array that keeps track of all ids
       this.state.ingredients.push(newValue);
     }
-    
     if (actionMeta.action === "remove-value" || actionMeta.action === "pop-value") {
       // calculates diff between old and new list
       var index = 0;
@@ -72,18 +73,21 @@ export default class SearchIngredient extends Component {
       method: 'POST',
       body: JSON.stringify({title: inputValue}),
       headers: {
-        'Content-Type': 'application/json'        }
+        'Content-Type': 'application/json'        
+      }
     })
     .then(res => res.text())
     .then(newOption => {
       var ingredient = JSON.parse(newOption);
-      var option = createOption(ingredient.title);
+      var option = createOption(ingredient.title, ingredient._id);
       this.state.value.push(option);
-      this.state.ingredients.push(ingredient._id);
+      this.state.ingredients.push(option);
       this.setState({
         isLoading: false,
-        value: this.state.value
-      });
+        value: this.state.value,
+        item: option
+      })
+      this.openModal(option);
     })
   }
 
@@ -113,11 +117,14 @@ export default class SearchIngredient extends Component {
   }
 
   openModal(headline) {
+    if (headline === null) {
+      return;
+    }
     this.setState({ currentHeadlline: headline.label})
     this.setState({ open: true });
   }
   
-  closeModal() { 
+  closeModal() {
       // If the array of ingredients already contains the selected one, just return and reset
       for (let i = 0; i < this.state.ingredientObjs.length; i++) {
         if (this.state.item !== undefined) {
@@ -126,7 +133,8 @@ export default class SearchIngredient extends Component {
               open: false,
               item: undefined,
               unit: undefined,
-              amount: undefined
+              amount: undefined,
+              value: {}
             });
           }
         }
@@ -145,7 +153,8 @@ export default class SearchIngredient extends Component {
         open: false,
         item: undefined,
         unit: undefined,
-        amount: undefined
+        amount: undefined,
+        value: {},
       });
   }
 

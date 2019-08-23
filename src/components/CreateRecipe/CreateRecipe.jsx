@@ -276,7 +276,7 @@ export default class CreateRecipe extends Component {
               <div id="generalInfo" className="row">
 
                 <div className="col-md-auto float-left">
-                  <div className="dropzone-wrapper">
+                  <div className="dropzone-wrapper row">
                     <ImageDropzone onImageChange={this.handleImageChange}/>
                   </div>
                 </div> 

@@ -20,14 +20,14 @@ class AddIngredient extends Component {
     return (
       <li className="row" key={element.item.value}>
         <p><b>{element.amount} {element.unit.label}</b> {element.item.label}</p>
-        <span id={element.item.value} className="remove-ingredient" aria-hidden="true" onClick={this.deleteItem}>&times;</span>
+        <span id={element.item.value} className="remove-ingredient-icon oi oi-x" onClick={this.deleteItem}></span>
       </li> 
 
     )
   }
 
   render() {
-    var ingredientEntries = this.props.entries;
+    var ingredientEntries = this.props.entries; console.log(ingredientEntries);
     var listItems = ingredientEntries.map(this.createItems);
  
     return (

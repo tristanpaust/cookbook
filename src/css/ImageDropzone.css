@@ -31,6 +31,7 @@
 .dropzone-wrapper {
   padding: 9px;
   border-color: #cccccc;
+  margin-bottom: 20px;
 }
 
 .dropzone-wrapper, .dropzone-wrapper section {

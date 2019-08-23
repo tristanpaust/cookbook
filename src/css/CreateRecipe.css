@@ -1,5 +1,6 @@
 .container-create-recipe {
 	margin-bottom: 3em;
+	overflow-x: hidden;
 }
 
 .async-tag-control, .async-ingredient-control {
@@ -21,6 +22,7 @@
 
 #generalInfo > div:first-child {
 	margin-right: 25px;
+	margin-bottom: 20px;
 }
 
 #generalInfo .row {

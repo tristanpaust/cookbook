@@ -2,9 +2,9 @@ import React, { Component } from "react";
 //import AsyncSelect from 'react-select/async';
 import AsyncCreatableSelect from 'react-select/async-creatable';
 
-const createOption = (label) => ({
-  label,
-  value: label.toLowerCase().replace(/\W/g, ''),
+const createOption = (label, id) => ({
+  value: id,
+  label
 });
 
 export default class SearchTag extends Component {
@@ -13,7 +13,7 @@ export default class SearchTag extends Component {
     super();
     this.state = {
       isLoading: false,
-      value: undefined,
+      value: [],
       tags: []
     }
     this.onChange = this.onChange.bind(this);
@@ -58,7 +58,7 @@ export default class SearchTag extends Component {
     .then(res => res.text())
     .then(newOption => {
       var tag = JSON.parse(newOption);
-      var option = createOption(tag.title);
+      var option = createOption(tag.title, tag._id);
       this.state.value.push(option);
       this.state.tags.push(tag._id);
       this.setState({
