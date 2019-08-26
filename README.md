@@ -1,5 +1,8 @@
 TODO:
 <ul>
+	<li>Make steps movable by drag and drop</li>
+	<li>Error checking in recipe creation looks sort of weird</li>
+	<li>Images shouldn't be mandatory for now</li>
 	<li>Unit tests for recipe creation</li>
 	<li>Add sortable list of recipes (by date, tags, search, etc)</li>
 	<li>Same as above for ingredients</li>
@@ -33,4 +36,7 @@ DONE:
 	<li>Delete steps</li>
 	<li>Edit steps</li>
 	<li>Finish recipe creation</li>
+	<li>Recipe Model</>
+	<li>Store recipe in database</li>
+	<li>Display list of recipes</li>
 </ul>

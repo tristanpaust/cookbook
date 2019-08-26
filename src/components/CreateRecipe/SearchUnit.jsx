@@ -31,7 +31,8 @@ export default class SearchUnit extends Component {
       method: 'POST',
       body: JSON.stringify({title: inputValue}),
       headers: {
-        'Content-Type': 'application/json'        }
+        'Content-Type': 'application/json'        
+      }
     })
     .then(res => res.text())
     .then(newOption => {

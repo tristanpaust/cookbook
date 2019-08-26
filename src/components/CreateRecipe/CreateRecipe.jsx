@@ -147,7 +147,7 @@ export default class CreateRecipe extends Component {
     this.setState({tags: options});
   }
 
-  handleIngredientSelect(options) {console.log(options);
+  handleIngredientSelect(options) {
     this.setState({ingredients: options});
   }
 
@@ -191,7 +191,6 @@ export default class CreateRecipe extends Component {
       }
     }
     this.setState({steps: array});
-    console.log(this.state.steps);
   }
 
   getIngredients = () => {
@@ -203,10 +202,53 @@ export default class CreateRecipe extends Component {
     const validation = this.validator.validate(this.state);
     this.setState({ validation });
     this.submitted = true;
-
+    
     if (validation.isValid) {
-      console.log('form is valid and can be submitted.');
+      var ingredientIDs = [...this.state.ingredients];
+
+      for (let i = 0; i < this.state.ingredients.length; i++) {
+          ingredientIDs[i].item = ingredientIDs[i].item.value;
+          ingredientIDs[i].unit = ingredientIDs[i].unit.value;
+      }
+
+      var stepText = [...this.state.steps];
+
+      for (let i = 0; i < this.state.steps.length; i++) {
+          stepText[i] = stepText[i].text;
+      }
+
+      var recipe = {
+        title: this.state.title, 
+        image: this.state.imageName,
+        servings: this.state.servings,
+        origin: this.state.origin,
+        type: this.state.type,
+        tags: this.state.tags,
+        ingredients: ingredientIDs,
+        steps: stepText
+      };
+
+      fetch('/api/saverecipe', {
+        method: 'POST',
+        body: JSON.stringify(recipe),
+        headers: {
+          'Content-Type': 'application/json'        
+        }
+      })
+      .then(res => {
+        if (res.status === 200) {
+          this.props.history.push('/');
+        } else {
+          const error = new Error(res.error);
+          throw error;
+        }
+      })
+      .catch(err => {
+        console.error(err);
+        alert('Error logging in please try again');
+      });
     }
+
     else {
       console.log('form is not valid.');
     }

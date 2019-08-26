@@ -25,11 +25,14 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(cors(corsOptions))
 
+
 /* Models */
 const User = require('./models/User');
 const Tag = require('./models/Tag');
 const Ingredient = require('./models/Ingredient');
 const Unit = require('./models/Unit');
+const Recipe = require('./models/Recipe');
+/***/
 
 const mongo_uri = 'mongodb+srv://' + config.database.user + ':' + config.database.password + '@cluster0-xt4o2.mongodb.net/test?retryWrites=true&w=majority';
 const opts = { useNewUrlParser: true };
@@ -47,10 +50,6 @@ app.get('/', function (req, res) {
 
 app.get('/api/home', function(req, res) {
   res.send('Welcome!');
-});
-
-app.get('/api/recipelist', withAuth, function(req, res) {
-  res.send('The password is potato');
 });
 
 app.get('/api/ingredientlist', withAuth, function(req, res) {
@@ -148,6 +147,8 @@ app.get('/api/searchtag', function(req, res) {
 
 /***/
 
+
+
 /* Ingredients */
 
 app.post('/api/saveingredient', function(req, res) {console.log('ingredient!', req.body);
@@ -218,6 +219,8 @@ app.get('/api/searchunit', function(req, res) {
 
 /***/
 
+
+
 /* Upload */
 
 var storage = multer.diskStorage({
@@ -233,6 +236,47 @@ app.use(upload.single('image'));
 
 app.post('/api/upload', function (req, res) {
   res.send(res.req.file);  
+});
+
+/***/
+
+
+
+/* Recipes */
+
+app.post('/api/saverecipe', function(req, res) {
+  const recipe = new Recipe({ 
+    title: req.body.title, 
+    image: req.body.image,
+    servings: req.body.servings,
+    origin: req.body.origin,
+    formType: req.body.type,
+    tags: req.body.tags,
+    ingredients: req.body.ingredients,
+    steps: req.body.steps
+  });
+  recipe.save(function(err) {
+    if (err) {
+      console.log(err);
+      res.status(500).send("Error storing new recipe. Please try again.");
+    } 
+    else {
+      res.status(200).send("New recipe successfully saved.");
+    }
+  });
+});
+
+
+app.get('/api/recipelist', withAuth, function(req, res) {
+  Recipe.find( {} )
+  .exec( function(err, recipeArray) {
+    if (err) {
+      res.status(500).send("Error finding the tag. Please try again later.")
+    }
+    else {
+      res.send(recipeArray);
+    }
+  })
 });
 
 /***/
