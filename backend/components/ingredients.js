@@ -1,6 +1,6 @@
 /* Ingredients */
 
-const Ingredient = require('../../models/Ingredient');
+const Ingredient = require('../models/Ingredient');
 
 function storeIngredient(req,res) {
   const { title } = req.body;

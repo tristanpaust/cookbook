@@ -1,6 +1,6 @@
 /* Unit */
 
-const Unit = require('../../models/Unit');
+const Unit = require('../models/Unit');
 
 function storeUnit(req,res) {
   const { title } = req.body;

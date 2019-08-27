@@ -1,6 +1,6 @@
 /* Recipes */
 
-const Recipe = require('../../models/Recipe');
+const Recipe = require('../models/Recipe');
 
 function storeRecipe(req,res) {
   const recipe = new Recipe({ 

@@ -1,6 +1,6 @@
 /* Tags */
 
-const Tag = require('../../models/Tag');
+const Tag = require('../models/Tag');
 
 function storeTag(req,res) {
   const { title } = req.body;
