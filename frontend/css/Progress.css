@@ -1,0 +1,52 @@
+.ProgressWrapper {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 15px;
+}
+
+.ProgressBar {
+  width: 90%;
+  height: 8px;
+  background-color: hsl(0,0%,50%);
+  border-radius: 5px;
+}
+
+.Progress {
+  background-color: #289fad;
+  height: 100%;
+  margin: 0;
+  border-radius: 5px;
+  transition: 0.3s;
+}
+
+.CheckIcon {
+  opacity: 0.5;
+  margin-left: 27px;
+  transition: 0.3s;
+  color: white;
+  background: #289fad;
+  border-radius: 100%;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.CheckIcon:hover {
+  background: #6a7989;
+}
+
+.CrossIcon {
+  opacity: 0.5;
+  transition: 0.3s;
+  margin-right: 27px;
+  color: white;
+  background: #d78308;
+  border-radius: 100%;
+  padding: 4px 5px 6px 5px;
+  cursor: pointer;
+}
+
+.CrossIcon:hover {
+  background: #d75108;
+}

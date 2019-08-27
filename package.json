@@ -31,7 +31,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test --testPathPattern=/tests/*.",
     "eject": "react-scripts eject",
-    "server": "node server.js",
+    "server": "node backend/server.js",
     "server-dev": "concurrently -kill-others \"npm run server\" \"npm start\""
   },
   "proxy": "http://localhost:8080",
