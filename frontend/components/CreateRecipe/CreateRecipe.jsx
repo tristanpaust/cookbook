@@ -9,8 +9,8 @@ import SearchIngredient from './SearchIngredient.jsx';
 import ImageDropzone from './ImageDropzone.jsx';
 import FormValidator from '../FormValidator.jsx';
 
-import {countryOptions} from './SelectOptions.jsx';
-import {dishOptions} from './SelectOptions.jsx';
+import {countryOptions} from '../SelectOptions.jsx';
+import {dishOptions} from '../SelectOptions.jsx';
 
 import Select from 'react-select';
 
