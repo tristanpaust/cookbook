@@ -19,16 +19,22 @@ export default class RecipeList extends Component {
       isLoading: true,
       message: 'Loading...',
       recipes: null,
-      value: [],
+      tagValue: [],
+      ingredientValue: [],
+      recipeType: '',
+      origin: '',
       tags: [],
-      ingredients: [],  
+      ingredients: [],
     }
 
     this.handleTypeChange = this.handleTypeChange.bind(this);
     this.handleOriginChange = this.handleOriginChange.bind(this);
     this.onGetTag = this.onGetTag.bind(this);
+    this.onChangeSearchField = this.onChangeSearchField.bind(this);
     this.onChangeTags = this.onChangeTags.bind(this);
     this.onGetIngredient = this.onGetIngredient.bind(this);
+    this.onChangeIngredient = this.onChangeIngredient.bind(this);
+    this.onSearchRecipe = this.onSearchRecipe.bind(this);
   }
 
   componentDidMount() {
@@ -43,15 +49,19 @@ export default class RecipeList extends Component {
   }
 
   handleTypeChange(option) {
-    this.setState({type: option.value});
+    this.setState({recipeType: option.value});
   }
 
   handleOriginChange(option) {
     this.setState({origin: option.label});
   }
 
+  onChangeSearchField(e) {
+    this.setState({searchString: e.target.value});
+  }
+
   onChangeTags(newValue, actionMeta) {
-    this.setState({ value: newValue });
+    this.setState({ tagValue: newValue });
 
     if (actionMeta.action === "select-option") { 
       // Add the tag to the array that keeps track of all ids
@@ -99,15 +109,14 @@ export default class RecipeList extends Component {
     })
   }
 
-  onChange(newValue, actionMeta) {
+  onChangeIngredient(newValue, actionMeta) {
     this.setState({ 
-      value: [],
-      item: newValue 
+      ingredientValue: newValue 
     });
 
-    if (actionMeta.action === "select-option") { 
+    if (actionMeta.action === "select-option") {
       // Add the ingredient to the array that keeps track of all ids
-      this.state.ingredients.push(newValue);
+      this.state.ingredients.push(newValue[newValue.length-1].value);
     }
     if (actionMeta.action === "remove-value" || actionMeta.action === "pop-value") {
       // calculates diff between old and new list
@@ -123,7 +132,6 @@ export default class RecipeList extends Component {
         this.state.ingredients.splice(index, 1); 
       }
     }
-    this.openModal(newValue);
   };
 
   onGetIngredient(value) {
@@ -151,6 +159,29 @@ export default class RecipeList extends Component {
     })
   }
 
+  onSearchRecipe() {
+    let searchQuery = {
+      searchString: this.state.searchString,
+      recipeType: this.state.recipeType,
+      origin: this.state.origin,
+      tags: this.state.tags,
+      ingredients: this.state.ingredients,
+    };
+    
+    return fetch('/api/searchrecipe?q=' + JSON.stringify(searchQuery), {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    })
+    .then((response) => {
+      return response.json();
+    })
+    .then((json) => {
+      console.log(json);
+    })
+  }
+
   createItems(element) {
     return (
       <li className="row" key={element.title}></li>
@@ -168,7 +199,7 @@ export default class RecipeList extends Component {
             <h1 className="headline">All Recipes</h1>
           
             <div className="filters row">
-              <input type="text" className="form-control" placeholder="Suchen"/>
+              <input type="text" className="form-control" placeholder="Suchen" onChange={this.onChangeSearchField}/>
               <div className="more-search-options row">
                 <Select
                   placeholder="-- Rezeptart --"
@@ -218,6 +249,7 @@ export default class RecipeList extends Component {
                 />
 
                 <AsyncSelect
+                  isMulti
                   isClearable
                   className="search-recipe-input"
                   isDisabled={this.state.isLoading}
@@ -225,15 +257,19 @@ export default class RecipeList extends Component {
                   backspaceRemoves={true}           
                   value={this.state.value}
                   loadOptions={this.onGetIngredient}
-                  onChange={this.onChangeIngredients}
+                  onChange={this.onChangeIngredient}
                   placeholder="-- Zutaten suchen --"
                 />
+              </div>
+              <div className="row">
+                <button onClick={this.onSearchRecipe}>Search</button>
+                <button>Clear</button>
               </div>
             </div>
 
             <ul className="recipe-list">
             {
-              this.state.recipes.map(function(recipe){
+              this.state.recipes.map(function(recipe){console.log(recipe);
                 return <li className="row" key={recipe._id}> {recipe.title} </li>;
               })
             }

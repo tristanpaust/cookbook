@@ -108,11 +108,13 @@ router.post('/api/saverecipe', function(req, res) {
   recipes.storeRecipe(req, res);
 });
 
+router.get('/api/searchrecipe', withAuth, function(req, res) {
+  recipes.getRecipe(req, res);
+});
 
 router.get('/api/recipelist', withAuth, function(req, res) {
   recipes.getRecipeList(req, res);
 });
-
 /***/
 
 module.exports = router;
