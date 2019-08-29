@@ -25,6 +25,8 @@ export default class RecipeList extends Component {
       origin: '',
       tags: [],
       ingredients: [],
+      originValue: '',
+      recipeTypeValue: ''
     }
 
     this.handleTypeChange = this.handleTypeChange.bind(this);
@@ -35,6 +37,7 @@ export default class RecipeList extends Component {
     this.onGetIngredient = this.onGetIngredient.bind(this);
     this.onChangeIngredient = this.onChangeIngredient.bind(this);
     this.onSearchRecipe = this.onSearchRecipe.bind(this);
+    this.onClearSearch = this.onClearSearch.bind(this);
   }
 
   componentDidMount() {
@@ -48,12 +51,40 @@ export default class RecipeList extends Component {
       );
   }
 
-  handleTypeChange(option) {
-    this.setState({recipeType: option.value});
+  handleTypeChange(newValue, actionMeta) {
+    this.setState({ 
+      recipeTypeValue: newValue
+    });
+    
+    if (actionMeta.action === "select-option") {
+      // Add the ingredient to the array that keeps track of all ids
+        this.setState({
+          recipeType: newValue.value
+        });
+      }
+    if (actionMeta.action === "clear") {
+      this.setState({
+        recipeType: '',
+      });
+    }
   }
 
-  handleOriginChange(option) {
-    this.setState({origin: option.label});
+  handleOriginChange(newValue, actionMeta) {
+    this.setState({ 
+      originValue: newValue
+    });
+    
+    if (actionMeta.action === "select-option") {
+      // Add the ingredient to the array that keeps track of all ids
+        this.setState({
+          origin: newValue.value
+        });
+      }
+    if (actionMeta.action === "clear") {
+      this.setState({
+        origin: '',
+      });
+    }  
   }
 
   onChangeSearchField(e) {
@@ -167,7 +198,7 @@ export default class RecipeList extends Component {
       tags: this.state.tags,
       ingredients: this.state.ingredients,
     };
-    
+
     return fetch('/api/searchrecipe?q=' + JSON.stringify(searchQuery), {
       method: 'GET',
       headers: {
@@ -178,14 +209,25 @@ export default class RecipeList extends Component {
       return response.json();
     })
     .then((json) => {
-      console.log(json);
+      this.setState({ recipes : json });
     })
   }
 
-  createItems(element) {
-    return (
-      <li className="row" key={element.title}></li>
-    )
+  onClearSearch() {
+    this.setState(
+      {
+        tagValue: [],
+        ingredientValue: [],
+        recipeType: '',
+        origin: '',
+        tags: [],
+        ingredients: [],
+        recipeTypeValue: '',
+        originValue: ''
+      }
+    );
+    this.refs.searchField.value = '';
+    this.componentDidMount();
   }
 
   render() {    
@@ -196,84 +238,103 @@ export default class RecipeList extends Component {
       return (
         <div className="container">
           <div className="container-fluid container-create-recipe">
-            <h1 className="headline">All Recipes</h1>
+            <h1 className="headline">Alle Rezepte</h1>
           
             <div className="filters row">
-              <input type="text" className="form-control" placeholder="Suchen" onChange={this.onChangeSearchField}/>
+              <input type="text" className="form-control search-recipe-text-input" placeholder="Suchen" onChange={this.onChangeSearchField} ref="searchField"/>
               <div className="more-search-options row">
-                <Select
-                  placeholder="-- Rezeptart --"
-                  label="Single select"
-                  options={dishOptions}
-                  onChange={this.handleTypeChange}
-                  className="search-recipe-input"
-                  theme={(theme) => ({
-                    ...theme,
-                    colors: {
-                      ...theme.colors,
-                      text: '#6a7989',
-                      primary25: '#289fad',
-                      primary: '#6a7989',
-                    },
-                  })}                  
-                />
+                <div className="col">
+                  <Select
+                    isClearable
+                    label="Single select"
+                    options={dishOptions}
+                    onChange={this.handleTypeChange}
+                    className="search-recipe-input"
+                    value={this.state.recipeTypeValue}
+                    placeholder="-- Rezeptart --"
+                    theme={(theme) => ({
+                      ...theme,
+                      colors: {
+                        ...theme.colors,
+                        text: '#6a7989',
+                        primary25: '#289fad',
+                        primary: '#6a7989',
+                      },
+                    })}                  
+                  />
+                </div>
 
-                <Select
-                  placeholder="-- Herkunfsland --"
-                  label="Single select"
-                  onChange={this.handleOriginChange}
-                  options={countryOptions}
-                  className="search-recipe-input"
-                  theme={(theme) => ({
-                    ...theme,
-                    colors: {
-                      ...theme.colors,
-                      text: '#6a7989',
-                      primary25: '#289fad',
-                      primary: '#6a7989',
-                    },
-                  })}
-                />
+                <div className="col">
+                  <Select
+                    isClearable
+                    placeholder="-- Herkunfsland --"
+                    label="Single select"
+                    onChange={this.handleOriginChange}
+                    options={countryOptions}
+                    className="search-recipe-input"
+                    value={this.state.originValue}
+                    theme={(theme) => ({
+                      ...theme,
+                      colors: {
+                        ...theme.colors,
+                        text: '#6a7989',
+                        primary25: '#289fad',
+                        primary: '#6a7989',
+                      },
+                    })}
+                  />
+                </div>
+                                
+                <div className="col">
+                  <AsyncSelect
+                    isMulti
+                    isClearable
+                    className="search-recipe-input"                
+                    isDisabled={this.state.isLoading}
+                    isLoading={this.state.isLoading}
+                    backspaceRemoves={true}           
+                    value={this.state.tagValue}
+                    loadOptions={this.onGetTag}
+                    onChange={this.onChangeTags}
+                    placeholder="-- Begriffe suchen --"
+                  />
+                </div>
 
-                <AsyncSelect
-                  isMulti
-                  isClearable
-                  className="search-recipe-input"                
-                  isDisabled={this.state.isLoading}
-                  isLoading={this.state.isLoading}
-                  backspaceRemoves={true}           
-                  value={this.state.value}
-                  loadOptions={this.onGetTag}
-                  onChange={this.onChangeTags}
-                  placeholder="-- Begriffe suchen --"
-                />
-
-                <AsyncSelect
-                  isMulti
-                  isClearable
-                  className="search-recipe-input"
-                  isDisabled={this.state.isLoading}
-                  isLoading={this.state.isLoading}
-                  backspaceRemoves={true}           
-                  value={this.state.value}
-                  loadOptions={this.onGetIngredient}
-                  onChange={this.onChangeIngredient}
-                  placeholder="-- Zutaten suchen --"
-                />
+                <div className="col">
+                  <AsyncSelect
+                    isMulti
+                    isClearable
+                    className="search-recipe-input"
+                    isDisabled={this.state.isLoading}
+                    isLoading={this.state.isLoading}
+                    backspaceRemoves={true}     
+                    value={this.state.ingredientValue}
+                    loadOptions={this.onGetIngredient}
+                    onChange={this.onChangeIngredient}
+                    placeholder="-- Zutaten suchen --"
+                  />
+                </div>
               </div>
-              <div className="row">
-                <button onClick={this.onSearchRecipe}>Search</button>
-                <button>Clear</button>
+
+              <div className="search-recipe-buttons">
+                <button className="btn btn-success btn-search-recipe" onClick={this.onSearchRecipe}>
+                  <span className="oi oi-magnifying-glass"></span>
+                </button>
+                <button className="btn btn-success btn-clear-recipe" onClick={this.onClearSearch}>
+                  <span className="oi oi-reload"></span>
+                </button>
               </div>
+
             </div>
 
             <ul className="recipe-list">
             {
-              this.state.recipes.map(function(recipe){console.log(recipe);
+              this.state.recipes.map(function(recipe){
                 return <li className="row" key={recipe._id}> {recipe.title} </li>;
               })
             }
             </ul>
+
           </div>
         </div>
       );

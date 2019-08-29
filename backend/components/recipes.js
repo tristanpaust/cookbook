@@ -25,20 +25,32 @@ function storeRecipe(req,res) {
 }
 
 function getRecipe(req, res) {
-const query = JSON.parse(req.query.q) || '';
-console.log(query);
-console.log(query.tags);
-console.log(query.ingredients);
+  const query = JSON.parse(req.query.q) || '';
+
+  var search = [];
+
+  if (query.searchString) {
+    search.push({'title': {$regex: ".*" + query.searchString + ".*", '$options' : 'i'}});
+  }
+  if (query.recipeType) {
+    search.push({'formType': {$regex: ".*" + query.recipeType + ".*", '$options' : 'i'}});
+  }
+  if (query.origin) {
+    search.push({'origin': {$regex: ".*" + query.origin + ".*", '$options' : 'i'}});
+  }
+  if (query.tags.length) {
+    search.push({'tags': { $all: query.tags }});
+  }
+  if (query.ingredients.length) {
+    search.push({'ingredients.item': { $all: query.ingredients }});
+  }
 
   if (query) {
     Recipe.find( 
         {
-          $and:[
-            {'title': {$regex: ".*" + query.searchString + ".*", '$options' : 'i'}},
-            {'formType': {$regex: ".*" + query.recipeType + ".*", '$options' : 'i'}},
-            {'origin': {$regex: ".*" + query.origin + ".*", '$options' : 'i'}},
-            {'tags': { $all: query.tags }},
-          ]}
+          $and:
+            search
+          }
       )
       .exec( function(err, recipeArray) {
         if (err) {
@@ -67,4 +79,5 @@ function getRecipeList(req, res) {
 module.exports.storeRecipe = storeRecipe;
 module.exports.getRecipe = getRecipe;
 module.exports.getRecipeList = getRecipeList;
+
 /***/
