@@ -12,6 +12,8 @@ import Register from './components/Register';
 
 import RecipeList from "./components/RecipeList";
 import CreateRecipe from "./components/CreateRecipe/CreateRecipe";
+import ViewRecipe from "./components/ViewRecipe";
+import EditRecipe from "./components/EditRecipe";
 
 import IngredientList from "./components/IngredientList";
 
@@ -57,8 +59,11 @@ class App extends Component {
         <Switch>
           <Route path="/" exact component={Home} />
           <Route path="/recipes" component={withAuth(RecipeList)} />
-          <Route path="/ingredients" component={withAuth(IngredientList)} />
           <Route path="/recipe/create" component={withAuth(CreateRecipe)} />
+          <Route path="/recipe/view/:id" component={withAuth(ViewRecipe)} />
+          <Route path="/recipe/edit/:id" component={withAuth(EditRecipe)} />
+
+          <Route path="/ingredients" component={withAuth(IngredientList)} />
           <Route path="/tag/create" component={withAuth(CreateTag)} />
 
           <Route path="/login" component={Login} />

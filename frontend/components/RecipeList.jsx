@@ -7,6 +7,8 @@ import AsyncSelect from 'react-select/async';
 import {countryOptions} from './SelectOptions.jsx';
 import {dishOptions} from './SelectOptions.jsx';
 
+import { NavLink } from 'react-router-dom';
+
 const createOption = (label, id) => ({
   value: id,
   label
@@ -17,6 +19,7 @@ export default class RecipeList extends Component {
     super();
     this.state = {
       isLoading: true,
+      isFetchingData: true,
       message: 'Loading...',
       recipes: null,
       tagValue: [],
@@ -38,6 +41,7 @@ export default class RecipeList extends Component {
     this.onChangeIngredient = this.onChangeIngredient.bind(this);
     this.onSearchRecipe = this.onSearchRecipe.bind(this);
     this.onClearSearch = this.onClearSearch.bind(this);
+    this.getCourseTypeName = this.getCourseTypeName.bind(this);
   }
 
   componentDidMount() {
@@ -45,6 +49,7 @@ export default class RecipeList extends Component {
       .then(res => res.text())
       .then(res => 
         this.setState({
+          isFetchingData: false,
           recipes: JSON.parse(res),
           isLoading: false
         })
@@ -190,7 +195,8 @@ export default class RecipeList extends Component {
     })
   }
 
-  onSearchRecipe() {
+  onSearchRecipe(e) {
+    e.preventDefault();
     let searchQuery = {
       searchString: this.state.searchString,
       recipeType: this.state.recipeType,
@@ -198,6 +204,8 @@ export default class RecipeList extends Component {
       tags: this.state.tags,
       ingredients: this.state.ingredients,
     };
+
+    this.setState({isFetchingData: true});
 
     return fetch('/api/searchrecipe?q=' + JSON.stringify(searchQuery), {
       method: 'GET',
@@ -209,11 +217,15 @@ export default class RecipeList extends Component {
       return response.json();
     })
     .then((json) => {
-      this.setState({ recipes : json });
+      this.setState({ 
+        recipes : json,
+        isFetchingData: false
+      });
     })
   }
 
-  onClearSearch() {
+  onClearSearch(e) {
+    e.preventDefault();
     this.setState(
       {
         tagValue: [],
@@ -230,107 +242,169 @@ export default class RecipeList extends Component {
     this.componentDidMount();
   }
 
+  getCourseTypeName(courseType) {
+    if (courseType === 'starter' ) {
+      return "Vorspeise";
+    }
+    if (courseType === 'main' ) {
+      return "Hauptspeise";
+    }
+    if (courseType === 'dessert' ) {
+      return "Nachspeise";
+    }
+    if (courseType === 'side' ) {
+      return "Beilage";
+    }
+    if (courseType === 'sauce' ) {
+      return "Sauce/Dressing";
+    }    
+  }
+
   render() {    
     if (this.state.isLoading) {
       return <p>{this.state.message}</p>;
     }
     else {
+      if (this.state.isFetchingData) {
+        const spinner = document.getElementById('spinner');
+        if (spinner && !spinner.hasAttribute('hidden')) {
+          spinner.classList.remove('hidden');
+        }
+      }
+      if (!this.state.isFetchingData) {
+        const spinner = document.getElementById('spinner');
+        if (spinner && !spinner.hasAttribute('hidden')) {
+          spinner.classList.add('hidden');
+        }
+      }
       return (
         <div className="container">
           <div className="container-fluid container-create-recipe">
             <h1 className="headline">Alle Rezepte</h1>
           
-            <div className="filters row">
-              <input type="text" className="form-control search-recipe-text-input" placeholder="Suchen" onChange={this.onChangeSearchField} ref="searchField"/>
-              <div className="more-search-options row">
-                <div className="col">
-                  <Select
-                    isClearable
-                    label="Single select"
-                    options={dishOptions}
-                    onChange={this.handleTypeChange}
-                    className="search-recipe-input"
-                    value={this.state.recipeTypeValue}
-                    placeholder="-- Rezeptart --"
-                    theme={(theme) => ({
-                      ...theme,
-                      colors: {
-                        ...theme.colors,
-                        text: '#6a7989',
-                        primary25: '#289fad',
-                        primary: '#6a7989',
-                      },
-                    })}                  
-                  />
+            <form>
+              <div className="filters row">
+                <input type="text" className="form-control search-recipe-text-input" placeholder="Suchen" onChange={this.onChangeSearchField} ref="searchField"/>
+                <div className="more-search-options row">
+                  <div className="col">
+                    <Select
+                      isClearable
+                      label="Single select"
+                      options={dishOptions}
+                      onChange={this.handleTypeChange}
+                      className="search-recipe-input"
+                      value={this.state.recipeTypeValue}
+                      placeholder="-- Rezeptart --"
+                      theme={(theme) => ({
+                        ...theme,
+                        colors: {
+                          ...theme.colors,
+                          text: '#6a7989',
+                          primary25: '#289fad',
+                          primary: '#6a7989',
+                        },
+                      })}                  
+                    />
+                  </div>
+
+                  <div className="col">
+                    <Select
+                      isClearable
+                      placeholder="-- Herkunfsland --"
+                      label="Single select"
+                      onChange={this.handleOriginChange}
+                      options={countryOptions}
+                      className="search-recipe-input"
+                      value={this.state.originValue}
+                      theme={(theme) => ({
+                        ...theme,
+                        colors: {
+                          ...theme.colors,
+                          text: '#6a7989',
+                          primary25: '#289fad',
+                          primary: '#6a7989',
+                        },
+                      })}
+                    />
+                  </div>
+                                  
+                  <div className="col">
+                    <AsyncSelect
+                      isMulti
+                      isClearable
+                      className="search-recipe-input"                
+                      isDisabled={this.state.isLoading}
+                      isLoading={this.state.isLoading}
+                      backspaceRemoves={true}           
+                      value={this.state.tagValue}
+                      loadOptions={this.onGetTag}
+                      onChange={this.onChangeTags}
+                      placeholder="-- Begriffe suchen --"
+                    />
+                  </div>
+
+                  <div className="col">
+                    <AsyncSelect
+                      isMulti
+                      isClearable
+                      className="search-recipe-input"
+                      isDisabled={this.state.isLoading}
+                      isLoading={this.state.isLoading}
+                      backspaceRemoves={true}     
+                      value={this.state.ingredientValue}
+                      loadOptions={this.onGetIngredient}
+                      onChange={this.onChangeIngredient}
+                      placeholder="-- Zutaten suchen --"
+                    />
+                  </div>
                 </div>
 
-                <div className="col">
-                  <Select
-                    isClearable
-                    placeholder="-- Herkunfsland --"
-                    label="Single select"
-                    onChange={this.handleOriginChange}
-                    options={countryOptions}
-                    className="search-recipe-input"
-                    value={this.state.originValue}
-                    theme={(theme) => ({
-                      ...theme,
-                      colors: {
-                        ...theme.colors,
-                        text: '#6a7989',
-                        primary25: '#289fad',
-                        primary: '#6a7989',
-                      },
-                    })}
-                  />
-                </div>
-                                
-                <div className="col">
-                  <AsyncSelect
-                    isMulti
-                    isClearable
-                    className="search-recipe-input"                
-                    isDisabled={this.state.isLoading}
-                    isLoading={this.state.isLoading}
-                    backspaceRemoves={true}           
-                    value={this.state.tagValue}
-                    loadOptions={this.onGetTag}
-                    onChange={this.onChangeTags}
-                    placeholder="-- Begriffe suchen --"
-                  />
+                <div className="search-recipe-buttons">
+                  <button className="btn btn-success btn-search-recipe" type="submit" onClick={this.onSearchRecipe}>
+                    <span className="oi oi-magnifying-glass"></span>
+                  </button>
+                  <button className="btn btn-success btn-clear-recipe" onClick={this.onClearSearch}>
+                    <span className="oi oi-reload"></span>
+                  </button>
                 </div>
 
-                <div className="col">
-                  <AsyncSelect
-                    isMulti
-                    isClearable
-                    className="search-recipe-input"
-                    isDisabled={this.state.isLoading}
-                    isLoading={this.state.isLoading}
-                    backspaceRemoves={true}     
-                    value={this.state.ingredientValue}
-                    loadOptions={this.onGetIngredient}
-                    onChange={this.onChangeIngredient}
-                    placeholder="-- Zutaten suchen --"
-                  />
-                </div>
               </div>
+            </form>
 
-              <div className="search-recipe-buttons">
-                <button className="btn btn-success btn-search-recipe" onClick={this.onSearchRecipe}>
-                  <span className="oi oi-magnifying-glass"></span>
-                </button>
-                <button className="btn btn-success btn-clear-recipe" onClick={this.onClearSearch}>
-                  <span className="oi oi-reload"></span>
-                </button>
+            <hr/>
+
+            <div className="d-flex justify-content-center hidden" id="spinner">
+              <div className="spinner-border" role="status">
+                <span className="sr-only">Laden...</span>
               </div>
-
             </div>
 
             <ul className="recipe-list">
-            {
+            { 
               this.state.recipes.map(function(recipe){
-                return <li className="row" key={recipe._id}> {recipe.title} </li>;
+                 function getCourseTypeName(courseType) {
+                  if (courseType === 'starter' ) {
+                    return "Vorspeise";
+                  }
+                  if (courseType === 'main' ) {
+                    return "Hauptspeise";
+                  }
+                  if (courseType === 'dessert' ) {
+                    return "Nachspeise";
+                  }
+                  if (courseType === 'side' ) {
+                    return "Beilage";
+                  }
+                  if (courseType === 'sauce' ) {
+                    return "Sauce/Dressing";
+                  }    
+                }
+                return <li className="row recipe-list-item" key={recipe._id}>
+                    <div className="col recipe-name align-self-center">{recipe.title}</div>
+                    <div className="col align-self-center">{recipe.origin}</div>
+                    <div className="col align-self-center">{getCourseTypeName(recipe.formType)}</div>
+                    <div className="col recipe-item-buttons"><NavLink to={'/recipe/view/' + recipe._id}><button className="btn btn-success view"><span className="oi oi-eye"></span></button></NavLink><NavLink to={'/recipe/edit/' + recipe._id}><button className="btn btn-success edit"><span className="oi oi-wrench"></span></button></NavLink><button className="btn btn-success delete"><span className="oi oi-x"></span></button></div>
+                  </li>;
               })
             }
             </ul>

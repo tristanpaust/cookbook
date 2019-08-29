@@ -4,7 +4,6 @@ TODO:
 	<li>Error checking in recipe creation looks sort of weird</li>
 	<li>Images shouldn't be mandatory for now</li>
 	<li>Unit tests for recipe creation</li>
-	<li>Add sortable list of recipes (by date, tags, search, etc)</li>
 	<li>Same as above for ingredients</li>
 	<li>Homepage movable preview grid with preview images and short description (eg: https://haltu.github.io/muuri/)</li>
 	<li>Edit recipes that are your own</li>
@@ -39,4 +38,5 @@ DONE:
 	<li>Recipe Model</>
 	<li>Store recipe in database</li>
 	<li>Display list of recipes</li>
+	<li>Add sortable list of recipes (by date, tags, search, etc)</li>
 </ul>

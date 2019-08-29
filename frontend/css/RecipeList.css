@@ -10,12 +10,81 @@
 .recipe-list {
 	text-decoration: none;
 	list-style: none;
+	padding-left: 30px;
+	padding-right: 30px;
+	margin-top: 40px;
+}
+
+.recipe-list-item {
+	line-height: 30px;
+	border: 1px solid #cccccc;
+	border-radius: 4px;
+	margin-bottom: 15px;
+	padding: 10px;
+}
+
+.recipe-list-item:hover {
+	transition: 0.5s;
+	background-color: #cccccc;
+}
+
+.recipe-name {
+	font-size: 18px;
+	font-weight: bold;
+}
+
+.recipe-item-buttons button {
+	margin-left: 10px;
+}
+
+.recipe-item-buttons button span {
+	margin-top: 4px;
+}
+
+.recipe-item-buttons .view {
+  background-color: #289fad;
+  border-color: #289fad;
+  color: white;
+}
+
+.recipe-item-buttons .view:hover {
+ background-color: #6a7989;
+ border-color: #6a7989;
+ transition: 0.3s;
+}
+
+.recipe-item-buttons .edit {
+  background-color: #d78308;
+  border-color: #d78308;
+  color: white;
+}
+
+.recipe-item-buttons .edit:hover {
+  background-color: #d75108;
+  border-color: #d75108;
+  transition: 0.3s;
+}
+
+.recipe-item-buttons .delete {
+  background-color: #d80000;
+  border-color: maroon;
+  color: white;
+}
+
+.recipe-item-buttons .delete:hover {
+  background-color: #980202;
+  border-color: #d75108;
+  transition: 0.3s;
 }
 
 .more-search-options {
 	margin-left: inherit;
 	margin-top: 1.5em;
 	width: 100%;
+}
+
+.more-search-options:hover {
+
 }
 
 .search-recipe-text-input {
