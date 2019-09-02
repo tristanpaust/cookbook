@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link, Route, Switch } from 'react-router-dom';
+import { Link, Route, Switch, BrowserRouter as Router } from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "open-iconic/font/css/open-iconic-bootstrap.css"
 import logo from './logo.svg';
@@ -23,6 +23,7 @@ import CreateTag from "./components/Tags/CreateTag";
 class App extends Component {
   render() {
     return (
+      <Router>
         <div className="full-width container">
             <nav className="navbar navbar-expand-lg">
               <a className="navbar-brand" href="https://codingthesmartway.com" target="_blank" rel="noopener noreferrer">
@@ -56,20 +57,21 @@ class App extends Component {
             </nav>
             <br/>
         
-        <Switch>
-          <Route path="/" exact component={Home} />
-          <Route path="/recipes" component={withAuth(RecipeList)} />
-          <Route path="/recipe/create" component={withAuth(CreateRecipe)} />
-          <Route path="/recipe/view/:id" component={withAuth(ViewRecipe)} />
-          <Route path="/recipe/edit/:id" component={withAuth(EditRecipe)} />
+          <Switch>
+            <Route path="/" exact component={Home} />
+            <Route path="/recipes" component={withAuth(RecipeList)} />
+            <Route path="/recipe/create" component={withAuth(CreateRecipe)} />
+            <Route path="/recipe/view/:id" component={withAuth(ViewRecipe)} />
+            <Route path="/recipe/edit/:id" component={withAuth(EditRecipe)} />
 
-          <Route path="/ingredients" component={withAuth(IngredientList)} />
-          <Route path="/tag/create" component={withAuth(CreateTag)} />
+            <Route path="/ingredients" component={withAuth(IngredientList)} />
+            <Route path="/tag/create" component={withAuth(CreateTag)} />
 
-          <Route path="/login" component={Login} />
-          <Route path="/register" component={Register} />
-        </Switch>
-      </div>
+            <Route path="/login" component={Login} />
+            <Route path="/register" component={Register} />
+          </Switch>
+        </div>
+      </Router>
     );
   }
 }

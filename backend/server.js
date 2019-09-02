@@ -22,7 +22,7 @@ app.use(cookieParser());
 app.use(cors(corsOptions))
 
 
-const mongo_uri = 'mongodb+srv://' + config.database.user + ':' + config.database.password + '@cluster0-xt4o2.mongodb.net/test?retryWrites=true&w=majority';
+const mongo_uri = 'mongodb+srv://' + config.database.user + ':' + config.database.password + config.database.url;
 const opts = { useNewUrlParser: true };
 
 mongoose.connect(mongo_uri, opts, function(err) {
@@ -34,4 +34,4 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(router);
 
 
-app.listen(process.env.PORT || 8080);
+module.exports = app.listen(process.env.PORT || 8080);

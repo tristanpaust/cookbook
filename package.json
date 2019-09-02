@@ -11,11 +11,12 @@
     "babel-loader": "8.0.4",
     "babel-plugin-named-asset-import": "^0.3.0",
     "babel-preset-react-app": "^7.0.0",
-    "bcrypt": "^3.0.0",
+    "bcrypt": "^3.0.6",
     "bfj": "6.1.1",
     "body-parser": "^1.18.3",
     "bootstrap": "^4.3.1",
     "case-sensitive-paths-webpack-plugin": "2.1.2",
+    "chai": "^4.2.0",
     "chalk": "2.4.1",
     "commonjs": "0.0.1",
     "cookie-parser": "^1.4.3",
@@ -64,6 +65,7 @@
     "resolve": "1.8.1",
     "sass-loader": "7.1.0",
     "style-loader": "0.23.0",
+    "supertest": "^4.0.2",
     "terser-webpack-plugin": "1.1.0",
     "url-loader": "1.1.1",
     "validator": "^11.1.0",
@@ -77,10 +79,11 @@
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --testPathPattern=/tests/*.",
     "server": "node backend/server.js",
-    "server-dev": "concurrently -kill-others \"npm run server\" \"npm start\""
+    "server-dev": "concurrently -kill-others \"npm run server\" \"npm run start\""
   },
   "proxy": "http://localhost:8080",
   "devDependencies": {
+    "concurrently": "^4.1.2",
     "nodemon": "^1.18.4"
   },
   "browserslist": [
@@ -99,8 +102,8 @@
       "react-app-polyfill/jsdom"
     ],
     "testMatch": [
-      "<rootDir>/src/**/__tests__/**/*.{js,jsx,ts,tsx}",
-      "<rootDir>/src/**/?(*.)(spec|test).{js,jsx,ts,tsx}"
+      "<rootDir>/**/__tests__/**/*.{js,jsx,ts,tsx}",
+      "<rootDir>/**/?(*.)(spec|test).{js,jsx,ts,tsx}"
     ],
     "testEnvironment": "jsdom",
     "testURL": "http://localhost",
