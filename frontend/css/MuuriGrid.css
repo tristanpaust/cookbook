@@ -1,0 +1,51 @@
+      .grid {
+        position: relative;
+        width: 45%;
+        background: #ccc;
+        border: 5px solid transparent;
+        min-height: 100px;
+      }
+      .item {
+        position: absolute;
+        width: 25%;
+        height: 25%;
+        margin: 5px;
+        z-index: 1;
+        left: inherit !important;
+        top: inherit !important;
+        border: 2px solid #ccc;
+        border-radius: 4px; 
+      }
+      .item.h1 {
+        height: 50px;
+        line-height: 50px;
+      }
+      .item.muuri-item-hidden {
+        z-index: 0;
+      }
+      .item.muuri-item-releasing {
+        z-index: 2;
+      }
+      .item.muuri-item-dragging {
+        z-index: 3;
+      }
+      .item-content {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        background: red;
+        font-size: 24px;
+        color: white;
+        cursor: pointer;
+
+        background-size: 100%;
+        background-repeat: no-repeat;        
+      }
+      .grid-2 .item-content {
+        background: green;
+      }
+      .item.muuri-item-dragging .item-content,
+      .item.muuri-item-releasing .item-content {
+        background: blue;
+      }

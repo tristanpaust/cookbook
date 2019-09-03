@@ -70,7 +70,7 @@ uploadFiles(file) {
       self.setState({dropBoxIsHidden: 'hidden'})
       self.setState({imageIsHidden: ''});
       self.setState({ successfullUploaded: true, uploading: false });
-      self.setState({file: window.location.origin + '/users/' + file.name});
+      self.setState({file: process.env.PUBLIC_URL + file.name});
       self.setState({fileName: file.name});
       self.props.onImageChange(file.name);
     })

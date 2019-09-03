@@ -9,6 +9,8 @@ import {dishOptions} from './SelectOptions.jsx';
 
 import { NavLink } from 'react-router-dom';
 
+import RecipeGrid from './RecipeGrid.jsx';
+
 const createOption = (label, id) => ({
   value: id,
   label
@@ -279,6 +281,7 @@ export default class RecipeList extends Component {
       }
       return (
         <div className="container">
+
           <div className="container-fluid container-create-recipe">
             <h1 className="headline">Alle Rezepte</h1>
           
@@ -408,6 +411,7 @@ export default class RecipeList extends Component {
               })
             }
             </ul>
+                  <RecipeGrid entries={this.state.recipes}/>
 
           </div>
         </div>
