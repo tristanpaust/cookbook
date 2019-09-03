@@ -4,7 +4,13 @@ const Tag = require('../models/Tag');
 
 function storeTag(req,res) {
   const { title } = req.body;
+
+  if (!title) {
+    return res.status(404).send("Error saving new ingredient. No title present.");
+  }
+
   const tag = new Tag({ title });
+  
   tag.save(function(err) {
     if (err) {
       console.log(err);

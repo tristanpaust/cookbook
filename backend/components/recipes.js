@@ -3,6 +3,10 @@
 const Recipe = require('../models/Recipe');
 
 function storeRecipe(req,res) {
+  if (!req.title || !req.servings || !req.origin || !req.formType || !req.tags || !req.ingredients || !req.steps) {
+    return res.status(404).send("Error. Recipe incomplete.");
+  }
+
   const recipe = new Recipe({ 
     title: req.body.title, 
     image: req.body.image,
@@ -13,6 +17,7 @@ function storeRecipe(req,res) {
     ingredients: req.body.ingredients,
     steps: req.body.steps
   });
+  
   recipe.save(function(err) {
     if (err) {
       console.log(err);

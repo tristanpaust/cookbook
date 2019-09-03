@@ -9,7 +9,13 @@ const secret = config.secret;
 
 function signup(req, res) {
   const { email, password } = req.body;
+  
+  if (!req.body || !email || !password) {
+    return res.status(500).send("Email or password is missing.");
+  }
+
   const user = new User({ email, password });
+  
   user.save(function(err) {
     if (err) {
       console.log(err);

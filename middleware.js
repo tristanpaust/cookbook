@@ -4,6 +4,7 @@ var env = process.env.NODE_ENV || 'development';
 var config = require('./config')[env];
 const secret = config.secret;
 
+
 const withAuth = function(req, res, next) {
   const token = 
       req.body.token ||

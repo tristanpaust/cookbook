@@ -4,6 +4,11 @@ const Unit = require('../models/Unit');
 
 function storeUnit(req,res) {
   const { title } = req.body;
+
+  if (!title) {
+    return res.status(404).send("Error saving new ingredient. No title present.");
+  }
+
   const unit = new Unit({ title });
   unit.save(function(err) {
     if (err) {

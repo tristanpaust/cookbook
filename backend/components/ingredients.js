@@ -4,6 +4,9 @@ const Ingredient = require('../models/Ingredient');
 
 function storeIngredient(req,res) {
   const { title } = req.body;
+  if (!title) {
+    return res.status(404).send("Error saving new ingredient. No title present.");
+  }
   const ingredient = new Ingredient({ title });
   ingredient.save(function(err) {
     if (err) {
