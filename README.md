@@ -8,6 +8,11 @@ TODO:
 	<li>Homepage movable preview grid with preview images and short description (eg: https://haltu.github.io/muuri/)</li>
 	<li>Edit recipes that are your own</li>
 	<li>Layout</li>
+	<li>Star recipes</li>
+	<li>Profile page showing recipes created by this profiles as well as favorites </li>
+	<li>Change list items in all recipes to grid design with image and buttons at the bottom</li>
+	<li>Navbar tabs for all recipes, create recipe, profile</li>
+	<li>Display latest recipes on home screen</li>
 </ul>
 
 DONE:
