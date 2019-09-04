@@ -5,6 +5,7 @@ const Tag = require('./Tag');
 const RecipeSchema = new mongoose.Schema({
   title: { type: String, required: true, unique: true },
   image: { type: String, required: true },
+  description: { type: String, required: true},
   servings: { type: Number, required: true },
   origin: { type: String, required: true },
   formType: { type: String, required: true },

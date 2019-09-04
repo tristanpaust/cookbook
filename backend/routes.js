@@ -8,7 +8,6 @@ const home = require('./components/home.js');
 const ingredients = require('./components/ingredients.js');
 const tags = require('./components/tags.js');
 const units = require('./components/units.js');
-const uploads = require('./components/uploads.js');
 const recipes = require('./components/recipes.js');
 /***/
 
@@ -90,18 +89,6 @@ router.get('/api/searchunit', function(req, res) {
 
 /***/
 
-
-
-/* Upload */
-
-router.post('/api/upload', function (req, res) {
-  uploads.uploadImage(req, res);  
-});
-
-/***/
-
-
-
 /* Recipes */
 
 router.post('/api/saverecipe', function(req, res) {
@@ -115,6 +102,11 @@ router.get('/api/searchrecipe', withAuth, function(req, res) {
 router.get('/api/recipelist', withAuth, function(req, res) {
   recipes.getRecipeList(req, res);
 });
+
+router.get('/api/getrecipebyid', withAuth, function(req, res) {
+  recipes.getRecipeById(req, res);
+});
+
 /***/
 
 module.exports = router;

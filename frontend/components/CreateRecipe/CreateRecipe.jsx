@@ -78,6 +78,7 @@ export default class CreateRecipe extends Component {
     this.state = {
       message: 'Loading...',
       title: undefined,
+      description: '',
       imageName: '',
       servings: 0,
       origin: undefined,
@@ -207,6 +208,7 @@ export default class CreateRecipe extends Component {
       var ingredientIDs = [...this.state.ingredients];
 
       for (let i = 0; i < this.state.ingredients.length; i++) {
+          ingredientIDs[i].amount = ingredientIDs[i].amount / this.state.servings;        
           ingredientIDs[i].item = ingredientIDs[i].item.value;
           ingredientIDs[i].unit = ingredientIDs[i].unit.value;
       }
@@ -219,6 +221,7 @@ export default class CreateRecipe extends Component {
 
       var recipe = {
         title: this.state.title, 
+        description: this.state.description,
         image: this.state.imageName,
         servings: this.state.servings,
         origin: this.state.origin,
@@ -335,7 +338,7 @@ export default class CreateRecipe extends Component {
                         <div className="value-button btn-danger" id="decrease" onClick={this.decreasePeople}>-</div>
                         <input type="text" pattern="[0-9]*" className="form-control" id="people" value={this.state.servings} onChange={this.handleServingsChange}/>
                         <div className="value-button btn-success" id="increase" onClick={this.increasePeople}>+</div>
-                      </div>
+                    </div>
                       <small className="form-text text-muted">Für wie viele Personen ist das Rezept?</small>
                       <span className="help-block">{validation.servings.message}</span>
                   </div>

@@ -411,7 +411,7 @@ export default class RecipeList extends Component {
               })
             }
             </ul>
-                  <RecipeGrid entries={this.state.recipes}/>
+                  //<RecipeGrid entries={this.state.recipes}/>
 
           </div>
         </div>

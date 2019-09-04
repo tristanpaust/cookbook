@@ -2,14 +2,16 @@
 
 const Recipe = require('../models/Recipe');
 
-function storeRecipe(req,res) {
-  if (!req.title || !req.servings || !req.origin || !req.formType || !req.tags || !req.ingredients || !req.steps) {
+function storeRecipe(req,res) { console.log("GETTING HERE >>>>>");
+  if (!req.body.title || !req.body.description || !req.body.servings || !req.body.origin || !req.body.type || !req.body.tags || !req.body.ingredients || !req.body.steps) {
+    console.log("Are we ending it here?");
     return res.status(404).send("Error. Recipe incomplete.");
   }
 
   const recipe = new Recipe({ 
     title: req.body.title, 
     image: req.body.image,
+    description: req.body.description,
     servings: req.body.servings,
     origin: req.body.origin,
     formType: req.body.type,
@@ -17,7 +19,7 @@ function storeRecipe(req,res) {
     ingredients: req.body.ingredients,
     steps: req.body.steps
   });
-  
+  console.log('getting here!', recipe);
   recipe.save(function(err) {
     if (err) {
       console.log(err);
@@ -81,8 +83,35 @@ function getRecipeList(req, res) {
   })
 }
 
+function getRecipeById(req, res) {
+  const query = req.query.q;
+  
+  if (!query) {
+    return res.status(404).send("No ID to search for. Please try again later.")
+  }
+
+  Recipe.find({'_id': req.query.q})
+  .populate('tags')
+  .populate({
+      path: 'ingredients.unit',
+      model: 'Unit'
+  })
+  .populate({
+      path: 'ingredients.item',
+      model: 'Ingredient'
+  })
+  .exec( function(err, result) {
+    if (err) {
+      res.status(500).send("Error finding recipe by id. Please try again later.")
+    }
+    else {
+      res.send(result);
+    }
+  })
+}
+
 module.exports.storeRecipe = storeRecipe;
 module.exports.getRecipe = getRecipe;
 module.exports.getRecipeList = getRecipeList;
-
+module.exports.getRecipeById = getRecipeById;
 /***/
