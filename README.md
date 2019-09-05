@@ -5,12 +5,10 @@ TODO:
 	<li>Images shouldn't be mandatory for now</li>
 	<li>Unit tests for recipe creation</li>
 	<li>Same as above for ingredients</li>
-	<li>Homepage movable preview grid with preview images and short description (eg: https://haltu.github.io/muuri/)</li>
-	<li>Edit recipes that are your own</li>
+	<li>Edit recipes that you own</li>
 	<li>Layout</li>
 	<li>Star recipes</li>
 	<li>Profile page showing recipes created by this profiles as well as favorites </li>
-	<li>Change list items in all recipes to grid design with image and buttons at the bottom</li>
 	<li>Navbar tabs for all recipes, create recipe, profile</li>
 	<li>Display latest recipes on home screen</li>
 </ul>
@@ -44,4 +42,6 @@ DONE:
 	<li>Store recipe in database</li>
 	<li>Display list of recipes</li>
 	<li>Add sortable list of recipes (by date, tags, search, etc)</li>
+	<li>Homepage movable preview grid with preview images</li>
+	<li>Change list items in all recipes to grid design with image and buttons at the bottom</li>
 </ul>

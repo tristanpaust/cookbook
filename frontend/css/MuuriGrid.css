@@ -9,7 +9,7 @@
       .item {
         position: absolute;
         width: 18%;
-        height: 40%;
+        height: 27%;
         margin: 5px;
         z-index: 1;
         left: inherit !important;
@@ -42,7 +42,7 @@
         margin: 0;
         width: 100%;
         height: 100%;
-        font-size: 24px;
+        font-size: 20px;
         color: white;
         cursor: pointer;
      
@@ -52,18 +52,18 @@
         background-repeat: no-repeat;
         background-position: center;
         background-size: contain;
-        height: 70%;
+        height: 82%;
         width: 100%;
         margin-top: 2%;
       }
 
       .tile-banner {
-        height: 25%;
+        height: 13%;
         width: 100%;
         background-color: #495057;
         bottom: 0;
         position: absolute;
-        padding: 5px 0 0 0;
+        padding: 0 0 0 0;
       }
 
       .tile-banner .recipe-tile-header {

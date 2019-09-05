@@ -10,7 +10,7 @@ import Home from './Home';
 import Login from './components/Login';
 import Register from './components/Register';
 
-import RecipeList from "./components/RecipeList";
+import RecipeList from "./components/RecipeList/RecipeList";
 import CreateRecipe from "./components/CreateRecipe/CreateRecipe";
 import ViewRecipe from "./components/ViewRecipe";
 import EditRecipe from "./components/EditRecipe";
