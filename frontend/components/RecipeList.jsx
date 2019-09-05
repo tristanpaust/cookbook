@@ -382,36 +382,7 @@ export default class RecipeList extends Component {
               </div>
             </div>
 
-            <ul className="recipe-list">
-            { 
-              this.state.recipes.map(function(recipe){
-                 function getCourseTypeName(courseType) {
-                  if (courseType === 'starter' ) {
-                    return "Vorspeise";
-                  }
-                  if (courseType === 'main' ) {
-                    return "Hauptspeise";
-                  }
-                  if (courseType === 'dessert' ) {
-                    return "Nachspeise";
-                  }
-                  if (courseType === 'side' ) {
-                    return "Beilage";
-                  }
-                  if (courseType === 'sauce' ) {
-                    return "Sauce/Dressing";
-                  }    
-                }
-                return <li className="row recipe-list-item" key={recipe._id}>
-                    <div className="col recipe-name align-self-center">{recipe.title}</div>
-                    <div className="col align-self-center">{recipe.origin}</div>
-                    <div className="col align-self-center">{getCourseTypeName(recipe.formType)}</div>
-                    <div className="col recipe-item-buttons"><NavLink to={'/recipe/view/' + recipe._id}><button className="btn btn-success view"><span className="oi oi-eye"></span></button></NavLink><NavLink to={'/recipe/edit/' + recipe._id}><button className="btn btn-success edit"><span className="oi oi-wrench"></span></button></NavLink><button className="btn btn-success delete"><span className="oi oi-x"></span></button></div>
-                  </li>;
-              })
-            }
-            </ul>
-                  //<RecipeGrid entries={this.state.recipes}/>
+            <RecipeGrid entries={this.state.recipes}/>
 
           </div>
         </div>
