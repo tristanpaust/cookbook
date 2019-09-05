@@ -7,8 +7,6 @@ import AsyncSelect from 'react-select/async';
 import {countryOptions} from './SelectOptions.jsx';
 import {dishOptions} from './SelectOptions.jsx';
 
-import { NavLink } from 'react-router-dom';
-
 import RecipeGrid from './RecipeGrid.jsx';
 
 const createOption = (label, id) => ({

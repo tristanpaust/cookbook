@@ -3,21 +3,39 @@ import MuuriGrid from 'react-muuri';
 import '../css/MuuriGrid.css'
 
 import { NavLink } from 'react-router-dom';
+import {dishOptions} from './SelectOptions.jsx';
+import {countryOptions} from './SelectOptions.jsx';
+import Select from 'react-select';
 
-export default class IngredientList extends Component {
-  constructor(props) {
-    super(props);
+export default class RecipeGrid extends Component {
+  constructor() {
+    super();    
+    this.state = {
+      recipeTypeValue: '',
+      originValue: '',
+
+      searchFieldValue: '',
+      filterTypeFieldValue: '',
+    };
 
     this.createItems = this.createItems.bind(this);
     this.removeElement = this.removeElement.bind(this);
-    this.navigateToRecipe = this.navigateToRecipe.bind(this);
+
+    this.onChangeSearchField = this.onChangeSearchField.bind(this);
+    this.onChangeTypeField = this.onChangeTypeField.bind(this);
+    this.onChangeOriginField = this.onChangeOriginField.bind(this);
+
+    this.filter = this.filter.bind(this);
   }
 
   componentDidMount() {
     this.grid = new MuuriGrid({
       node: this.gridElement,
       defaultOptions: {
-        dragEnabled: false // See Muuri's documentation for other option overrides.
+        dragEnabled: false,
+        layoutOnResize: true,
+        layoutDuration: 200,
+        layoutEasing: 'ease',        
       },
     });
   }
@@ -33,14 +51,53 @@ export default class IngredientList extends Component {
     }
   }
 
-  navigateToRecipe(id) {
-    this.props.history.push('/recipe/view/' + id)    
+  
+  onChangeSearchField(e) {
+    if (this.state.searchFieldValue !== e.target.value) {
+      this.setState({
+        searchFieldValue: e.target.value
+      }, () => {
+        this.filter();
+      });
+    }
   }
+
+  onChangeTypeField(newValue, actionMeta) {
+    this.setState({
+      filterTypeFieldValue: newValue.value
+    }, () => {
+      this.filter();
+    });
+  }
+
+  onChangeOriginField(newValue, actionMeta) {
+    this.setState({
+      filterOriginFieldValue: newValue.label
+    }, () => {
+      this.filter();
+    });    
+  }
+
+  filter() {
+    let searchFieldValue = this.state.searchFieldValue;
+    let filterTypeFieldValue = this.state.filterTypeFieldValue;
+    let filterOriginFieldValue = this.state.filterOriginFieldValue;
+console.log(filterOriginFieldValue)
+
+    this.grid.getMethod('filter', function (item) {
+      var element = item.getElement();
+      var isSearchMatch = !searchFieldValue ? true : (element.getAttribute('data-title') || '').toLowerCase().indexOf(searchFieldValue) > -1;
+      var isFilterTypeMatch = !filterTypeFieldValue ? true : (element.getAttribute('data-type') || '') === filterTypeFieldValue;
+      var isFilterOriginMatch = !filterOriginFieldValue ? true : (element.getAttribute('data-origin') || '') === filterOriginFieldValue;
+      return isSearchMatch && isFilterTypeMatch && isFilterOriginMatch;
+    }); 
+  }
+
 
   createItems(item) {
     let imageUrl = process.env.PUBLIC_URL + '/users/' + item.image;
     return (
-      <div className="item box1" key={item._id} title={item.title}>
+      <div className="item box1" key={item._id} title={item.title} data-title={item.title} data-type={item.formType} data-origin={item.origin}>
         <NavLink to={'/recipe/view/' + item._id}>
           <div className="item-content">
             <div className="background-image" style={{backgroundImage: `url(${imageUrl})`}}></div>
@@ -59,6 +116,47 @@ export default class IngredientList extends Component {
     return (
 
       <div>
+        <input type="text" className="form-control search-recipe-text-input" placeholder="Suchen" onChange={this.onChangeSearchField}/>
+
+                    <Select
+                      isClearable
+                      label="Single select"
+                      options={dishOptions}
+                      onChange={this.onChangeTypeField}
+                      className="search-recipe-input"
+                      value={this.state.recipeTypeValue}
+                      placeholder="-- Rezeptart --"
+                      theme={(theme) => ({
+                        ...theme,
+                        colors: {
+                          ...theme.colors,
+                          text: '#6a7989',
+                          primary25: '#289fad',
+                          primary: '#6a7989',
+                        },
+                      })}                  
+                    />
+
+                      <Select
+                      isClearable
+                      placeholder="-- Herkunfsland --"
+                      label="Single select"
+                      onChange={this.onChangeOriginField}
+                      options={countryOptions}
+                      className="search-recipe-input"
+                      value={this.state.originValue}
+                      theme={(theme) => ({
+                        ...theme,
+                        colors: {
+                          ...theme.colors,
+                          text: '#6a7989',
+                          primary25: '#289fad',
+                          primary: '#6a7989',
+                        },
+                      })}
+                    />
+
+
         <div ref={gridElement => this.gridElement = gridElement}>
 
           {listItems}
