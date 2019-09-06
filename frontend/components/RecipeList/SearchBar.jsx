@@ -288,7 +288,7 @@ export default class SearchBar extends Component {
         </div>
 
         <div className="row more-search-options">
-          <a className="col more-options-link" onClick={this.toggleMoreOptions}> Erweiterte Suche <span className="oi oi-chevron-bottom"></span></a>
+          <a className="col more-options-link" onClick={this.toggleMoreOptions}> Erweiterte Suche <span className={this.state.showMoreOptions ? 'oi oi-chevron-top' : 'oi oi-chevron-bottom'}></span></a>
         </div>
 
         <div className={this.state.showMoreOptions ? 'expand-search row more-search-options' : 'expand-search row more-search-options invisible'}>

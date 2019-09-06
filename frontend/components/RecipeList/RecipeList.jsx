@@ -15,7 +15,15 @@ export default class RecipeList extends Component {
 
       searchString: '',
       typeFilter: '',
-      originFilter: ''
+      originFilter: '',
+
+      currentPage: 1,
+      recipesPerPage: 3,
+      pageNumbers: [], 
+      recipesOnPage: [],
+
+      firstItem: 0,
+      lastItem: 3
     }
 
     this.handleSearchChange = this.handleSearchChange.bind(this);
@@ -23,6 +31,10 @@ export default class RecipeList extends Component {
     this.handleOriginFilterChange = this.handleOriginFilterChange.bind(this);
     this.handleNewRecipeQueue = this.handleNewRecipeQueue.bind(this);
     this.handleClearSearch = this.handleClearSearch.bind(this);
+
+
+    this.renderPageNumbers = this.renderPageNumbers.bind(this);
+    this.changePage = this.changePage.bind(this);    
   }
 
   componentDidMount() {
@@ -32,6 +44,7 @@ export default class RecipeList extends Component {
         this.setState({
           isFetchingData: false,
           recipes: JSON.parse(res),
+          recipesOnPage: JSON.parse(res),
           isLoading: false
         })
       );
@@ -61,6 +74,56 @@ export default class RecipeList extends Component {
     });
   }
 
+  renderPageNumbers() {
+    const indexOfLastRecipe = this.state.currentPage * this.state.recipesPerPage;
+    const indexOfFirstRecipe = indexOfLastRecipe - this.state.recipesPerPage;
+    const currentRecipes = this.state.recipes.slice(indexOfFirstRecipe, indexOfLastRecipe);       
+
+    const pageNumbers = [];
+
+    for (let i = 1; i <= Math.ceil(this.state.recipes.length / this.state.recipesPerPage); i++) {
+      pageNumbers.push(i);
+    }
+    pageNumbers.map(number => {
+      return (
+        <li
+          key={number}
+          id={number}
+          onClick={this.changePage}
+        >
+          {number}
+        </li>
+      );
+    });       
+  }
+
+  changePage(event) {
+    let page = Number(event.target.id);
+    this.setState({
+      currentPage: page,
+    });
+
+    const indexOfLastRecipe = page * this.state.recipesPerPage;
+    const indexOfFirstRecipe = indexOfLastRecipe - this.state.recipesPerPage;
+
+    this.setState({
+      firstItem: indexOfFirstRecipe,
+      lastItem: indexOfLastRecipe
+    });
+  }
+
+  renderPageNumbers(number) {
+    return (
+      <li className="xcxcx"
+        key={number}
+        id={number}
+        onClick={this.changePage}
+      >
+        {number}
+      </li>
+    );   
+  }
+
   render() {    
     if (this.state.isLoading) {
       return <p>{this.state.message}</p>;
@@ -76,7 +139,18 @@ export default class RecipeList extends Component {
         const spinner = document.getElementById('spinner');
         if (spinner && !spinner.hasAttribute('hidden')) {
           spinner.classList.add('hidden');
+        }  
+
+        const indexOfLastRecipe = this.state.currentPage * this.state.recipesPerPage;
+        const indexOfFirstRecipe = indexOfLastRecipe - this.state.recipesPerPage;
+        const currentRecipes = this.state.recipes.slice(indexOfFirstRecipe, indexOfLastRecipe);       
+        const pageNumbers = [];
+
+        for (let i = 1; i <= Math.ceil(this.state.recipes.length / this.state.recipesPerPage); i++) {
+          pageNumbers.push(i);
         }
+
+        var pages = pageNumbers.map(this.renderPageNumbers);
       }
       return (
         <div className="container">
@@ -95,7 +169,11 @@ export default class RecipeList extends Component {
             </div>
 
             
-            <RecipeGrid entries={this.state.recipes} searchString={this.state.searchString} typeFilter={this.state.typeFilter} originFilter={this.state.originFilter}/>
+            <RecipeGrid entries={this.state.recipes} firstItem={this.state.firstItem} lastItem={this.state.lastItem} searchString={this.state.searchString} typeFilter={this.state.typeFilter} originFilter={this.state.originFilter}/>
+
+            <ul id="page-numbers">
+              {pages}
+            </ul>
 
           </div>
         </div>

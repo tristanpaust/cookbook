@@ -15,6 +15,7 @@ export default class RecipeGrid extends Component {
 
     this.createItems = this.createItems.bind(this);
     this.filter = this.filter.bind(this);
+    this.rebuildGridOnPageChange = this.rebuildGridOnPageChange.bind(this);
   }
 
   componentDidMount() {
@@ -51,10 +52,16 @@ export default class RecipeGrid extends Component {
         this.filter();
       });
     }
+    if (prevProps.recipesOnPage !== this.props.recipesOnPage) {
+      this.grid.getMethod('destroy');
+    }
+    if (prevProps.firstItem !== this.props.firstItem) { console.log(this.gridElement)
+      this.rebuildGridOnPageChange()
+    }
   }
 
   componentWillUnmount() {
-    this.grid.getMethod('destroy'); // Required: Destroy the grid when the component is unmounted.
+    this.grid.getMethod('destroy'); // Required: Destroy the grid when the component is unmounted.    
   }
 
   filter() {
@@ -62,7 +69,7 @@ export default class RecipeGrid extends Component {
         typeFilter = this.state.typeFilter,
         originFilter  = this.state.originFilter;
 
-    this.grid.getMethod('filter', function (item) {
+    this.grid.getMethod('filter', function (item) {console.log(item)
       let element = item.getElement(),
           isSearchMatch = !searchFilter ? true : (element.getAttribute('data-title') || '').toLowerCase().indexOf(searchFilter) > -1,
           isFilterTypeMatch = !typeFilter ? true : (element.getAttribute('data-type') || '') === typeFilter,
@@ -87,14 +94,52 @@ export default class RecipeGrid extends Component {
     )
   }
 
+  rebuildGridOnPageChange() {
+    var currentElements = this.grid.getMethod('getItems');
+    var i = currentElements.length;
+    while (i--) {
+      this.grid.getMethod('remove', currentElements[i]);
+      currentElements.splice(i, 1);
+    }
+
+    let newElements = [];
+    for (let i = this.props.firstItem; i < this.props.lastItem; i++) {
+      let item = this.props.entries[i];
+      var itemElem = document.createElement('div');
+      let imageUrl = process.env.PUBLIC_URL + '/users/' + item.image;
+
+      let itemTemplate = 
+        '<div class="item box1" key="' + item._id + '" title="' + item.title + '" data-title="' + item.title + '" data-type="' + item.formType + '" data-origin="' + item.origin + '">' +
+          '<a href="/recipe/view/' + item._id + '">' + 
+            '<div class="item-content">' + 
+              '<div class="background-image" style="background-image: url(' + imageUrl +'")></div>' +
+                '<div class="tile-banner">' + 
+                '<p class="recipe-tile-header col">' + item.title + '</p>' +
+              '</div>' +
+            '</div>' +
+          '</a>' +
+        '</div>';
+
+      itemElem.innerHTML = itemTemplate;
+      newElements.push(itemElem.firstChild);
+    }
+      console.log(newElements)
+      this.grid.getMethod('add', newElements);
+  }
+
   render () {
     var elements = this.props.entries;
-    var listItems = elements.map(this.createItems);
+    var currentRecipes = this.props.entries.slice(this.props.firstItem, this.props.lastItem);       
+    console.log(this.props.firstItem, this.props.lastItem)
+    var listItems = currentRecipes.map(this.createItems);
+
     return (
       <div>
+
         <div ref={gridElement => this.gridElement = gridElement}>
           {listItems}
         </div>
+
       </div>
     )
   }
