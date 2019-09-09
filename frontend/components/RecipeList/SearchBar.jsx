@@ -13,24 +13,26 @@ export default class SearchBar extends Component {
       originValue: '',
       typeValue: '',
 
-      searchFieldValue: '',
+      filterSearchFieldValue: '',
       typeFieldValue: '',
       originFieldValue: '',
 
       showMoreOptions: false,
 
+      searchFieldValue: '',
       tagValue: [],
       ingredientValue: [],
       tags: [],
       ingredients: [] 
     };
 
-    this.onChangeSearchField = this.onChangeSearchField.bind(this);
+    this.onChangeFilterSearchField = this.onChangeFilterSearchField.bind(this);
     this.onChangeTypeField = this.onChangeTypeField.bind(this);
     this.onChangeOriginField = this.onChangeOriginField.bind(this);
 
     this.toggleMoreOptions = this.toggleMoreOptions.bind(this);
 
+    this.onChangeSearchField = this.onChangeSearchField.bind(this);
     this.onGetTag = this.onGetTag.bind(this);
     this.onChangeTags = this.onChangeTags.bind(this);
     this.onGetIngredient = this.onGetIngredient.bind(this);
@@ -40,9 +42,9 @@ export default class SearchBar extends Component {
     this.onClearSearch = this.onClearSearch.bind(this);
   }
   
-  onChangeSearchField(e) {
-    if (this.state.searchFieldValue !== e.target.value) {
-        this.setState({searchFieldValue: e.target.value});
+  onChangeFilterSearchField(e) {
+    if (this.state.filterSearchFieldValue !== e.target.value) {
+        this.setState({filterSearchFieldValue: e.target.value});
         this.props.onChangeSearch(e.target.value);
     }
   }
@@ -87,6 +89,12 @@ export default class SearchBar extends Component {
     this.setState({
       showMoreOptions: !this.state.showMoreOptions
     });
+  }
+
+  onChangeSearchField(e) {
+    if (this.state.searchFieldValue !== e.target.value) {
+        this.setState({searchFieldValue: e.target.value});
+    }
   }
 
   onChangeTags(newValue, actionMeta) {
@@ -221,6 +229,7 @@ export default class SearchBar extends Component {
     e.preventDefault();
     this.setState(
       {
+        filterSearchFieldValue: '',
         tagValue: [],
         ingredientValue: [],
         tags: [],
@@ -241,7 +250,7 @@ export default class SearchBar extends Component {
 
       <div className="filters row">
 
-        <input type="text" className="form-control search-recipe-text-input" placeholder="Suchen" ref="searchInput" onChange={this.onChangeSearchField} />
+        <input type="text" className="form-control search-recipe-text-input" placeholder="Diese Seite filtern" ref="searchInput" onChange={this.onChangeFilterSearchField} />
 
         <div className="more-search-options row">
           <div className="col">
@@ -288,10 +297,13 @@ export default class SearchBar extends Component {
         </div>
 
         <div className="row more-search-options">
-          <a className="col more-options-link" onClick={this.toggleMoreOptions}> Erweiterte Suche <span className={this.state.showMoreOptions ? 'oi oi-chevron-top' : 'oi oi-chevron-bottom'}></span></a>
+          <a className="col more-options-link" onClick={this.toggleMoreOptions}> Erweiterte Suche über alle Seiten<span className={this.state.showMoreOptions ? 'oi oi-chevron-top' : 'oi oi-chevron-bottom'}></span></a>
         </div>
 
         <div className={this.state.showMoreOptions ? 'expand-search row more-search-options' : 'expand-search row more-search-options invisible'}>
+          
+          <input type="text" className="form-control search-recipe-text-input all-recipes" placeholder="Alle Seiten durchsuchen" ref="searchInput" onChange={this.onChangeSearchField} />
+
           <div className="col">
             <AsyncSelect
               isMulti
@@ -303,7 +315,7 @@ export default class SearchBar extends Component {
               value={this.state.tagValue}
               loadOptions={this.onGetTag}
               onChange={this.onChangeTags}
-              placeholder="-- Begriffe suchen --"
+              placeholder="-- Rezept enthält Schlagwort --"
             />
           </div>
 
@@ -318,7 +330,7 @@ export default class SearchBar extends Component {
               value={this.state.ingredientValue}
               loadOptions={this.onGetIngredient}
               onChange={this.onChangeIngredient}
-              placeholder="-- Zutaten suchen --"
+              placeholder="-- Rezept enthält Zutat --"
             />
           </div>
 

@@ -17,13 +17,15 @@ export default class RecipeList extends Component {
       typeFilter: '',
       originFilter: '',
 
+      searchQueue: [],
+
       currentPage: 1,
-      recipesPerPage: 3,
+      recipesPerPage: 4,
       pageNumbers: [], 
       recipesOnPage: [],
 
       firstItem: 0,
-      lastItem: 3
+      lastItem: 4
     }
 
     this.handleSearchChange = this.handleSearchChange.bind(this);
@@ -32,9 +34,10 @@ export default class RecipeList extends Component {
     this.handleNewRecipeQueue = this.handleNewRecipeQueue.bind(this);
     this.handleClearSearch = this.handleClearSearch.bind(this);
 
-
     this.renderPageNumbers = this.renderPageNumbers.bind(this);
-    this.changePage = this.changePage.bind(this);    
+    this.changePage = this.changePage.bind(this);   
+    this.goPageBackward = this.goPageBackward.bind(this);
+    this.goPageForward = this.goPageForward.bind(this); 
   }
 
   componentDidMount() {
@@ -63,38 +66,19 @@ export default class RecipeList extends Component {
   }
 
   handleNewRecipeQueue(results) {
-    this.setState({recipes: results});
+    this.setState({searchQueue: results});
   }
 
   handleClearSearch() {
     this.setState({
       searchString: '',
       typeFilter: '',
-      originFilter: ''
+      originFilter: '',
+      searchQueue: [],
+      firstItem: 0,
+      lastItem: this.state.recipesPerPage
     });
-  }
 
-  renderPageNumbers() {
-    const indexOfLastRecipe = this.state.currentPage * this.state.recipesPerPage;
-    const indexOfFirstRecipe = indexOfLastRecipe - this.state.recipesPerPage;
-    const currentRecipes = this.state.recipes.slice(indexOfFirstRecipe, indexOfLastRecipe);       
-
-    const pageNumbers = [];
-
-    for (let i = 1; i <= Math.ceil(this.state.recipes.length / this.state.recipesPerPage); i++) {
-      pageNumbers.push(i);
-    }
-    pageNumbers.map(number => {
-      return (
-        <li
-          key={number}
-          id={number}
-          onClick={this.changePage}
-        >
-          {number}
-        </li>
-      );
-    });       
   }
 
   changePage(event) {
@@ -112,15 +96,51 @@ export default class RecipeList extends Component {
     });
   }
 
+  goPageBackward() {
+    if (this.state.currentPage !== 1) {
+      let page = Number(this.state.currentPage - 1);
+      this.setState({
+        currentPage: page
+      })
+      const indexOfLastRecipe = page * this.state.recipesPerPage;
+      const indexOfFirstRecipe = indexOfLastRecipe - this.state.recipesPerPage;
+
+      this.setState({
+        firstItem: indexOfFirstRecipe,
+        lastItem: indexOfLastRecipe
+      });
+    }
+  }
+
+  goPageForward() {
+    if ((this.state.currentPage) !== (this.state.recipes.length / this.state.recipesPerPage)) {
+      let page = Number(this.state.currentPage + 1);
+      this.setState({
+        currentPage: page
+      })
+      const indexOfLastRecipe = page * this.state.recipesPerPage;
+      const indexOfFirstRecipe = indexOfLastRecipe - this.state.recipesPerPage;
+
+      this.setState({
+        firstItem: indexOfFirstRecipe,
+        lastItem: indexOfLastRecipe
+      });
+    } 
+  }
+
   renderPageNumbers(number) {
+    let classes = "page-number-item"
+    if (number === this.state.currentPage) {
+      classes = "page-number-item active"
+    }
     return (
-      <li className="xcxcx"
+      <span className={classes}
         key={number}
         id={number}
         onClick={this.changePage}
       >
         {number}
-      </li>
+      </span>
     );   
   }
 
@@ -143,7 +163,6 @@ export default class RecipeList extends Component {
 
         const indexOfLastRecipe = this.state.currentPage * this.state.recipesPerPage;
         const indexOfFirstRecipe = indexOfLastRecipe - this.state.recipesPerPage;
-        const currentRecipes = this.state.recipes.slice(indexOfFirstRecipe, indexOfLastRecipe);       
         const pageNumbers = [];
 
         for (let i = 1; i <= Math.ceil(this.state.recipes.length / this.state.recipesPerPage); i++) {
@@ -154,8 +173,8 @@ export default class RecipeList extends Component {
       }
       return (
         <div className="container">
-
           <div className="container-fluid container-create-recipe">
+
             <h1 className="headline">Alle Rezepte</h1>
           
             <SearchBar onReturnSearchResults={this.handleNewRecipeQueue} onClearSearch={this.handleClearSearch} onChangeSearch={this.handleSearchChange} onChangeTypeFilter={this.handleTypeFilterChange} onChangeOriginFilter={this.handleOriginFilterChange}/>
@@ -169,11 +188,15 @@ export default class RecipeList extends Component {
             </div>
 
             
-            <RecipeGrid entries={this.state.recipes} firstItem={this.state.firstItem} lastItem={this.state.lastItem} searchString={this.state.searchString} typeFilter={this.state.typeFilter} originFilter={this.state.originFilter}/>
+            <RecipeGrid entries={this.state.recipes} searchResults={this.state.searchQueue} firstItem={this.state.firstItem} lastItem={this.state.lastItem} searchString={this.state.searchString} typeFilter={this.state.typeFilter} originFilter={this.state.originFilter}/>
 
-            <ul id="page-numbers">
-              {pages}
-            </ul>
+            <div className={"row " + (this.state.searchQueue.length ? 'hidden' : 'shown')}>
+              <div className="page-numbers col text-center">
+                <span><span className="oi oi-chevron-left page-before" onClick={this.goPageBackward}></span></span>
+                {pages}
+                <span><span className="oi oi-chevron-right page-after" onClick={this.goPageForward}></span></span>
+              </div>
+            </div>
 
           </div>
         </div>

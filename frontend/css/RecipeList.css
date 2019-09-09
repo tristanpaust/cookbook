@@ -131,7 +131,34 @@
   transition: 0.3s;
 }
 
-
-.xcxcx {
+.page-numbers {
+	list-style: none;
 	margin-top: 20px;
+}
+
+.page-number-item {
+	cursor: pointer;
+	margin-right: 1em;
+	color: #289fad !important;
+}
+
+.page-number-item:hover, .page-before:hover, .page-after:hover {
+	color: #495057 !important;
+	-webkit-transition: 0.5s;
+	transition: 0.5s;
+}
+
+.page-number-item.active {
+	text-decoration: underline;
+}
+
+.page-before {
+	margin-right: 1em;
+	color: #289fad !important;
+	cursor: pointer;
+}
+
+.page-after {
+	color: #289fad !important;
+	cursor: pointer;
 }

@@ -11,6 +11,7 @@ TODO:
 	<li>Profile page showing recipes created by this profiles as well as favorites </li>
 	<li>Navbar tabs for all recipes, create recipe, profile</li>
 	<li>Display latest recipes on home screen</li>
+	<li>Status messages on homepage (after creation, error, etc)</li>
 </ul>
 
 DONE:
