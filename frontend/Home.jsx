@@ -9,7 +9,13 @@ export default class Home extends Component {
   }
   
   componentDidMount() {
-    fetch('/api/home')
+    fetch('/api/home', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': localStorage.getItem('token')
+        }
+      })
       .then(res => res.text())
       .then(res => this.setState({message: res}));
   }

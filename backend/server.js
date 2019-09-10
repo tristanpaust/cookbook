@@ -7,6 +7,7 @@ const cors = require('cors')
 const fs = require('fs');
 const router = require('./routes');
 const multer = require('multer');
+const passport = require('passport')
 const app = express();
 
 var env = process.env.NODE_ENV || 'development';
@@ -17,8 +18,12 @@ const corsOptions = {
   optionsSuccessStatus: 200,
 }
 
+app.use(passport.initialize());
+require('./passport-config')(passport);
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
 app.use(cookieParser());
 app.use(cors(corsOptions))
 
@@ -27,7 +32,9 @@ const mongo_uri = 'mongodb+srv://' + config.database.user + ':' + config.databas
 const opts = { useNewUrlParser: true };
 
 mongoose.connect(mongo_uri, opts, function(err) {
-  if (err) { return console.error('failed');}
+  if (err) { 
+  	return console.error('failed');
+  }
 }); 
 
 app.use(express.static(path.join(__dirname, 'public')));

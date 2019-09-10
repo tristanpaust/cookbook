@@ -25,8 +25,10 @@ export default class Login extends Component {
         'Content-Type': 'application/json'
       }
     })
-    .then(res => {
-      if (res.status === 200) {
+      .then(res => res.json())
+      .then(res => { console.log(res)
+      if (res.success) {
+        localStorage.setItem('token', res.token);
         this.props.history.push('/');
       } else {
         const error = new Error(res.error);

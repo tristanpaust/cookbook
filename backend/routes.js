@@ -11,18 +11,20 @@ const units = require('./components/units.js');
 const recipes = require('./components/recipes.js');
 /***/
 
+const passport = require('passport');
+
 router.use(function(req, res, next) {
-  next();
 });
 
 router.get('/', function (req, res) {
+  console.log(req.user);
   res.sendFile(path.join(__dirname, 'public', '../frontend/index.html'));
 });
 
 
 /* Home */
 
-router.get('/api/home', function(req, res) {
+router.get('/api/home', passport.authenticate('jwt', { session: false }), function(req, res) { console.log('user', req.user)
   home.getGreeting(req, res);
 });
 
@@ -39,8 +41,8 @@ router.post('/api/authenticate', function(req, res) {
   auth.auth(req,res);
 });
 
-router.get('/checkToken', withAuth, function(req, res) {
-  auth.checkToken(req, res);
+router.get('/api/getcurrentuser', passport.authenticate('jwt', { session: false }), function(req, res) {
+  auth.getCurrentUser(req,res);
 });
 
 /***/
@@ -62,15 +64,15 @@ router.get('/api/searchtag', function(req, res) {
 
 /* Ingredients */
 
-router.post('/api/saveingredient', function(req, res) {
+router.post('/api/saveingredient', passport.authenticate('jwt', { session: false }), function(req, res) {
   ingredients.storeIngredient(req, res);
 });
 
-router.get('/api/searchingredient', function(req, res) {
+router.get('/api/searchingredient', passport.authenticate('jwt', { session: false }), function(req, res) {
   ingredients.getIngredient(req, res);
 });
 
-router.get('/api/ingredientlist', withAuth, function(req, res) {
+router.get('/api/ingredientlist', passport.authenticate('jwt', { session: false }), function(req, res) {
   ingredients.getIngredientList(req,res);
 });
 /***/
@@ -79,11 +81,11 @@ router.get('/api/ingredientlist', withAuth, function(req, res) {
 
 /* Units */
 
-router.post('/api/saveunit', function(req, res) {
+router.post('/api/saveunit', passport.authenticate('jwt', { session: false }), function(req, res) {
   units.storeUnit(req, res);
 });
 
-router.get('/api/searchunit', function(req, res) {
+router.get('/api/searchunit', passport.authenticate('jwt', { session: false }), function(req, res) {
   units.getUnit(req, res);
 });
 
@@ -91,19 +93,19 @@ router.get('/api/searchunit', function(req, res) {
 
 /* Recipes */
 
-router.post('/api/saverecipe', function(req, res) {
+router.post('/api/saverecipe', passport.authenticate('jwt', { session: false }), function(req, res) {
   recipes.storeRecipe(req, res);
 });
 
-router.get('/api/searchrecipe', withAuth, function(req, res) {
+router.get('/api/searchrecipe', passport.authenticate('jwt', { session: false }), function(req, res) {
   recipes.getRecipe(req, res);
 });
 
-router.get('/api/recipelist', withAuth, function(req, res) {
+router.get('/api/recipelist', passport.authenticate('jwt', { session: false }), function(req, res) {
   recipes.getRecipeList(req, res);
 });
 
-router.get('/api/getrecipebyid', withAuth, function(req, res) {
+router.get('/api/getrecipebyid', passport.authenticate('jwt', { session: false }), function(req, res) {
   recipes.getRecipeById(req, res);
 });
 

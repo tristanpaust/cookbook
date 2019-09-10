@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { Link, Route, Switch, BrowserRouter as Router } from 'react-router-dom';
+
 import "bootstrap/dist/css/bootstrap.min.css";
 import "open-iconic/font/css/open-iconic-bootstrap.css"
 import logo from './logo.svg';
 
-import withAuth from './withAuth';
 import Home from './Home';
 
+import Profile from "./components/Profile/Profile";
 import Login from './components/Login';
 import Register from './components/Register';
 
@@ -19,8 +20,12 @@ import IngredientList from "./components/IngredientList";
 
 import CreateTag from "./components/Tags/CreateTag";
 
-
 class App extends Component {
+
+  logOut() {
+    localStorage.setItem('token', '');
+  }
+
   render() {
     return (
       <Router>
@@ -47,11 +52,17 @@ class App extends Component {
               <div className="collpase navbar-collapse justify-content-end small">
                 <ul className="navbar-nav">
                   <li className="navbar-item">
+                    <Link to="/profile" className="nav-link">Profile</Link>
+                  </li>                
+                  <li className="navbar-item">
                     <Link to="/login" className="nav-link">Login</Link>
                   </li>
                   <li className="navbar-item">
                     <Link to="/register" className="nav-link">Register</Link>
                   </li>
+                  <li className="navbar-item">
+                    <Link to="/login" className="nav-link" onClick={this.logOut}>Logout</Link>
+                  </li>                  
                 </ul>
               </div>
             </nav>
@@ -59,14 +70,15 @@ class App extends Component {
         
           <Switch>
             <Route path="/" exact component={Home} />
-            <Route path="/recipes" component={withAuth(RecipeList)} />
-            <Route path="/recipe/create" component={withAuth(CreateRecipe)} />
-            <Route path="/recipe/view/:id" component={withAuth(ViewRecipe)} />
-            <Route path="/recipe/edit/:id" component={withAuth(EditRecipe)} />
+            <Route path="/recipes" component={RecipeList} />
+            <Route path="/recipe/create" component={CreateRecipe} />
+            <Route path="/recipe/view/:id" component={ViewRecipe} />
+            <Route path="/recipe/edit/:id" component={EditRecipe} />
 
-            <Route path="/ingredients" component={withAuth(IngredientList)} />
-            <Route path="/tag/create" component={withAuth(CreateTag)} />
+            <Route path="/ingredients" component={IngredientList} />
+            <Route path="/tag/create" component={CreateTag} />
 
+            <Route path="/profile" component={Profile} />
             <Route path="/login" component={Login} />
             <Route path="/register" component={Register} />
           </Switch>

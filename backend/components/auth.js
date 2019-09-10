@@ -1,75 +1,95 @@
 /* Auth */
 
 const jwt = require('jsonwebtoken');
-const User = require('../models/User');
+const bcrypt = require('bcrypt');
+const passport = require('passport');
 
+
+const User = require('../models/User');
 var env = process.env.NODE_ENV || 'development';
 var config = require('../../config')[env];
 const secret = config.secret;
 
 function signup(req, res) {
-  const { email, password } = req.body;
-  
-  if (!req.body || !email || !password) {
-    return res.status(500).send("Email or password is missing.");
-  }
-
-  const user = new User({ email, password });
-  
-  user.save(function(err) {
-    if (err) {
-      console.log(err);
-      res.status(500).send("Error registering new user please try again.");
-    } else {
-      res.status(200).send("Welcome to the club!");
-    }
-  });
+  User.findOne({email: req.body.email})
+    .then(user => {
+      if (user) {
+        let error = 'Email Address Exists in Database.';
+        return res.status(400).json(error);
+      } 
+      else {
+        const newUser = new User({
+          name: req.body.name,
+          email: req.body.email,
+          password: req.body.password
+        });
+        bcrypt.genSalt(10, (err, salt) => {
+          if (err) {
+            throw err;
+          }
+          bcrypt.hash(newUser.password, salt, (err, hash) => {
+            if (err) {
+              throw err;
+            }
+            newUser.password = hash;
+            newUser.save()
+              .then(user => res.json(user))
+              .catch(err => res.status(400).json(err));
+          });
+        });
+      }
+   }
+  );
 }
 
 function auth(req, res) {
-  const { email, password } = req.body;
-  User.findOne({ email }, function(err, user) {
-    if (err) {
-      console.error(err);
-      res.status(500)
-        .json({
-        error: 'Internal error please try again'
-      });
-    } else if (!user) {
-      res.status(401)
-        .json({
-        error: 'Incorrect email or password'
-      });
-    } else {
-      user.isCorrectPassword(password, function(err, same) {
-        if (err) {
-          res.status(500)
-            .json({
-            error: 'Internal error please try again'
-          });
-        } else if (!same) {
-          res.status(401)
-            .json({
-            error: 'Incorrect email or password'
-          });
-        } else {
-          // Issue token
-          const payload = { email };
-          const token = jwt.sign(payload, secret, {
-            expiresIn: '1h'
-          });
-          res.cookie('token', token, { httpOnly: true }).sendStatus(200);
-        }
-      });
-    }
-  });
+  const email = req.body.email;
+  const password = req.body.password;   
+  
+  User.findOne({ email })
+    .then(user => {
+      if (!user) {
+        errors.email = "No Account Found";
+        return res.status(404).json(errors);
+      }
+      bcrypt.compare(password, user.password)
+        .then(isMatch => {
+          if (isMatch) {
+            const payload = {
+              id: user._id,
+              username: user.username
+            };
+            jwt.sign(payload, secret, { expiresIn: 36000 }, (err, token) => {
+              if (err) {
+                res.status(500).json({ error: "Error signing token", raw: err });
+              }
+              res.json({ 
+                success: true,
+                token: 'Bearer ' + token,
+                user: {
+                  id: user._id,
+                  username: user.username,
+                  email: user.email 
+                }
+              });
+            });
+          } 
+          else {
+            errors.password = "Password is incorrect";
+            res.status(400).json(errors);
+          }
+        });
+    });
 }
 
-function checkToken(req, res) {
-  res.sendStatus(200);
+function getCurrentUser(req, res) {
+    var user = req.user;
+    console.log('aaaaa', user);
+    res.send(user);
+
 }
 
 module.exports.signup = signup
 module.exports.auth = auth;
-module.exports.checkToken = checkToken;
+module.exports.getCurrentUser = getCurrentUser;
 /***/

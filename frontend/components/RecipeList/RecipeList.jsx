@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import '../../css/RecipeList.css';
+import '../../global.jsx'
 
 import RecipeGrid from './RecipeGrid.jsx';
 import SearchBar from './SearchBar.jsx';
@@ -41,13 +42,12 @@ export default class RecipeList extends Component {
   }
 
   componentDidMount() {
-    fetch('/api/recipelist')
-      .then(res => res.text())
+    global.FetchWithHeaders('GET', '/api/recipelist')
       .then(res => 
         this.setState({
           isFetchingData: false,
-          recipes: JSON.parse(res),
-          recipesOnPage: JSON.parse(res),
+          recipes: res,
+          recipesOnPage: res,
           isLoading: false
         })
       );
