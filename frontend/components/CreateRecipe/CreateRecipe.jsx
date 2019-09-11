@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import '../../css/App.css';
 import '../../css/CreateRecipe.css';
+import '../../global.jsx'
 
 import AddStep from './AddStep.jsx';
 import SearchTag from './SearchTag.jsx';
@@ -113,12 +114,6 @@ export default class CreateRecipe extends Component {
     this.child = React.createRef();
   }
 
-  componentDidMount() {
-    fetch('/api/recipelist')
-      .then(res => res.text())
-      .then(res => this.setState({message: res}));
-  }
-
   //Event handlers
   handleTitleChange(e) {
     this.setState({title: e.target.value});
@@ -198,7 +193,7 @@ export default class CreateRecipe extends Component {
     var ingredientArray = this.child.getAllIngredients()
   }
 
-  handleFormSubmit = event => {
+  async handleFormSubmit (event) {
     event.preventDefault();
     const validation = this.validator.validate(this.state);
     this.setState({ validation });
@@ -230,28 +225,17 @@ export default class CreateRecipe extends Component {
         ingredients: ingredientIDs,
         steps: stepText
       };
+      
+      const res = await (global.FetchWithHeaders('POST', 'api/saverecipe/', recipe))
 
-      fetch('/api/saverecipe', {
-        method: 'POST',
-        body: JSON.stringify(recipe),
-        headers: {
-          'Content-Type': 'application/json'        
-        }
-      })
-      .then(res => {
-        if (res.status === 200) {
-          this.props.history.push('/');
-        } else {
-          const error = new Error(res.error);
-          throw error;
-        }
-      })
-      .catch(err => {
-        console.error(err);
-        alert('Error logging in please try again');
-      });
+      if (res._id) {
+        this.props.history.push('/');
+      } 
+      else {
+        const error = new Error(res.error);
+        throw error;
+      }
     }
-
     else {
       console.log('form is not valid.');
     }

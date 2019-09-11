@@ -1,5 +1,6 @@
 import React, { Component } from "react"; 
 import '../../css/Popup.css';
+import '../../global.jsx'
 
 import AsyncCreatableSelect from 'react-select/async-creatable';
 import SearchUnit from './SearchUnit.jsx';
@@ -66,54 +67,35 @@ export default class SearchIngredient extends Component {
     this.openModal(newValue);
   };
 
-  handleCreate(inputValue) {
+  async handleCreate(inputValue) {
     this.setState({ isLoading: true });
-      
-    fetch('/api/saveingredient', {
-      method: 'POST',
-      body: JSON.stringify({title: inputValue}),
-      headers: {
-        'Content-Type': 'application/json'        
-      }
+    const newOption = await (global.FetchWithHeaders('POST', 'api/saveingredient', {title: inputValue}))
+    
+    var ingredient = newOption;
+    var option = createOption(ingredient.title, ingredient._id);
+    this.state.value.push(option);
+    this.state.ingredients.push(option);
+    this.setState({
+      isLoading: false,
+      value: this.state.value,
+      item: option
     })
-    .then(res => res.text())
-    .then(newOption => {
-      var ingredient = JSON.parse(newOption);
-      var option = createOption(ingredient.title, ingredient._id);
-      this.state.value.push(option);
-      this.state.ingredients.push(option);
-      this.setState({
-        isLoading: false,
-        value: this.state.value,
-        item: option
-      })
-      this.openModal(option);
-    })
+    this.openModal(option);
   }
 
-  onGetIngredient(value) {
+  async onGetIngredient(value) {
     if (!value) {
       return Promise.resolve({ options: [] });
     }
-
-    return fetch('/api/searchingredient?q='+value, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      },      
-    })
-    .then((response) => {
-      return response.json();
-    })
-    .then((json) => {
-      const formatted = json.map((l) => {
-        return Object.assign({}, {
-          value: l._id,
-          label: l.title
-        });
-      })
-      return formatted;
-    })
+    const response = await (global.FetchWithHeaders('GET', 'api/searchingredient?q=' + value))
+    
+    const formatted = response.map((l) => {
+      return Object.assign({}, {
+        value: l._id,
+        label: l.title
+      });
+    });
+    return formatted;
   }
 
   openModal(headline) {

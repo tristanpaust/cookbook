@@ -1,5 +1,6 @@
 import React, { Component } from "react"; 
-//import AsyncSelect from 'react-select/async';
+import '../../global.jsx'
+
 import AsyncCreatableSelect from 'react-select/async-creatable';
 
 const createOption = (label, id) => ({
@@ -24,51 +25,33 @@ export default class SearchUnit extends Component {
     this.props.onSelectUnit(newValue);
   };
 
-  handleCreate(inputValue) {
+  async handleCreate(inputValue) {
     this.setState({ isLoading: true });
-      
-    fetch('/api/saveunit', {
-      method: 'POST',
-      body: JSON.stringify({title: inputValue}),
-      headers: {
-        'Content-Type': 'application/json'        
-      }
-    })
-    .then(res => res.text())
-    .then(newOption => {
-      newOption = JSON.parse(newOption);
-      var option = createOption(newOption.title, newOption._id);
-      this.setState({
-        isLoading: false,
-        value: option,
-      });  
-      this.props.onSelectUnit(option);
-    })
+
+    const newOption = await (global.FetchWithHeaders('POST', 'api/saveunit', {title: inputValue}))
+
+    var option = createOption(newOption.title, newOption._id);
+    this.setState({
+      isLoading: false,
+      value: option,
+    });  
+    this.props.onSelectUnit(option);
   }
 
-  onGetUnit(value) {
+  async onGetUnit(value) {
     if (!value) {
       return Promise.resolve({ options: [] });
     }
 
-    return fetch('/api/searchunit?q='+value, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      },      
-    })
-    .then((response) => {
-      return response.json();
-    })
-    .then((json) => {
-      const formatted = json.map((l) => {
-        return Object.assign({}, {
+    const response = await (global.FetchWithHeaders('GET', 'api/searchunit?q=' + value))
+
+    const formatted = response.map((l) => {
+      return Object.assign({}, {
           value: l._id,
           label: l.title
         });
       })
       return formatted;
-    })
   }
 
   render() {

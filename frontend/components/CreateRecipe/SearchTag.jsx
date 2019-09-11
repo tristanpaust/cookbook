@@ -1,6 +1,8 @@
 import React, { Component } from "react"; 
-//import AsyncSelect from 'react-select/async';
+import '../../global.jsx'
+
 import AsyncCreatableSelect from 'react-select/async-creatable';
+
 
 const createOption = (label, id) => ({
   value: id,
@@ -46,51 +48,34 @@ export default class SearchTag extends Component {
     this.props.onSelectTag(this.state.tags);
   };
 
-  handleCreate(inputValue) {
+  async handleCreate(inputValue) {
     this.setState({ isLoading: true });
       
-    fetch('/api/savetag', {
-      method: 'POST',
-      body: JSON.stringify({title: inputValue}),
-      headers: {
-        'Content-Type': 'application/json'        }
-    })
-    .then(res => res.text())
-    .then(newOption => {
-      var tag = JSON.parse(newOption);
-      var option = createOption(tag.title, tag._id);
-      this.state.value.push(option);
-      this.state.tags.push(tag._id);
-      this.setState({
-        isLoading: false,
-        value: this.state.value
-      });
-    })
+    const newOption = await (global.FetchWithHeaders('POST', 'api/savetag', {title: inputValue}))
+
+    var tag = newOption;
+    var option = createOption(tag.title, tag._id);
+    this.state.value.push(option);
+    this.state.tags.push(tag._id);
+    this.setState({
+      isLoading: false,
+      value: this.state.value
+    });
   }
 
-  onGetTag(value) {
+  async onGetTag(value) {
     if (!value) {
       return Promise.resolve({ options: [] });
     }
+    const response = await (global.FetchWithHeaders('GET', 'api/searchtag?q=' + value))
 
-    return fetch('/api/searchtag?q='+value, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      },      
+    const formatted = response.map((l) => {
+      return Object.assign({}, {
+        value: l._id,
+        label: l.title
+      });
     })
-    .then((response) => {
-      return response.json();
-    })
-    .then((json) => {
-      const formatted = json.map((l) => {
-        return Object.assign({}, {
-          value: l._id,
-          label: l.title
-        });
-      })
-      return formatted;
-    })
+    return formatted;
   }
 
   render() {

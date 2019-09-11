@@ -19,14 +19,13 @@ function storeRecipe(req,res) { console.log("GETTING HERE >>>>>");
     ingredients: req.body.ingredients,
     steps: req.body.steps
   });
-  console.log('getting here!', recipe);
   recipe.save(function(err) {
     if (err) {
       console.log(err);
       res.status(500).send("Error storing new recipe. Please try again.");
     } 
     else {
-      res.status(200).send("New recipe successfully saved.");
+      res.status(200).send(recipe);
     }
   });
 }

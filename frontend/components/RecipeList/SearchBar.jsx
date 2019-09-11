@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import '../../css/SearchBar.css';
+import '../../global.jsx'
 
 import {dishOptions, countryOptions} from '../SelectOptions.jsx';
 
@@ -121,21 +122,11 @@ export default class SearchBar extends Component {
     }
   };
 
-  onGetTag(value) {
+  async onGetTag(value) {
     if (!value) {
       return Promise.resolve({ options: [] });
     }
-
-    return fetch('/api/searchtag?q='+value, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      },      
-    })
-    .then((response) => {
-      return response.json();
-    })
-    .then((json) => {
+    const json = await (global.FetchWithHeaders('GET', 'api/searchtag?q='+value))
       const formatted = json.map((l) => {
         return Object.assign({}, {
           value: l._id,
@@ -143,7 +134,6 @@ export default class SearchBar extends Component {
         });
       })
       return formatted;
-    })
   }
 
   onChangeIngredient(newValue, actionMeta) {
@@ -171,21 +161,12 @@ export default class SearchBar extends Component {
     }
   };
 
-  onGetIngredient(value) {
+  async onGetIngredient(value) {
     if (!value) {
       return Promise.resolve({ options: [] });
     }
+    const json = await (global.FetchWithHeaders('GET', 'api/searchingredient?q=' + value))
 
-    return fetch('/api/searchingredient?q='+value, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      },      
-    })
-    .then((response) => {
-      return response.json();
-    })
-    .then((json) => {
       const formatted = json.map((l) => {
         return Object.assign({}, {
           value: l._id,
@@ -193,10 +174,9 @@ export default class SearchBar extends Component {
         });
       })
       return formatted;
-    })
   }
 
-  onSearchRecipe(e) {
+  async onSearchRecipe(e) {
     e.preventDefault();
     let searchQuery = {
       searchString: this.state.searchFieldValue,
@@ -207,22 +187,13 @@ export default class SearchBar extends Component {
     };
     this.setState({isFetchingData: true});
 
-    return fetch('/api/searchrecipe?q=' + JSON.stringify(searchQuery), {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-    })
-    .then((response) => {
-      return response.json();
-    })
-    .then((json) => {
-      this.props.onReturnSearchResults(json);
-      this.setState({ 
-        recipes : json,
-        isFetchingData: false
-      });
-    })
+    const json =  await (global.FetchWithHeaders('GET', 'api/searchrecipe?q='+ JSON.stringify(searchQuery)))
+
+    this.props.onReturnSearchResults(json);
+    this.setState({ 
+      recipes : json,
+      isFetchingData: false
+    });
   }
 
   onClearSearch(e) {

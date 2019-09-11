@@ -42,7 +42,7 @@ export default class RecipeList extends Component {
   }
 
   componentDidMount() {
-    global.FetchWithHeaders('GET', '/api/recipelist')
+    global.FetchWithHeaders('GET', 'api/recipelist')
       .then(res => 
         this.setState({
           isFetchingData: false,

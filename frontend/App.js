@@ -41,10 +41,10 @@ class App extends Component {
                     <Link to="/" className="nav-link">Home</Link>
                   </li>
                   <li className="navbar-item">
-                    <Link to="/recipes" className="nav-link">Recipes</Link>
+                    <Link to="/recipes" className="nav-link">Rezepte</Link>
                   </li>
                   <li className="navbar-item">
-                    <Link to="/ingredients" className="nav-link">Ingredients</Link>
+                    <Link to="/recipe/create" className="nav-link">Rezept schreiben</Link>
                   </li>
                   </ul>
               </div>

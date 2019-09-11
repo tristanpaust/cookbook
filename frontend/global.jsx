@@ -2,7 +2,8 @@ global.FetchWithHeaders = async function(verb, url, data){
     const request = {
             method: verb,
             headers: {
-              'Authorization': localStorage.getItem('token')
+                'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem('token')
             }
         };
 
@@ -10,11 +11,11 @@ global.FetchWithHeaders = async function(verb, url, data){
         request.body = JSON.stringify(data);
     }
 
-    const responseObj = await fetch(url, request)
-        .then(function(response){
+    const responseObj = await fetch(('/'+url), request)
+        .then(function(response){ console.log(response);
             return response = response.json();
         })
-        .then(function(response) {
+        .then(function(response) { console.log('aa', response)
             return response;
         });
 

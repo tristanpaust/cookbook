@@ -6,7 +6,7 @@ import Progress from './Progress';
 class ImageDropzone extends Component {
   constructor() {
     super();
-    this.onDrop = (files) => { console.log(files);
+    this.onDrop = (files) => {
       this.setState({files});
       this.uploadFiles(files[files.length-1]);
     };
@@ -34,7 +34,6 @@ sendRequest(file) {
           state: "pending",
           percentage: (event.loaded / event.total) * 100
         };
-
         this.setState({ uploadProgress: currentProgess });
       }
     });

@@ -14,6 +14,11 @@ const recipes = require('./components/recipes.js');
 const passport = require('passport');
 
 router.use(function(req, res, next) {
+  if (req.body) console.info(req.body);
+  if (req.params) console.info(req.params);
+  if(req.query) console.info(req.query);
+  console.info(`Received a ${req.method} request from ${req.ip} for ${req.url}`);
+  next();
 });
 
 router.get('/', function (req, res) {
