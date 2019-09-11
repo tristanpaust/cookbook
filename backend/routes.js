@@ -50,6 +50,17 @@ router.get('/api/getcurrentuser', passport.authenticate('jwt', { session: false 
   auth.getCurrentUser(req,res);
 });
 
+router.get('/api/getpopulatedcurrentuser', passport.authenticate('jwt', { session: false }), function(req, res) {
+  auth.getPopulatedCurrentUser(req,res);
+});
+
+router.post('/api/addfavorite', passport.authenticate('jwt', { session: false }), function(req, res) {
+  auth.addFavorite(req,res);
+})
+
+router.post('/api/removefavorite', passport.authenticate('jwt', { session: false }), function(req, res) {
+  auth.removeFavorite(req,res);
+})
 /***/
 
 

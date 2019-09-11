@@ -7,9 +7,6 @@ TODO:
 	<li>Same as above for ingredients</li>
 	<li>Edit recipes that you own</li>
 	<li>Layout</li>
-	<li>Star recipes</li>
-	<li>Profile page showing recipes created by this profiles as well as favorites </li>
-	<li>Navbar tabs for all recipes, create recipe, profile</li>
 	<li>Display latest recipes on home screen</li>
 	<li>Status messages on homepage (after creation, error, etc)</li>
 </ul>
@@ -45,4 +42,7 @@ DONE:
 	<li>Add sortable list of recipes (by date, tags, search, etc)</li>
 	<li>Homepage movable preview grid with preview images</li>
 	<li>Change list items in all recipes to grid design with image and buttons at the bottom</li>
+	<li>Navbar tabs for all recipes, create recipe, profile</li>
+	<li>Star recipes</li>
+	<li>Profile page showing recipes created by this profiles as well as favorites </li>
 </ul>

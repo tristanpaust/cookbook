@@ -29,7 +29,7 @@ app.use(cors(corsOptions))
 
 
 const mongo_uri = 'mongodb+srv://' + config.database.user + ':' + config.database.password + config.database.url;
-const opts = { useNewUrlParser: true };
+const opts = { useNewUrlParser: true, useFindAndModify: false };
 
 mongoose.connect(mongo_uri, opts, function(err) {
   if (err) { 

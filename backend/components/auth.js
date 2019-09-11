@@ -69,7 +69,8 @@ function auth(req, res) {
                 user: {
                   id: user._id,
                   username: user.username,
-                  email: user.email 
+                  email: user.email,
+                  favorites: user.favorites
                 }
               });
             });
@@ -83,13 +84,64 @@ function auth(req, res) {
 }
 
 function getCurrentUser(req, res) {
-    var user = req.user;
-    console.log('aaaaa', user);
-    res.send(user);
+  let userID = req.user.id;
+  User.findOne({_id: userID}, function(err, result) {
+  if (err) {
+      res.json(err)
+    }
+    else {
+      res.json(result)
+    }
+  })
+}
 
+function getPopulatedCurrentUser(req, res) {
+  let userID = req.user.id;  
+  User.findOne({_id: userID})
+  .populate({
+      path: 'favorites',
+      model: 'Recipe'
+  })  .exec( function(err, result) {
+    if (err) {
+      res.json(err)
+    }
+    else {
+      res.send(result);
+    }
+  })
+}
+
+function addFavorite(req, res) {
+  var userID = req.user.id;
+  var recipeID = req.body.recipeID
+
+  User.updateOne({_id: userID}, { $addToSet: { "favorites": recipeID }}, 
+    function(err, result) {
+        if (err)
+            res.status(500).json(err);
+        else
+            res.status(200);
+    });
+}
+
+function removeFavorite(req, res) {
+  var userID = req.user.id;
+  var recipeID = req.body.recipeID
+
+  User.updateOne({_id: userID}, { $pull: { "favorites": recipeID }}, 
+    function(err, result) {
+        if (err)
+            res.status(500).json(err);
+        else
+            res.status(200);
+    });
 }
 
 module.exports.signup = signup
 module.exports.auth = auth;
 module.exports.getCurrentUser = getCurrentUser;
+module.exports.getPopulatedCurrentUser = getPopulatedCurrentUser;
+module.exports.addFavorite = addFavorite;
+module.exports.removeFavorite = removeFavorite;
+
 /***/

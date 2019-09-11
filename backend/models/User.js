@@ -5,7 +5,10 @@ const saltRounds = 10;
 
 const UserSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
-  password: { type: String, required: true }
+  password: { type: String, required: true },
+  username: { type: String, required: true, unique: true },
+  favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Recipe', _id: false }],
+  author: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Recipe' }]
 });
 
 UserSchema.pre('save', function(next) {

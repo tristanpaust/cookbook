@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import '../css/ViewRecipe.css';
+import '../global.jsx'
 
 export default class ViewRecipe extends Component {
   constructor() {
@@ -10,7 +11,8 @@ export default class ViewRecipe extends Component {
       isFetchingData: true,      
       message: 'Loading...',
       recipe: {},
-      calculateServings: 1
+      calculateServings: 1,
+      isFavorite: false
     }
 
     this.getCourseTypeName = this.getCourseTypeName.bind(this);
@@ -19,17 +21,28 @@ export default class ViewRecipe extends Component {
 
     this.increasePeople = this.increasePeople.bind(this);
     this.decreasePeople = this.decreasePeople.bind(this);
-    this.handleServingsChange = this.handleServingsChange.bind(this);   
+    this.handleServingsChange = this.handleServingsChange.bind(this);
+
+    this.addFavorite = this.addFavorite.bind(this);
+    this.removeFavorite = this.removeFavorite.bind(this);
   }
 
-  componentDidMount() {
-    fetch('/api/getrecipebyid?q=' + this.props.match.params.id)
-      .then(res => res.json())
-      .then(res => this.setState({
+  async componentDidMount() {
+      const res = await (global.FetchWithHeaders('GET', 'api/getrecipebyid?q=' + this.props.match.params.id))
+      this.setState({
         isFetchingData: false,
         recipe: res[0],
         isLoading: false
-      }))
+      })
+
+      const user = await (global.FetchWithHeaders('GET', 'api/getcurrentuser'))
+      console.log(user)
+
+      if (user.favorites.includes(this.state.recipe._id)) {
+        this.setState({
+          isFavorite: true
+        })
+      }
   }
 
   getCourseTypeName(courseType) {
@@ -87,6 +100,22 @@ export default class ViewRecipe extends Component {
   handleServingsChange(e) {
     this.setState({calculateServings: e.target.value})
   }  
+  
+  setStateAsync(state) {
+    return new Promise((resolve) => {
+      this.setState(state, resolve)
+    });
+  }
+
+  async addFavorite() {
+    await this.setStateAsync({ isFavorite: true });
+    await (global.FetchTextWithHeaders('POST', 'api/addfavorite', {recipeID: this.state.recipe._id} ))    
+  }
+
+  async removeFavorite() {
+    await this.setStateAsync({ isFavorite: false });
+    await (global.FetchTextWithHeaders('POST', 'api/removefavorite', {recipeID: this.state.recipe._id} ))
+  }
 
   render() {
     if (this.state.isLoading) {
@@ -127,7 +156,11 @@ export default class ViewRecipe extends Component {
               </div>
             </div>
 
-            <h1 className="headline">{this.state.recipe.title}</h1>
+            <h1 className="headline">{this.state.recipe.title}
+                <span className={"oi oi-star favorite-recipe " + (this.state.isFavorite ? 'hidden' : '')} onClick={this.addFavorite}></span>
+                <span className={"oi oi-star favorite-recipe active " + (this.state.isFavorite ? '' : 'hidden')} onClick={this.removeFavorite}></span>
+
+            </h1>
 
             <div className="row">
               <img className="col-7" src={process.env.PUBLIC_URL + '/users/' + this.state.recipe.image} />
