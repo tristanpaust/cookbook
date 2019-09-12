@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const Tag = require('./Tag');
 
 const RecipeSchema = new mongoose.Schema({
+  author: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   title: { type: String, required: true, unique: true },
   image: { type: String, required: true },
   description: { type: String, required: true},

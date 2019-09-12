@@ -17,7 +17,8 @@ function storeRecipe(req,res) { console.log("GETTING HERE >>>>>");
     formType: req.body.type,
     tags: req.body.tags,
     ingredients: req.body.ingredients,
-    steps: req.body.steps
+    steps: req.body.steps,
+    author: req.body.author
   });
   recipe.save(function(err) {
     if (err) {
@@ -91,6 +92,10 @@ function getRecipeById(req, res) {
 
   Recipe.find({'_id': req.query.q})
   .populate('tags')
+  .populate({
+      path: 'author',
+      model: 'User'
+  })
   .populate({
       path: 'ingredients.unit',
       model: 'Unit'

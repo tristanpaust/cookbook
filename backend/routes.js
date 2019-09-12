@@ -61,6 +61,10 @@ router.post('/api/addfavorite', passport.authenticate('jwt', { session: false })
 router.post('/api/removefavorite', passport.authenticate('jwt', { session: false }), function(req, res) {
   auth.removeFavorite(req,res);
 })
+
+router.post('/api/addauthor', passport.authenticate('jwt', { session: false }), function(req, res) {
+  auth.addAuthor(req, res);
+})
 /***/
 
 

@@ -101,7 +101,12 @@ function getPopulatedCurrentUser(req, res) {
   .populate({
       path: 'favorites',
       model: 'Recipe'
-  })  .exec( function(err, result) {
+  })  
+  .populate({
+      path: 'author',
+      model: 'Recipe'
+  })
+  .exec( function(err, result) {
     if (err) {
       res.json(err)
     }
@@ -117,10 +122,12 @@ function addFavorite(req, res) {
 
   User.updateOne({_id: userID}, { $addToSet: { "favorites": recipeID }}, 
     function(err, result) {
-        if (err)
-            res.status(500).json(err);
-        else
-            res.status(200);
+        if (err) {
+          res.status(500).json(err);
+          }
+        else {
+          res.status(200);
+         }   
     });
 }
 
@@ -137,11 +144,27 @@ function removeFavorite(req, res) {
     });
 }
 
+function addAuthor(req, res) {
+  let userID = req.user.id;
+  let recipeID = req.body.recipeID;
+
+  User.updateOne({ _id: userID}, { $addToSet: { "author": recipeID }},
+    function(err, result) {
+      if (err) {
+        res.status(500).json(err);
+      }
+      else {
+        res.status(200).send(result);
+      }
+    });
+}
+
 module.exports.signup = signup
 module.exports.auth = auth;
 module.exports.getCurrentUser = getCurrentUser;
 module.exports.getPopulatedCurrentUser = getPopulatedCurrentUser;
 module.exports.addFavorite = addFavorite;
 module.exports.removeFavorite = removeFavorite;
+module.exports.addAuthor = addAuthor;
 
 /***/

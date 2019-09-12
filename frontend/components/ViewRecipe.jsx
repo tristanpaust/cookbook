@@ -165,6 +165,7 @@ export default class ViewRecipe extends Component {
             <div className="row">
               <img className="col-7" src={process.env.PUBLIC_URL + '/users/' + this.state.recipe.image} />
               <div className="col">
+                <p>{this.state.recipe.author.email}</p>
                 <p>{this.state.recipe.description}</p>
                 <p>{this.state.recipe.origin}</p>
                 <p>{this.getCourseTypeName(this.state.recipe.formType)}</p>

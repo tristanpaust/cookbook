@@ -8,7 +8,7 @@ const UserSchema = new mongoose.Schema({
   password: { type: String, required: true },
   username: { type: String, required: true, unique: true },
   favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Recipe', _id: false }],
-  author: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Recipe' }]
+  author: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Recipe', _id: false }]
 });
 
 UserSchema.pre('save', function(next) {

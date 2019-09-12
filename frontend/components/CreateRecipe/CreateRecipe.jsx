@@ -20,55 +20,55 @@ export default class CreateRecipe extends Component {
     super();
 
     this.validator = new FormValidator([
-      { 
+      {
         field: 'title', 
         method: this.isNotUndefined, 
         validWhen: true, 
         message: 'Das Rezept muss eine Überschrift haben.' 
       },
-      { 
+      {
         field: 'description', 
         method: this.isNotUndefined, 
         validWhen: true, 
         message: 'Das Rezept muss eine kurze Beschreibung haben.' 
       },      
-      { 
+      {
         field: 'servings', 
         method: this.isNotZero, 
         validWhen: true, 
         message: 'Personenanzahl kann nicht 0 sein.' 
       },
-      { 
+      {
         field: 'origin', 
         method: this.isNotUndefined, 
         validWhen: true, 
         message: 'Ein Herkunfsland muss ausgewählt werden.' 
       },
-      { 
+      {
         field: 'type', 
         method: this.isNotUndefined, 
         validWhen: true, 
         message: 'Eine Rezeptart muss ausgewählt werden.' 
       },              
-      { 
+      {
         field: 'tags', 
         method: this.arrayNotEmpty, 
         validWhen: true, 
         message: 'Tags are required.' 
       },
-      { 
+      {
         field: 'tags',
         method: this.arrayBiggerThan, 
         validWhen: true, 
         message: 'At least 3 tags are needed'
       },
-      { 
+      {
         field: 'ingredients', 
         method: this.arrayNotEmpty, 
         validWhen: true, 
         message: 'Ingredients are required'
       },
-      { 
+      {
         field: 'steps', 
         method: this.arrayNotEmpty, 
         validWhen: true, 
@@ -87,6 +87,7 @@ export default class CreateRecipe extends Component {
       tags: [],
       ingredients: [],
       steps: [],
+      user: {},
       validation: this.validator.valid(),
     }
     
@@ -112,6 +113,13 @@ export default class CreateRecipe extends Component {
     this.decreasePeople = this.decreasePeople.bind(this);
 
     this.child = React.createRef();
+  }
+
+  async componentDidMount() {
+    const json = await (global.FetchWithHeaders('GET', 'api/getcurrentuser'))
+    await this.setStateAsync({ 
+      user: json
+    });
   }
 
   //Event handlers
@@ -193,12 +201,18 @@ export default class CreateRecipe extends Component {
     var ingredientArray = this.child.getAllIngredients()
   }
 
+  setStateAsync(state) {
+    return new Promise((resolve) => {
+      this.setState(state, resolve)
+    });
+  }
+
   async handleFormSubmit (event) {
     event.preventDefault();
     const validation = this.validator.validate(this.state);
     this.setState({ validation });
     this.submitted = true;
-    
+
     if (validation.isValid) {
       var ingredientIDs = [...this.state.ingredients];
 
@@ -223,13 +237,15 @@ export default class CreateRecipe extends Component {
         type: this.state.type,
         tags: this.state.tags,
         ingredients: ingredientIDs,
-        steps: stepText
+        steps: stepText,
+        author: this.state.user._id
       };
-      
-      const res = await (global.FetchWithHeaders('POST', 'api/saverecipe/', recipe))
+      console.log(recipe);
+
+      const res =  await global.FetchWithHeaders('POST', 'api/saverecipe/', recipe);
 
       if (res._id) {
-        this.props.history.push('/');
+        this.saveAuthorAndRedirect(res._id);
       } 
       else {
         const error = new Error(res.error);
@@ -239,6 +255,17 @@ export default class CreateRecipe extends Component {
     else {
       console.log('form is not valid.');
     }
+  }
+
+  async saveAuthorAndRedirect(recipeID) {
+    const author = await global.FetchWithHeaders('POST', 'api/addauthor/', { recipeID: recipeID});
+    if (author) {
+      this.props.history.push('/');
+    }
+    else {
+      const error = new Error(author.error);
+      throw error;
+    }    
   }
 
   // Helper functions

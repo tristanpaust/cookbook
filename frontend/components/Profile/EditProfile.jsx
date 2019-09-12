@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import '../../global.jsx'
 
-export default class Profile extends Component {
+export default class EditProfile extends Component {
   constructor() {
     super();
 
@@ -21,6 +21,7 @@ export default class Profile extends Component {
       isLoading: false,
       profile: json 
     });
+
   }
 
   setStateAsync(state) {
@@ -38,12 +39,13 @@ export default class Profile extends Component {
   }
 
   render() {
+
+
     if (this.state.isLoading) {
       return <p>{this.state.message}</p>;
     }
     else {
       var favorites = this.state.profile.favorites.map(this.createItems);
-      var authored = this.state.profile.author.map(this.createItems);
 
       if (this.state.isFetchingData) {
         const spinner = document.getElementById('spinner');
@@ -59,6 +61,7 @@ export default class Profile extends Component {
       }
     }  
     return (
+
       <div className="container">
         <div className="container-fluid">
           
@@ -74,9 +77,7 @@ export default class Profile extends Component {
 
           <h1>Meine Rezepte</h1>
           <div className="row">
-            <ul>
-              {authored}
-            </ul>
+            
           </div>
 
         </div>

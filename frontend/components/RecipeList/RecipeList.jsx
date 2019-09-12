@@ -113,7 +113,7 @@ export default class RecipeList extends Component {
   }
 
   goPageForward() {
-    if ((this.state.currentPage) !== (this.state.recipes.length / this.state.recipesPerPage)) {
+    if ((this.state.currentPage) <= (this.state.recipes.length / this.state.recipesPerPage)) {
       let page = Number(this.state.currentPage + 1);
       this.setState({
         currentPage: page
