@@ -1,9 +1,10 @@
 TODO:
 <ul>
-	<li>form validation for profile fields</li>
 	<li>Make sure mail is unique and old password is correct when updating</li>
+	<li>Only show login or logout / Only show Register when not logged in</li>
 	<li>Make steps movable by drag and drop</li>
 	<li>Error checking in recipe creation looks sort of weird</li>
+	<li>Error checking in profile looks terrible too</li>
 	<li>Images shouldn't be mandatory for now</li>
 	<li>Unit tests for recipe creation</li>
 	<li>Same as above for ingredients</li>
@@ -47,4 +48,5 @@ DONE:
 	<li>Navbar tabs for all recipes, create recipe, profile</li>
 	<li>Star recipes</li>
 	<li>Profile page showing recipes created by this profiles as well as favorites </li>
+	<li>form validation for profile fields</li>
 </ul>

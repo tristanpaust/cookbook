@@ -7,3 +7,14 @@
   color: #495057;
   transition: 0.3s;
 }
+
+.btn-profile-change {
+  background-color: #289fad !important;
+  border-color: #289fad !important;
+}
+
+.btn-profile-change:hover {
+  background-color: #495057 !important;
+  border-color: #495057 !important;
+  transition: 0.3s;
+}

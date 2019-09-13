@@ -240,7 +240,6 @@ export default class CreateRecipe extends Component {
         steps: stepText,
         author: this.state.user._id
       };
-      console.log(recipe);
 
       const res =  await global.FetchWithHeaders('POST', 'api/saverecipe/', recipe);
 

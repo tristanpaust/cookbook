@@ -167,7 +167,7 @@ function changePassword(req, res) {
 function changeMail(req,res) {
   let userID = req.user.id;
   let newMail = req.body.newMail;
-  User.updateOne({ _id: userID}, { mail: newMail },
+  User.updateOne({ _id: userID}, { email: newMail },
     function(err, result) {
       if (err) {
         res.status(500).json(err);
