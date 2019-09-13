@@ -58,16 +58,26 @@ export default class Profile extends Component {
     })
   }
 
-  changeEmail() {
-
+  async changeEmail() {
+    const json = await (global.FetchWithHeaders('POST', 'api/changemailaddress', { newMail: this.refs.newMail.value }))
+    await this.setStateAsync({
+      isEmailOpen: false
+    });
+    this.refs.newEmail.value = '';
+    this.componentDidMount();
   }
 
-  changeUsername() {
-
+  async changeUsername() {
+    const json = await (global.FetchWithHeaders('POST', 'api/changeusername', { newUsername: this.refs.newUsername.value }));
+    await this.setStateAsync({
+      isUsernameOpen: false
+    });
+    this.refs.newUsername.value = '';
+    this.componentDidMount();
   }
 
-  changePassword() {
-
+  async changePassword() {
+    const json = await (global.FetchWithHeaders('POST', 'api/changepassword', { newPassword: this.refs.newPassword.value }))
   }
 
   createItems(item) {
@@ -110,9 +120,9 @@ export default class Profile extends Component {
             <p className="col profile-button" onClick={this.openChangeUsername}>Benutzername ändern</p>
           </div>
 
-          <div className={this.state.isUsernameOpen ? 'row' : 'hidden'}>
-            <input type="text" placeholder="Neuer Benutzername" />
-            <button onClick={this.changeUsername}>Benutzername aktualisieren</button>
+          <div className={this.state.isUsernameOpen ? 'col' : 'hidden'}>
+            <input className="form-control" type="text" placeholder="Neuer Benutzername" ref="newUsername"/>
+            <button className="btn btn-success" onClick={this.changeUsername}>Benutzername aktualisieren</button>
           </div>
 
           <div className="row">
@@ -120,9 +130,9 @@ export default class Profile extends Component {
             <p className="col profile-button" onClick={this.openChangeEmail}>Email-Adresse ändern</p>
           </div>
 
-          <div className={this.state.isEmailOpen ? 'row' : 'hidden'}>
-            <input type="mail" placeholder="Neue Email-Adresse" />
-            <button onClick={this.changeEmail}>Email aktualisieren</button>
+          <div className={this.state.isEmailOpen ? 'col' : 'hidden'}>
+            <input className="form-control" type="email" placeholder="Neue Email-Adresse" ref="newMail"/>
+            <button className="btn btn-success" onClick={this.changeEmail}>Email aktualisieren</button>
           </div>
 
           <div className="row">
@@ -130,12 +140,12 @@ export default class Profile extends Component {
             <p className="col profile-button" onClick={this.openChangePassword}>Passwort ändern</p>
           </div>
 
-          <div className={this.state.isPasswordOpen ? 'row' : 'hidden'}>
-            <input type="password" placeholder="Altes Passwort" />
-            <input type="password" placeholder="Neues Passwort" />
-            <input type="password" placeholder="Neues Passwort wiederholen" />
+          <div className={this.state.isPasswordOpen ? 'col' : 'hidden'}>
+            <input className="form-control" type="password" placeholder="Altes Passwort" />
+            <input className="form-control" type="password" placeholder="Neues Passwort" ref="newPassword"/>
+            <input className="form-control" type="password" placeholder="Neues Passwort wiederholen" />
 
-            <button onClick={this.changePassword}>Passwort aktualisieren</button>
+            <button className="btn btn-success" onClick={this.changePassword}>Passwort aktualisieren</button>
           </div>
 
           <h1>Favoriten</h1>

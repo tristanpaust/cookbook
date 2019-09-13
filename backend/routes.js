@@ -65,6 +65,19 @@ router.post('/api/removefavorite', passport.authenticate('jwt', { session: false
 router.post('/api/addauthor', passport.authenticate('jwt', { session: false }), function(req, res) {
   auth.addAuthor(req, res);
 })
+
+router.post('/api/changeusername', passport.authenticate('jwt', { session: false}), function(req, res) {
+  auth.changeUsername(req, res);
+})
+
+router.post('/api/changepassword', passport.authenticate('jwt', { session: false}), function(req, res) {
+  auth.changePassword(req, res);
+})
+
+router.post('/api/changemailAddress', passport.authenticate('jwt', { session: false}), function(req, res) {
+  auth.changeMail(req, res);
+})
+
 /***/
 
 

@@ -25,7 +25,7 @@ export default class Login extends Component {
         'Content-Type': 'application/json'
       }
     })
-    .then(res => {
+    .then(res => {console.log(res)
       if (res.status === 200) {
         this.props.history.push('/');
       } else {

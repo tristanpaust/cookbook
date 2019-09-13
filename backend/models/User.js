@@ -27,14 +27,10 @@ UserSchema.pre('save', function(next) {
   }
 });
 
-UserSchema.methods.isCorrectPassword = function(password, callback) {
-  bcrypt.compare(password, this.password, function(err, same) {
-    if (err) {
-      callback(err);
-    } else {
-      callback(err, same);
-    }
-  });
+UserSchema.methods.isValidPassword = async function(password){
+  const user = this;
+  const compare = await bcrypt.compare(password, user.password);
+  return compare;
 }
 
 module.exports = mongoose.model('User', UserSchema);

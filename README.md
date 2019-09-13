@@ -1,5 +1,7 @@
 TODO:
 <ul>
+	<li>form validation for profile fields</li>
+	<li>Make sure mail is unique and old password is correct when updating</li>
 	<li>Make steps movable by drag and drop</li>
 	<li>Error checking in recipe creation looks sort of weird</li>
 	<li>Images shouldn't be mandatory for now</li>
