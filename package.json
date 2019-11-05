@@ -43,7 +43,7 @@
     "jest-resolve": "23.6.0",
     "jsonwebtoken": "^8.3.0",
     "mini-css-extract-plugin": "0.4.3",
-    "mongoose": "^5.4.3",
+    "mongoose": "^5.7.5",
     "multer": "^1.4.2",
     "open-iconic": "^1.1.1",
     "optimize-css-assets-webpack-plugin": "5.0.1",
