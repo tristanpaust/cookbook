@@ -1,3 +1,6 @@
+A fully new background made with Python3, i18n support for react frontend and an overall cleaner and better folder strcuture.
+Not fully done yet, the background is migrated from another project and the routes are not connected yet.
+
 TODO:
 <ul>
 	<li>Make sure mail is unique and old password is correct when updating</li>

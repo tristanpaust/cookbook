@@ -1,0 +1,119 @@
+{
+  "languages": {
+    "header": "Sprache",
+    "english": "Englisch",
+    "german": "Deutsch"
+  },
+  "header": {
+    "home": "Home",
+    "recipes": "Rezepte",
+    "writerecipe": "Rezept schreiben",
+    "showprofile": "Profil",
+    "showhistory": "Long Running Task History",
+    "showlogout": "Ausloggen"
+  },
+  "home": {
+    "explanation": "Here is some text which explains what this website is doing"
+  },
+  "login": {
+    "email": "E-Mail-Adresse",
+    "emailplaceholder": "E-Mail",
+    "emailhelp": "Die E-Mail-Adresse, mit der du dich registriert hast" ,
+    "password": "Passwort",
+    "passwordplaceholder": "Passwort",
+    "passwordsecurityerror": "Das Passwort ist nicht lang genug!",
+    "passwordcredentialerror": "Dein Benutzername oder das Passwort ist falsch.",
+    "othererror": "Etwas ist schiefgelaufen. Bitte später erneut versuchen.",
+    "loginbutton": "Absenden",
+    "registerlink": "Noch kein Account? Hier klicken zum registrieren",
+    "forgotpasswordlink": "Passwort vergessen? Hier klicken zum zurücksetzen"
+  },
+  "profile": {
+    "changemail": "E-Mail-Adresse",
+    "emailinput": "Neue E-Mail-Adresse",
+    "emailplaceholder": "Neue E-Mail-Adresse einfügen",
+    "emailrepeatinput": "E-Mail-Adresse wiederholen",
+    "emailrepeatplaceholder": "Bitte wiederhole deine neue E-Mail-Adresse",
+    "changemailsubmit": "Absenden",
+    "changepassword": "Passwort ändern",
+    "oldpassword": "Aktuelles Passwort",
+    "oldpasswordplaceholder": "Aktuelles Passwirt einfügen",
+    "newpassword": "Neues Passwort",
+    "newpasswordplaceholder": "Bitte das neue Passwort einfügen",
+    "repeatpassword": "Neues Passwort wiederholen",
+    "repeatpasswordplaceholder": "Bitte wiederhole dein neues Passwort",
+    "changepasswordsubmit": "Absenden",
+    "emailmismatcherror": "Die zwei E-Mail-Adressen stimmen nicht überein.",
+    "emailusederror": "Die E-Mail-Adresse ist bereits vergeben.",
+    "oldpasswordwrongerror": "Dein aktuelles Passwort ist nicht richtig.",
+    "passwordmismatcherror": "Dein neues Passwort und das wiederholte Passwort stimmen nicht überein!",
+    "passwordnotsecureerror": "Passwörter müssen mindestens 10 Zeichen lang sein.",
+    "othererror": "Ein Fehler ist aufgetreten. Bitte später erneut versuchen.",
+    "emailchangeinfo": "Bitte beachte, dass du nach einer Änderung die neue E-Mail-Adresse zur Anmeldung benötigst."
+  },
+  "register": {
+    "emailaddress": "E-Mail-Adresse",
+    "emailplaceholder": "Füge hier die E-Mail-Adresse ein, die du verwenden möchtest",
+    "emailhelper": "Deine E-Mail-Adresse wird niemals außerhalb dieser Website verwendet.",
+    "name": "Dein voller Name",
+    "nameplaceholder": "Bitte hier den vollen Namen einfügen",
+    "namehelper": "Dein Name wird zur Anzeige von Rezepten und Kommentaren verwendet.",
+    "password": "Passwort",
+    "passwordplaceholder": "Bitte hier das neue Passwort einfügen.",
+    "repeatpassword": "Passwort wiederholen",
+    "repeatpasswordplaceholder": "Das neue Passwort erneut einfügen.",
+    "passwordmismatcherror": "Die zwei Passwörter stimmen nicht überein.",
+    "passwordinsecureerror": "Passwörter müssen mindestens 10 Zeichen lang sein.",
+    "emailtakenerror": "Die gewünschte E-Mail-Adresse ist bereits in Verwendung.",
+    "othererror": "Etwas ist schiefgelaufen. Bitte später erneut versuchen.",
+    "submitbutton": "Absenden",
+    "loginlinkbottom": "Schon einen Account angelegt? Zum Einloggen hier klicken!!"
+  },
+  "messages": {
+    "passwordchangesuccess": "Dein Passwort wurde geändert. Bitte melde dich mit dem neuen Passwort erneut an.",
+    "emailchangesuccess": "Deine E-Mail-Adresse wurde geändert. Bitte melde dich mit der neuen Adresse erneut an.",
+    "notauthorized": "Du musst eingeloggt sein, um diese Seite zu sehen.",
+    "registrationsuccess": "Dein Account wurde erstellt! Bitte melde dich mit deiner E-Mail-Adresse und deinem Passwort an.",
+    "newpredictionsuccess": "Du hast ein neues Rezept gespeichert!"
+  },
+  "longrunningtask": {
+    "header": "Erstelle ein neues Rezept",
+    "titleplaceholder": "Enter a title for your longrunningtask",
+    "predictiontitlehelp": "This will be shown in the public queue.",
+    "dropzonehelper": "Click here to open a menu or drag your file into this area",
+    "submitpredictioninfo": "You are not able to submit a longrunningtask until your file has finished uploading.",
+    "submitprediction": "Submit longrunningtask",
+    "fileisempty": "You need to upload a file in order to start a longrunningtask.",
+    "titleisempty": "You can not submit a new longrunningtask without a title.",
+    "othererror": "Something went wrong. Please try again later.",
+    "nofileerror": "You need to select a file before you are able to upload",
+    "successfulUpload": "File upload successful.",
+    "uploadError": "There was an error uploading your file. Please try again.",
+    "deleteError": "There was a problem deleting your file.",
+    "uploading": "Uploading...",
+    "startupload": "Submit",
+    "deletefile": "Delete file"
+  },
+  "history": {
+    "predictionrunning": "Long Running Task is running",
+    "noresult": "To be determined",
+    "explanationtab": "Explanation",
+    "explanationcontent": "The tabs on the left side of the screen are the names of all the predictions that you have started so far. Click on the nams to get moe information about them!",
+    "searchbar": "Type to filter by longrunningtask title"
+  },
+  "queue": {
+    "tabletitle": "Long Running Task Title",
+    "tablename": "Submitted By",
+    "tablestarted": "Time Started",
+    "tableruntime": "Running For",
+    "tableedit": "Edit",
+    "queueempty": "The queue is currently empty.",
+    "popupdeleteheader": "Confirm that you want to delete",
+    "popupdeleteexplanation": "If you delete this item from the queue, it won't be executed anymore. Furthermore, it will be removed from your history  and the file connected to it will also be deleted. ",
+    "popupdeleteconfirm": "Confirm",
+    "popupdeletecancel": "Cancel",
+    "authdeletionerror": "You are not authorized to delete this longrunningtask.",
+    "popupdeleteerror": "The deletion of the longrunningtask has been cancelled.",
+    "popupdeletesuccess": "The longrunningtask has been deleted successfully."
+  }
+}
