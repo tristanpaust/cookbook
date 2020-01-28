@@ -7,16 +7,32 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Dropzone from 'react-dropzone';
 import Spinner from 'react-bootstrap/Spinner';
+import Select from 'react-select';
 
 import { withTranslation } from 'react-i18next';
 import i18n from "i18next";
+
+import {countryOptions} from '../../Static/other/SelectOptions.js';
+import {dishOptions} from '../../Static/other/SelectOptions.js';
 
 class WriteRecipe extends React.Component {
   constructor(props) {
 		super(props);
 		this.state = {
       userMail: '',
-      LongRunningTaskTitle: '',
+      
+      recipeTitle: '',
+      recipeDescription: '',
+      imagePath: '',
+      servingSize: 0,
+      recipeOrigin: undefined,
+      recipeType: undefined,
+      tags: [],
+      ingredients: [],
+      steps: [],
+      user: {},
+
+
       dropzoneIsLocked: false,
       fileIsHidden: true,
       file: {},
@@ -46,6 +62,9 @@ class WriteRecipe extends React.Component {
     this.startLongRunningTask = this.startLongRunningTask.bind(this);
     this.resetIndicators = this.resetIndicators.bind(this);
     this.isEmpty = this.isEmpty.bind(this);
+
+    this.increasePeople = this.increasePeople.bind(this);
+    this.decreasePeople = this.decreasePeople.bind(this);
   }
 
   // Check the users auth token,
@@ -126,11 +145,25 @@ class WriteRecipe extends React.Component {
   
   handleInputChange = (event) => {
     const { value, name } = event.target;
+    console.log(event.target);
     this.setState({
       [name]: value
     });
+    console.log(this.state)
+  }  
+
+  handleOriginChange = (option) => {
+    this.setState({
+      recipeOrigin: option.label
+    });
   }  
   
+  handleTypeChange = (option) => {
+    this.setState({
+      recipeType: option.label
+    });
+  }  
+
   // Remove file from selection by emptying the file object, reset all messages and button states
   removeFile() {
     this.setState({
@@ -217,6 +250,16 @@ class WriteRecipe extends React.Component {
     })
   }
 
+  increasePeople() {
+    this.setState({servingSize: parseInt(this.state.servingSize) + 1});
+  }
+  
+  decreasePeople() {
+    if (parseInt(this.state.servingSize) >= 1) {
+      this.setState({servingSize: parseInt(this.state.servingSize) - 1});
+    }
+  }
+
 	render () {
     // Translation item
     const { t } = this.props;
@@ -226,7 +269,23 @@ class WriteRecipe extends React.Component {
         
           <p className="dropzone-header">{t('longrunningtask.header')}</p>
           
-          <div className="new-LongRunningTask-form">
+
+          <Form.Group controlId="formBasicFile" className="test">
+            <Form.Control 
+              type="text" 
+              placeholder={t('longrunningtask.titleplaceholder')}
+              name='LongRunningTaskTitle' 
+              value={this.state.LongRunningTaskTitle}
+              onChange={this.handleInputChange}
+              required
+            />
+            <Form.Text className="text-muted LongRunningTask-info">
+              {t('longrunningtask.LongRunningTasktitlehelp')}
+            </Form.Text>
+          </Form.Group>
+
+          <div className="new-recipe-form">
+
             <div className="input-left-side">
               <Dropzone 
                 onDrop={this.onDrop} 
@@ -292,23 +351,80 @@ class WriteRecipe extends React.Component {
               </Button>
               
             </div>
+
             <div className="input-right-side">
-              <Form.Group controlId="formBasicFile">
-                <Form.Control 
-                  type="text" 
-                  placeholder={t('longrunningtask.titleplaceholder')}
-                  name='LongRunningTaskTitle' 
-                  value={this.state.LongRunningTaskTitle}
+              <h5> Generelle Angaben </h5>
+
+              <Form.Group controlId="formBasicDescription">
+                <Form.Control as="textarea" rows="3"
+                  placeholder={t('writerecipe.descriptionplaceholder')}
+                  name='recipeDescription' 
+                  className='recipeTextbox'
+                  value={this.state.recipeDescription}
                   onChange={this.handleInputChange}
                   required
                 />
-                <Form.Text className="text-muted LongRunningTask-info">
-                  {t('longrunningtask.LongRunningTasktitlehelp')}
+                <Form.Text className="text-muted createRecipe-info">
+                  {t('writerecipe.recipedescriptionhelp')}
                 </Form.Text>
-                
               </Form.Group>
+
+              <div className='form-group'>
+                <div className='servingSizeWrapper'>
+                  <div className="value-button btn-danger decrease" onClick={this.decreasePeople}>-</div>
+                  <input type="text" pattern="[0-9]*" name="servingSize" className="form-control servingSize" value={this.state.servingSize} onChange={this.handleInputChange}/>
+                  <div className="value-button btn-success increase" onClick={this.increasePeople}>+</div>
+                </div>
+                <Form.Text className="text-muted createRecipe-info">
+                  {t('writerecipe.recipeservingshelp')}
+                </Form.Text>
+              </div>
+
+              <div className='form-group'>
+                <Select
+                  placeholder="-- Bitte Herkunfsland auswählen --"
+                  label="Single select"
+                  onChange={this.handleOriginChange}
+                  options={countryOptions}
+                  name="recipeOrigin"
+                  className="general-info-input"
+                  theme={(theme) => ({
+                    ...theme,
+                    colors: {
+                      ...theme.colors,
+                      text: '#6a7989',
+                      primary25: '#289fad',
+                      primary: '#6a7989',
+                    },
+                  })}
+                />
+                <small className="form-text text-muted">Wo kommt das Rezept her?</small>
+              </div>              
+
+              <div className='form-group'>
+                <Select
+                  placeholder="-- Bitte Rezeptart auswählen --"
+                  label="Single select"
+                  options={dishOptions}
+                  onChange={this.handleTypeChange}
+                  className="general-info-input"
+                  theme={(theme) => ({
+                    ...theme,
+                    colors: {
+                      ...theme.colors,
+                      text: '#6a7989',
+                      primary25: '#289fad',
+                      primary: '#6a7989',
+                    },
+                  })}                  
+                />
+                <small className="form-text text-muted">Vorspeise, Hauptspeise, Nachspeise, usw.</small>                
+              </div>
+
             </div>
+
           </div>
+
           <hr />
           
           <p className={'LongRunningTask-error ' + (this.state.fileError ? 'show' : 'hidden')}>

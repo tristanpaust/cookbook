@@ -2,7 +2,7 @@
   margin-bottom: 25px;
 }
 
-.new-prediction-form {
+.new-recipe-form {
   display: flex;
 }
 
@@ -11,6 +11,9 @@
   width: 100%;
 }
 
+.test {
+  width: 100%;
+}
 .dropzone {
   flex: 1;
   display: flex;
@@ -116,4 +119,58 @@ dropzone.disabled {
 
 .prediction-success {
   color: #00b5ad;
+}
+
+.recipeTextbox {
+  resize: none;
+}
+
+.servingSizeWrapper {
+  display: flex;
+}
+
+.value-button {
+  display: inline-block;
+  border: 1px solid #ddd;
+  margin: 0px;
+  width: 40px;
+  height: 2.3em;
+  line-height: 2.3em;
+  text-align: center;
+  vertical-align: middle;
+  background: #eee;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.decrease {
+    margin-right: -4px;
+    border-radius: 8px 0 0 8px;
+    color: hsl(0,0%,50%);
+    float: left;
+}
+
+.increase {
+  margin-left: -4px;
+  border-radius: 0 8px 8px 0;
+  color: hsl(0,0%,50%);
+}
+
+.servingSize {
+  width: 3em;
+  text-align: center;
+  height: 3.2em;
+  float: left;
+  border-radius: 0;
+  padding-right: 15px;
+}
+
+.value-button:hover {
+  cursor: pointer;
+  transition: 0.3s;
+  color: white !important;
 }
