@@ -3,12 +3,10 @@ from jsonschema.exceptions import ValidationError
 from jsonschema.exceptions import SchemaError
 from bson import ObjectId
 
-# A longrunningtask contains a title,
-# The mail address of the creator,
-# The path to where it is stored in ODIN,
-# It could (potentially) store the resulting vector after Salmon processing (although that could also be a link to ODIN),
-# After running it trough the model it has a result,
-# Time started and time ended for displaying purposes
+# A recipe contains a title,
+# The id of the creator,
+# Image paths, serving sizes, tags, country of origin, type of dish, tags, all steps and an array of ingredient IDs
+
 recipe_schema = {
     "type": "object",
     "properties": {
@@ -19,20 +17,58 @@ recipe_schema = {
             "type": "string",
             "format": "email"
         },
-        "storedAt": {
+        "image": {
             "type": "string",
         },
-        "result": {
+        "servings": {
           "type": "string"
         },
-        "timeStarted": {
+        "origin": {
           "type": "string" 
         },
-        "timeEnded": { 
+        "formType": { 
           "type": "string" 
+        },
+        "tags": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "tagID": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "ingredients": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "type": "string",
+                },
+                "unit": {
+                    "type": "object",
+                    "properties": {
+                        "unitID": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "item": {
+                    "type": "object",
+                    "properties": {
+                        "ingredientID": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "steps": {
+            "type": "string"
         }
     },
-    "required": ["recipeTitle", "submittedBy", "storedAt"],
+    "required": ["recipeTitle", "submittedBy", "storedAt", "servings", "formType", "tags", "ingredients", "steps"],
     "additionalProperties": False
 }
 
