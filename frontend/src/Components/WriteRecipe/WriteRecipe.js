@@ -1,6 +1,6 @@
 import React from "react";
 import {withRouter} from 'react-router';
-import './LongRunningTask.css';
+import './WriteRecipe.css';
 import APIClient from '../../Actions/apiClient';
 
 import Form from 'react-bootstrap/Form';
@@ -11,7 +11,7 @@ import Spinner from 'react-bootstrap/Spinner';
 import { withTranslation } from 'react-i18next';
 import i18n from "i18next";
 
-class LongRunningTask extends React.Component {
+class WriteRecipe extends React.Component {
   constructor(props) {
 		super(props);
 		this.state = {
@@ -189,7 +189,7 @@ class LongRunningTask extends React.Component {
     // Create a new LongRunningTask in the database, return the auto generated ID, 
     // Pass ID into next function to save it in the history of the creator,
     // Pass the creator ID and the LongRunningTask ID to the last function to create a new item in the queue
-    this.apiClient.createLongRunningTask(LongRunningTask).then((data) => {
+    this.apiClient.createRecipe(LongRunningTask).then((data) => {
       this.apiClient.updateUserHistory({"LongRunningTaskID": data.data}).then((data) => {
         this.apiClient.createQueueItem(data.data).then((data) => {
    			  const location = { 
@@ -224,7 +224,7 @@ class LongRunningTask extends React.Component {
       <div className="container">
         <div className="container-fluid">
         
-          <p className="dropzone-header">{t('LongRunningTask.header')}</p>
+          <p className="dropzone-header">{t('longrunningtask.header')}</p>
           
           <div className="new-LongRunningTask-form">
             <div className="input-left-side">
@@ -236,7 +236,7 @@ class LongRunningTask extends React.Component {
                   <section className={'container ' + (this.state.dropzoneIsLocked ? 'hidden' : '')}>
                     <div {...getRootProps({className: 'dropzone'})}>
                       <input {...getInputProps()} />
-                      <p>{t('LongRunningTask.dropzonehelper')}</p>
+                      <p>{t('longrunningtask.dropzonehelper')}</p>
                     </div>
                   </section>
                 )}
@@ -253,7 +253,7 @@ class LongRunningTask extends React.Component {
                 onClick={this.uploadFiles} 
               >
                 <div className={'container ' + (this.state.uploading ? 'hidden' : '')}>
-                  {t('LongRunningTask.startupload')}
+                  {t('longrunningtask.startupload')}
                 </div>
                 <div className={'spinner-container ' + ((this.state.uploading) ? '' : 'hidden')}>
                   <Spinner
@@ -264,31 +264,31 @@ class LongRunningTask extends React.Component {
                     aria-hidden="true"
                     className="upload-spinner"
                   />
-                  <span>{t('LongRunningTask.uploading')}</span>
+                  <span>{t('longrunningtask.uploading')}</span>
                 </div>
               </Button> 
               
               <p className={'LongRunningTask-error ' + (this.state.noFileError ? 'show' : 'hidden')}>
-                {t('LongRunningTask.nofileerror')}
+                {t('longrunningtask.nofileerror')}
               </p>
               
               <p className={'LongRunningTask-error ' + (this.state.uploadError ? 'show' : 'hidden')}>
-                {t('LongRunningTask.uploadError')}
+                {t('longrunningtask.uploadError')}
               </p>
               
               <p className={'LongRunningTask-error ' + (this.state.deleteError ? 'show' : 'hidden')}>
-                {t('LongRunningTask.deleteError')}
+                {t('longrunningtask.deleteError')}
               </p>
 
               <p className={'LongRunningTask-success ' + (this.state.successfulUpload ? 'show' : 'hidden')}>
-                {t('LongRunningTask.successfulUpload')}
+                {t('longrunningtask.successfulUpload')}
               </p>
               
               <Button variant="danger" 
                 className={'upload-button ' + ((this.state.successfulUpload) ? '' : 'hidden')} 
                 onClick={this.deleteFile} 
               >
-                {t('LongRunningTask.deletefile')}
+                {t('longrunningtask.deletefile')}
               </Button>
               
             </div>
@@ -296,14 +296,14 @@ class LongRunningTask extends React.Component {
               <Form.Group controlId="formBasicFile">
                 <Form.Control 
                   type="text" 
-                  placeholder={t('LongRunningTask.titleplaceholder')}
+                  placeholder={t('longrunningtask.titleplaceholder')}
                   name='LongRunningTaskTitle' 
                   value={this.state.LongRunningTaskTitle}
                   onChange={this.handleInputChange}
                   required
                 />
                 <Form.Text className="text-muted LongRunningTask-info">
-                  {t('LongRunningTask.LongRunningTasktitlehelp')}
+                  {t('longrunningtask.LongRunningTasktitlehelp')}
                 </Form.Text>
                 
               </Form.Group>
@@ -312,19 +312,19 @@ class LongRunningTask extends React.Component {
           <hr />
           
           <p className={'LongRunningTask-error ' + (this.state.fileError ? 'show' : 'hidden')}>
-            {t('LongRunningTask.fileisempty')} 
+            {t('longrunningtask.fileisempty')} 
           </p>                
           <p className={'LongRunningTask-error ' + (this.state.titleError ? 'show' : 'hidden')}>
-            {t('LongRunningTask.titleisempty')}  
+            {t('longrunningtask.titleisempty')}  
           </p>
           <p className={'LongRunningTask-error ' + (this.state.otherError ? 'show' : 'hidden')}>
-            {t('LongRunningTask.othererror')}
+            {t('longrunningtask.othererror')}
           </p>
                 
-          <span className="text-muted LongRunningTask-info">{t('LongRunningTask.submitLongRunningTaskinfo')}</span>
+          <span className="text-muted LongRunningTask-info">{t('longrunningtask.submitLongRunningTaskinfo')}</span>
           <br />
           <Button className={'btn btn-primary btn-LongRunningTask ' + (this.state.successfulUpload ? '' : 'disabled')} onClick={this.startLongRunningTask}>
-            {t('LongRunningTask.submitLongRunningTask')}
+            {t('longrunningtask.submitLongRunningTask')}
           </Button>
           
         </div>
@@ -332,4 +332,4 @@ class LongRunningTask extends React.Component {
     )
   }
 }
-export default withRouter(withTranslation()(LongRunningTask));
+export default withRouter(withTranslation()(WriteRecipe));

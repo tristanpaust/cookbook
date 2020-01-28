@@ -9,10 +9,10 @@ from bson import ObjectId
 # It could (potentially) store the resulting vector after Salmon processing (although that could also be a link to ODIN),
 # After running it trough the model it has a result,
 # Time started and time ended for displaying purposes
-longrunningtask_schema = {
+recipe_schema = {
     "type": "object",
     "properties": {
-        "longrunningtaskTitle": {
+        "recipeTitle": {
             "type": "string"
         },
         "submittedBy": {
@@ -32,14 +32,14 @@ longrunningtask_schema = {
           "type": "string" 
         }
     },
-    "required": ["longrunningtaskTitle", "submittedBy", "storedAt"],
+    "required": ["recipeTitle", "submittedBy", "storedAt"],
     "additionalProperties": False
 }
 
 # When data is going to be stored, try the data against the model to make sure it has the right format of required items
-def validate_longrunningtask(data):
+def validate_recipe(data):
     try:
-        validate(data, longrunningtask_schema)
+        validate(data, recipe_schema)
     except ValidationError as e:
         return {'ok': False, 'message': e}
     except SchemaError as e:

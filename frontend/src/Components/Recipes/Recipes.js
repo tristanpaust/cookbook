@@ -1,6 +1,6 @@
 import React from "react";
 import {withRouter} from 'react-router';
-import './Queue.css';
+import './Recipes.css';
 import APIClient from '../../Actions/apiClient';
 
 import Table from 'react-bootstrap/Table';
@@ -11,7 +11,7 @@ import { withTranslation } from 'react-i18next';
 
 import moment from 'moment';
 
-class Queue extends React.Component {
+class Recipes extends React.Component {
   constructor(props) {
 		super(props);
 		this.state = {
@@ -124,7 +124,7 @@ class Queue extends React.Component {
     
     this.apiClient.deleteQueueItem({'queueID': queueID}).then((data) => {
       this.apiClient.removeFromUserHistory(data).then((res) => {
-        this.apiClient.deleteLongRuningTask(res.data).then((res) => {
+        this.apiClient.deleteRecipe(res.data).then((res) => {
           this.apiClient.deleteFile(res.data).then((data) => {              
             table.removeChild(tableRow);
             this.setState({ popupDeleteSuccess: true });
@@ -242,4 +242,4 @@ class Queue extends React.Component {
     )
   }
 }
-export default withRouter(withTranslation()(Queue));
+export default withRouter(withTranslation()(Recipes));

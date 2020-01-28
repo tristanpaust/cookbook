@@ -3,7 +3,7 @@ from flask_jwt_extended import (jwt_required, jwt_refresh_token_required, get_jw
 
 import controllers.auth as auth
 import controllers.user as user
-import controllers.longrunningtask as longrunningtask
+import controllers.recipe as recipe
 import controllers.queue as queue
 import controllers.upload as upload
 
@@ -87,21 +87,21 @@ def removeFromUserHistory():
     
 ###
 
-### LongRunningTasks
+### Recipes
 
 # Get, create, update, delete a single job
 
-@routes.route('/longrunningtask', methods = ['POST', 'GET', 'PUT', 'DELETE'])
+@routes.route('/recipe', methods = ['POST', 'GET', 'PUT', 'DELETE'])
 @jwt_required
 def longrunningtaskControl():
     if request.method == 'POST':
-        return longrunningtask.createLongRunningTask()
+        return recipe.createRecipe()
     if request.method == 'GET':
-        return longrunningtask.getLongRunningTask()
+        return recipe.getRecipe()
     if request.method == 'PUT':
-        return longrunningtask.updateLongRunningTask()
+        return recipe.updateRecipe()
     if request.method == 'DELETE':
-        return longrunningtask.deleteLongRunningTask()
+        return recipe.deleteRecipe()
         
 ###
 

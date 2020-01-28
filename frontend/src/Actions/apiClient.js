@@ -65,12 +65,12 @@ class APIClient {
   }
 
   /*** ///  Maps to LongRunningTask controller  /// ***/
-  createLongRunningTask(LongRunningTask) {
-    return this.perform('post', '/LongRunningTask', LongRunningTask);
+  createRecipe(newRecipe) {
+    return this.perform('post', '/Recipe', newRecipe);
   }
   
-  deleteLongRunningTask(LongRunningTaskID) {
-    return this.perform('delete', '/LongRunningTask', LongRunningTaskID)
+  deleteRecipe(recipeID) {
+    return this.perform('delete', '/LongRunningTask', recipeID)
   }
 
   /*** ///  Maps to queue controller  /// ***/

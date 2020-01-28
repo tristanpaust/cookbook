@@ -1,13 +1,13 @@
 from flask import request, jsonify
 from application import mongo
 from application import flask_bcrypt
-from models.longrunningtaskModel import validate_longrunningtask
+from models.recipeModel import validate_recipe
 from bson import json_util, ObjectId
 import controllers.errors
 import datetime
 
 # Make timestamp, get user, save new prediction
-def createLongRunningTask():
+def createRecipe():
   data = validate_longrunningtask(request.get_json())
   if data['ok']:
     data = data['data']
@@ -19,14 +19,14 @@ def createLongRunningTask():
   else:
     return jsonify({'ok': False, 'message': 'Bad request parameters: {}'.format(data['message'])}), 400
 
-def getLongRunningTask():
+def getRecipe():
   return
 
-def updateLongRunningTask():
+def updateRecipe():
   return
 
 # Get long running task, get link to associated file, remove long running task, return link to file
-def deleteLongRunningTask():
+def deleteRecipe():
   try:
     data = request.get_json()
     longrunningtaskID = data['predictionID']

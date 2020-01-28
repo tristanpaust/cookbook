@@ -9,9 +9,9 @@ import Home from './Components/Home';
 import Login from './Components/Login/Login';
 import Register from './Components/Register/Register';
 import Profile from './Components/Profile/Profile';
-import Queue from './Components/Queue/Queue';
+import Recipes from './Components/Recipes/Recipes';
 import History from './Components/History/History';
-import LongRunningTask from './Components/Predict/LongRunningTask';
+import WriteRecipe from './Components/WriteRecipe/WriteRecipe';
 
 function App() {
     return (
@@ -29,8 +29,8 @@ function App() {
                <Route path="/" exact component={Home} />
                <Route path="/register" component={Register} />
                <Route path="/profile" component={Profile} />
-               <Route path="/queue" component={Queue} />
-               <Route path="/longunningtask" component={LongRunningTask} />
+               <Route path="/recipes" component={Recipes} />
+               <Route path="/writerecipe" component={WriteRecipe} />
                <Route path="/history" component={History} />
                <Route path="/login" component={Login} />
              </Switch>

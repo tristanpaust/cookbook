@@ -89,9 +89,9 @@ class Header extends React.Component {
             <Nav className="mr-auto">
               <Nav.Link href="/">{t('header.home')}</Nav.Link>
               <span className="nav-link-separator">|</span>
-              <Nav.Link href="/queue">{t('header.recipes')}</Nav.Link>
+              <Nav.Link href="/recipes">{t('header.recipes')}</Nav.Link>
               <span className="nav-link-separator">|</span>
-              <Nav.Link href="/LongRunningTask">{t('header.writerecipe')}</Nav.Link>
+              <Nav.Link href="/writerecipe">{t('header.writerecipe')}</Nav.Link>
             </Nav>
           </Navbar.Collapse>
   
