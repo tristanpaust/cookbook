@@ -2,6 +2,7 @@ import React from "react";
 import {withRouter} from 'react-router';
 import './WriteRecipe.css';
 import APIClient from '../../Actions/apiClient';
+import TagSelect from './TagSelect.js';
 
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -65,6 +66,8 @@ class WriteRecipe extends React.Component {
 
     this.increasePeople = this.increasePeople.bind(this);
     this.decreasePeople = this.decreasePeople.bind(this);
+
+    this.handleTagSelect = this.handleTagSelect.bind(this);
   }
 
   // Check the users auth token,
@@ -162,7 +165,12 @@ class WriteRecipe extends React.Component {
     this.setState({
       recipeType: option.label
     });
-  }  
+  }
+
+  handleTagSelect(options) {
+    console.log(options)
+    this.setState({tags: options});
+  }
 
   // Remove file from selection by emptying the file object, reset all messages and button states
   removeFile() {
@@ -267,20 +275,20 @@ class WriteRecipe extends React.Component {
       <div className="container">
         <div className="container-fluid">
         
-          <p className="dropzone-header">{t('longrunningtask.header')}</p>
+          <p className="dropzone-header">{t('writerecipe.recipeimageheader')}</p>
           
 
           <Form.Group controlId="formBasicFile" className="test">
             <Form.Control 
               type="text" 
-              placeholder={t('longrunningtask.titleplaceholder')}
-              name='LongRunningTaskTitle' 
-              value={this.state.LongRunningTaskTitle}
+              placeholder={t('writerecipe.titleplaceholder')}
+              name='WriteRecipeTitle' 
+              value={this.state.WriteRecipeTitle}
               onChange={this.handleInputChange}
               required
             />
-            <Form.Text className="text-muted LongRunningTask-info">
-              {t('longrunningtask.LongRunningTasktitlehelp')}
+            <Form.Text className="text-muted WriteRecipe-info">
+              {t('writerecipe.recipeimagesubmit')}
             </Form.Text>
           </Form.Group>
 
@@ -295,7 +303,7 @@ class WriteRecipe extends React.Component {
                   <section className={'container ' + (this.state.dropzoneIsLocked ? 'hidden' : '')}>
                     <div {...getRootProps({className: 'dropzone'})}>
                       <input {...getInputProps()} />
-                      <p>{t('longrunningtask.dropzonehelper')}</p>
+                      <p>{t('writerecipe.dropzonehelper')}</p>
                     </div>
                   </section>
                 )}
@@ -312,7 +320,7 @@ class WriteRecipe extends React.Component {
                 onClick={this.uploadFiles} 
               >
                 <div className={'container ' + (this.state.uploading ? 'hidden' : '')}>
-                  {t('longrunningtask.startupload')}
+                  {t('writerecipe.startupload')}
                 </div>
                 <div className={'spinner-container ' + ((this.state.uploading) ? '' : 'hidden')}>
                   <Spinner
@@ -323,37 +331,37 @@ class WriteRecipe extends React.Component {
                     aria-hidden="true"
                     className="upload-spinner"
                   />
-                  <span>{t('longrunningtask.uploading')}</span>
+                  <span>{t('writerecipe.uploading')}</span>
                 </div>
               </Button> 
               
-              <p className={'LongRunningTask-error ' + (this.state.noFileError ? 'show' : 'hidden')}>
-                {t('longrunningtask.nofileerror')}
+              <p className={'WriteRecipe-error ' + (this.state.noFileError ? 'show' : 'hidden')}>
+                {t('writerecipe.nofileerror')}
               </p>
               
-              <p className={'LongRunningTask-error ' + (this.state.uploadError ? 'show' : 'hidden')}>
-                {t('longrunningtask.uploadError')}
+              <p className={'WriteRecipe-error ' + (this.state.uploadError ? 'show' : 'hidden')}>
+                {t('writerecipe.uploadError')}
               </p>
               
-              <p className={'LongRunningTask-error ' + (this.state.deleteError ? 'show' : 'hidden')}>
-                {t('longrunningtask.deleteError')}
+              <p className={'WriteRecipe-error ' + (this.state.deleteError ? 'show' : 'hidden')}>
+                {t('writerecipe.deleteError')}
               </p>
 
-              <p className={'LongRunningTask-success ' + (this.state.successfulUpload ? 'show' : 'hidden')}>
-                {t('longrunningtask.successfulUpload')}
+              <p className={'WriteRecipe-success ' + (this.state.successfulUpload ? 'show' : 'hidden')}>
+                {t('writerecipe.successfulUpload')}
               </p>
               
               <Button variant="danger" 
                 className={'upload-button ' + ((this.state.successfulUpload) ? '' : 'hidden')} 
                 onClick={this.deleteFile} 
               >
-                {t('longrunningtask.deletefile')}
+                {t('writerecipe.deletefile')}
               </Button>
               
             </div>
 
             <div className="input-right-side">
-              <h5> Generelle Angaben </h5>
+              <h5> {t('writerecipe.recipegeneralinfoheader')}</h5>
 
               <Form.Group controlId="formBasicDescription">
                 <Form.Control as="textarea" rows="3"
@@ -382,7 +390,7 @@ class WriteRecipe extends React.Component {
 
               <div className='form-group'>
                 <Select
-                  placeholder="-- Bitte Herkunfsland auswählen --"
+                  placeholder={t('writerecipe.recipeoriginplaceholder')}
                   label="Single select"
                   onChange={this.handleOriginChange}
                   options={countryOptions}
@@ -398,12 +406,14 @@ class WriteRecipe extends React.Component {
                     },
                   })}
                 />
-                <small className="form-text text-muted">Wo kommt das Rezept her?</small>
+                <Form.Text className="text-muted createRecipe-info">
+                  {t('writerecipe.recipeservingshelp')}
+                </Form.Text>
               </div>              
 
               <div className='form-group'>
                 <Select
-                  placeholder="-- Bitte Rezeptart auswählen --"
+                  placeholder={t('writerecipe.recipetypeplaceholder')}
                   label="Single select"
                   options={dishOptions}
                   onChange={this.handleTypeChange}
@@ -418,7 +428,16 @@ class WriteRecipe extends React.Component {
                     },
                   })}                  
                 />
-                <small className="form-text text-muted">Vorspeise, Hauptspeise, Nachspeise, usw.</small>                
+                <Form.Text className="text-muted createRecipe-info">
+                  {t('writerecipe.recipetypehelp')}
+                </Form.Text>              
+              </div>
+
+              <div className="form-group">
+                  <TagSelect onSelectTag={this.handleTagSelect} searchPlaceholder={t('writerecipe.tagsearchplaceholder')}/>
+                  <Form.Text className="text-muted createRecipe-info">
+                    {t('writerecipe.recipetaghelp')}
+                  </Form.Text>
               </div>
 
             </div>
@@ -427,20 +446,20 @@ class WriteRecipe extends React.Component {
 
           <hr />
           
-          <p className={'LongRunningTask-error ' + (this.state.fileError ? 'show' : 'hidden')}>
-            {t('longrunningtask.fileisempty')} 
+          <p className={'WriteRecipe-error ' + (this.state.fileError ? 'show' : 'hidden')}>
+            {t('writerecipe.fileisempty')} 
           </p>                
-          <p className={'LongRunningTask-error ' + (this.state.titleError ? 'show' : 'hidden')}>
-            {t('longrunningtask.titleisempty')}  
+          <p className={'WriteRecipe-error ' + (this.state.titleError ? 'show' : 'hidden')}>
+            {t('writerecipe.titleisempty')}  
           </p>
-          <p className={'LongRunningTask-error ' + (this.state.otherError ? 'show' : 'hidden')}>
-            {t('longrunningtask.othererror')}
+          <p className={'WriteRecipe-error ' + (this.state.otherError ? 'show' : 'hidden')}>
+            {t('writerecipe.othererror')}
           </p>
                 
-          <span className="text-muted LongRunningTask-info">{t('longrunningtask.submitLongRunningTaskinfo')}</span>
+          <span className="text-muted WriteRecipe-info">{t('writerecipe.submitNewRecipe')}</span>
           <br />
-          <Button className={'btn btn-primary btn-LongRunningTask ' + (this.state.successfulUpload ? '' : 'disabled')} onClick={this.startLongRunningTask}>
-            {t('longrunningtask.submitLongRunningTask')}
+          <Button className={'btn btn-primary btn-WriteRecipe ' + (this.state.successfulUpload ? '' : 'disabled')} onClick={this.createNewRecipe}>
+            {t('writerecipe.submitNewRecipe')}
           </Button>
           
         </div>

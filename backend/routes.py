@@ -4,6 +4,7 @@ from flask_jwt_extended import (jwt_required, jwt_refresh_token_required, get_jw
 import controllers.auth as auth
 import controllers.user as user
 import controllers.recipe as recipe
+import controllers.tag as tag
 import controllers.queue as queue
 import controllers.upload as upload
 
@@ -102,6 +103,20 @@ def longrunningtaskControl():
         return recipe.updateRecipe()
     if request.method == 'DELETE':
         return recipe.deleteRecipe()
+        
+###
+
+### Tags
+
+# Create a single tag or get an array of them
+
+@routes.route('/tag', methods = ['POST', 'GET'])
+@jwt_required
+def tagControl():
+    if request.method == 'POST':
+        return tag.createTag()
+    if request.method == 'GET':
+        return tag.searchTag()
         
 ###
 

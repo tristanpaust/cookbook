@@ -64,6 +64,17 @@ class APIClient {
     return this.perform('get', '/user?email=' + email);
   }
 
+  /*** ///  Maps to Tag controller  /// ***/
+
+  createTag(newTag) {
+    return this.perform('post', '/tag', newTag);
+  }
+
+  searchTag(tag) {
+    return this.perform('get', '/tag?q=' + tag);
+  }
+
+
   /*** ///  Maps to LongRunningTask controller  /// ***/
   createRecipe(newRecipe) {
     return this.perform('post', '/Recipe', newRecipe);

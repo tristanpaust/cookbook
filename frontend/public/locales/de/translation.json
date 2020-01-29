@@ -115,5 +115,8 @@
     "authdeletionerror": "You are not authorized to delete this longrunningtask.",
     "popupdeleteerror": "The deletion of the longrunningtask has been cancelled.",
     "popupdeletesuccess": "The longrunningtask has been deleted successfully."
+  },
+  "writerecipe": {
+    "tagsearchplaceholder": "-- Bitte mindestens 3 Begriffe wählen --"
   }
 }
