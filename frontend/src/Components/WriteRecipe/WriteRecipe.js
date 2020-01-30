@@ -2,7 +2,10 @@ import React from "react";
 import {withRouter} from 'react-router';
 import './WriteRecipe.css';
 import APIClient from '../../Actions/apiClient';
+
 import TagSelect from './TagSelect.js';
+import IngredientAdd from './IngredientAdd.js';
+import IngredientSelect from './IngredientSelect.js';
 
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -68,6 +71,10 @@ class WriteRecipe extends React.Component {
     this.decreasePeople = this.decreasePeople.bind(this);
 
     this.handleTagSelect = this.handleTagSelect.bind(this);
+    this.handleIngredientSelect = this.handleIngredientSelect.bind(this);
+    this.handleIngredientDelete = this.handleIngredientDelete.bind(this);
+
+    this.child = React.createRef();
   }
 
   // Check the users auth token,
@@ -87,7 +94,7 @@ class WriteRecipe extends React.Component {
     			const location = { 
     				pathname: '/login', 
     				state: { 
-    					from: 'LongRunningTask', 
+    					from: 'WriteRecipe', 
     					message: i18n.t('messages.notauthorized') 
     				} 
     			} 
@@ -168,8 +175,27 @@ class WriteRecipe extends React.Component {
   }
 
   handleTagSelect(options) {
-    console.log(options)
     this.setState({tags: options});
+  }
+
+  handleIngredientSelect(options) {
+    this.setState({ingredients: options});
+  }
+
+  handleIngredientDelete(id) {
+    var array = [...this.state.ingredients]; // make a separate copy of the array
+
+    for (let i = 0; i < array.length; i++) {
+      if (array[i]['item'].value === id) {
+        array.splice(i, 1);
+        this.setState({ingredients: array});
+        this.child.current.deleteIngredient(id);
+      }
+    }
+  }
+
+  getIngredients = () => {
+    var ingredientArray = this.child.getAllIngredients()
   }
 
   // Remove file from selection by emptying the file object, reset all messages and button states
@@ -439,6 +465,25 @@ class WriteRecipe extends React.Component {
                     {t('writerecipe.recipetaghelp')}
                   </Form.Text>
               </div>
+
+              <hr />
+
+              <div className="row" id="ingredients">
+                <div className="form-group col">
+
+                  <h5 className="recipe-headline" htmlFor="ingredients">{t('writerecipe.ingredientsheader')}</h5>
+
+                  <IngredientSelect onSelectIngredient={this.handleIngredientSelect} ref={this.child}   />
+
+                  <Form.Text className="text-muted createRecipe-info">
+                    {t('writerecipe.recipeingredienthelp')}
+                  </Form.Text>
+
+                  <IngredientAdd entries={this.state.ingredients} onHandleDelete={this.handleIngredientDelete}/>
+                </div>
+              </div>
+                
+              <hr />
 
             </div>
 

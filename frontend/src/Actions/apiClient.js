@@ -13,7 +13,6 @@ const client = axios.create({
 class APIClient {
   /*** ///  Maps to auth controller  /// ***/  
   login(user) {
-    console.log("<<<", user)
     return this.perform('post', '/login', user);
   }
  
@@ -64,6 +63,7 @@ class APIClient {
     return this.perform('get', '/user?email=' + email);
   }
 
+
   /*** ///  Maps to Tag controller  /// ***/
 
   createTag(newTag) {
@@ -75,6 +75,28 @@ class APIClient {
   }
 
 
+  /*** ///  Maps to Ingredient controller  /// ***/
+
+  createIngredient(newIngredient) {
+    return this.perform('post', '/ingredient', newIngredient);
+  }
+
+  searchIngredient(ingredient) {
+    return this.perform('get', '/ingredient?q=' + ingredient);
+  }
+
+
+  /*** ///  Maps to Unit controller  /// ***/
+
+  createUnit(newUnit) {
+    return this.perform('post', '/unit', newUnit);
+  }
+
+  searchUnit(unit) {
+    return this.perform('get', '/unit?q=' + unit);
+  }
+
+
   /*** ///  Maps to LongRunningTask controller  /// ***/
   createRecipe(newRecipe) {
     return this.perform('post', '/Recipe', newRecipe);
@@ -83,6 +105,7 @@ class APIClient {
   deleteRecipe(recipeID) {
     return this.perform('delete', '/LongRunningTask', recipeID)
   }
+
 
   /*** ///  Maps to queue controller  /// ***/
   createQueueItem(newQueueItem) {
@@ -96,6 +119,7 @@ class APIClient {
   deleteQueueItem(queueItem) {
     return this.perform('delete', '/queue', queueItem);
   }
+
   
   /*** /// Upload /// ***/
   uploadFile(file) {
@@ -107,11 +131,13 @@ class APIClient {
     return this.perform('delete', '/upload', file);  
     // Please not that this is NOT the final route, as it doesn't go to ODIN but just to the local server
   }
+
   
   /*** /// Mail /// ***/
   sendMail() {
     return this.perform('get', '/mail');
   }
+
   
   // Perform takes in the mehthod, route, data and creates a new client
   // Also gets the token from localStorage and adds it to the header of the request

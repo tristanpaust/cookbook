@@ -16,9 +16,9 @@ ingredient_schema = {
 }
 
 # When data is going to be stored, try the data against the model to make sure it has the right format of required items
-def validate_queue(data):
+def validate_ingredient(data):
     try:
-        validate(data, queue_schema)
+        validate(data, ingredient_schema)
     except ValidationError as e:
         return {'ok': False, 'message': e}
     except SchemaError as e:

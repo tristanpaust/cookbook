@@ -5,7 +5,8 @@ import controllers.auth as auth
 import controllers.user as user
 import controllers.recipe as recipe
 import controllers.tag as tag
-import controllers.queue as queue
+import controllers.ingredient as ingredient
+import controllers.unit as unit
 import controllers.upload as upload
 
 from application import jwt
@@ -120,20 +121,34 @@ def tagControl():
         
 ###
 
-### Queue
 
-# Get, create, update the entire job queue
-@routes.route('/queue', methods = ['POST', 'GET', 'PUT', 'DELETE'])
+### Ingredients
+
+# Create a single ingredient or get an array of them
+
+@routes.route('/ingredient', methods = ['POST', 'GET'])
 @jwt_required
-def queueControl():
+def ingredientControl():
     if request.method == 'POST':
-        return queue.createQueueItem()
+        return ingredient.createIngredient()
     if request.method == 'GET':
-        return queue.getQueue()
-    if request.method == 'PUT':
-        return queue.updateQueueItem()
-    if request.method == 'DELETE':
-        return queue.deleteQueueItem()
+        return ingredient.searchIngredient()
+        
+###
+
+
+### Unit
+
+# Create a single unit or get an array of them
+
+@routes.route('/unit', methods = ['POST', 'GET'])
+@jwt_required
+def unitControl():
+    if request.method == 'POST':
+        return unit.createUnit()
+    if request.method == 'GET':
+        return unit.searchUnit()
+        
 ###
 
 
@@ -146,6 +161,7 @@ def uploadControl():
     if request.method == 'DELETE':
         return upload.deleteFile()
 ###
+
 
 ### Mail
 
