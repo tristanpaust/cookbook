@@ -6,6 +6,7 @@ import APIClient from '../../Actions/apiClient';
 import TagSelect from './TagSelect.js';
 import IngredientAdd from './IngredientAdd.js';
 import IngredientSelect from './IngredientSelect.js';
+import StepAdd from './StepAdd.js';
 
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -73,6 +74,11 @@ class WriteRecipe extends React.Component {
     this.handleTagSelect = this.handleTagSelect.bind(this);
     this.handleIngredientSelect = this.handleIngredientSelect.bind(this);
     this.handleIngredientDelete = this.handleIngredientDelete.bind(this);
+
+    this.onStepAdd = this.onStepAdd.bind(this);
+    this.handleStepDelete = this.handleStepDelete.bind(this);
+    this.handleStepEdit = this.handleStepEdit.bind(this);
+    this.handleStepBlur = this.handleStepBlur.bind(this);
 
     this.child = React.createRef();
   }
@@ -197,6 +203,54 @@ class WriteRecipe extends React.Component {
   getIngredients = () => {
     var ingredientArray = this.child.getAllIngredients()
   }
+
+  onStepAdd(e) {
+    let step = this.refs.step.value;
+
+    let newStep = {
+      text: step,
+      key: 'step' + parseInt(this.state.steps.length+1)
+    }
+
+    this.setState((prevState) => {
+      return {
+        steps: prevState.steps.concat(newStep)
+      };
+    });
+    this.refs.step.value = '';
+
+    e.preventDefault();
+  }
+
+  handleStepDelete(id) {
+    var array = [...this.state.steps];
+
+    for (let i = 0; i < array.length; i++) {
+      if (array[i]['key'] === id) {
+        array.splice(i, 1);
+        return this.setState({steps: array});
+      }
+    }
+  }
+
+  handleStepEdit(textElement) {
+    textElement.contentEditable = true;
+    textElement.classList.add('editable');
+  }
+
+  handleStepBlur(textElement, id) {
+    textElement.contentEditable = false;
+    textElement.classList.remove('editable');
+
+    var array = [...this.state.steps];
+
+    for (let i = 0; i < array.length; i++) {
+      if (array[i]['key'] === id) {
+        array[i]['text'] = textElement.textContent;
+      }
+    }
+    this.setState({steps: array});
+  }  
 
   // Remove file from selection by emptying the file object, reset all messages and button states
   removeFile() {
@@ -484,6 +538,38 @@ class WriteRecipe extends React.Component {
               </div>
                 
               <hr />
+
+              <div className="row">
+                <div className="form-group col">
+                  <h5 className="recipe-headline">{t('writerecipe.stepsheader')}</h5>
+                    
+                    <div className="input-group">
+                      <input 
+                        id="step" 
+                        name="step" 
+                        type="text" 
+                        ref="step"
+                        className='col form-control step-control'
+                        onKeyPress={event => {
+                          if (event.key === 'Enter') {
+                            this.onStepAdd(event)
+                          }
+                        }}
+                      />
+
+                    <Form.Text className="text-muted createRecipe-info">
+                      {t('writerecipe.recipestephelp')}
+                    </Form.Text>
+                    </div>
+
+                    <StepAdd 
+                      entries={this.state.steps} 
+                      onHandleDelete={this.handleStepDelete} 
+                      onHandleEdit={this.handleStepEdit} 
+                      onHandleBlur={this.handleStepBlur}
+                    />
+                  </div>
+              </div>
 
             </div>
 

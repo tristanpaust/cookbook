@@ -232,10 +232,10 @@ class IngredientSelect extends Component {
           <div className="row float-right popup-btns">
               <button ref="closeModalBtn" id="modalSuccess" onClick={this.closeModal} className="close-modal-success btn btn-success">
                 <Icon icon={checkmarkIcon} />
-                </button>
+              </button>
               <button id="modalCancel" onClick={this.dismissModal} className="close-modal-cancel btn btn-success">
                 <Icon icon={crossIcon} />
-            </button>
+              </button>
           </div>
 
         </Popup>
